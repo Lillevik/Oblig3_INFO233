@@ -26,7 +26,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Main.Main;
-import no.uib.info233.v2016.puz001.esj003.Oblig2.Issue.Issues;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Issues.Issues;
 
 /**
  * @author mariuslillevik

@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.Serializable;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.SaveProgram;
-import no.uib.info233.v2016.puz001.esj003.Oblig2.Gui.Gui;
-import no.uib.info233.v2016.puz001.esj003.Oblig2.Issue.Issues;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.Gui;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Issues.Issues;
 
 /**
  * Class to start the program.
