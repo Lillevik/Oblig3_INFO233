@@ -1,6 +1,9 @@
 # Oblig3_INFO233
 ###### Choo Choo Motherfuckers
 
+###### Har blitt litt lite commits i det sista pga 216 prosjekt. 
+###### will skjerpa oss.
+
 ###### Lillevik(puz001) - 2, 6, 9, 3
 ###### Svimanet(esj002) - 1, 7, 8, 5, 4
 
