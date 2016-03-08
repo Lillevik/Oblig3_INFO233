@@ -1,6 +1,3 @@
-/**
- * 
- */
 package no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling;
 
 import java.util.*;
@@ -44,7 +41,7 @@ public class IssueTable implements Serializable{
 	private Set<String> users = new HashSet <String>();
 	private ArrayList<Issues> issueList = new ArrayList <Issues>();
 	private ArrayList<Integer> prio = new ArrayList<Integer>() ;
-	private ArrayList<String> prioString = new ArrayList<~>() ;
+	private ArrayList<String> prioString = new ArrayList<String>();
 
 	
 	
@@ -261,7 +258,9 @@ public class IssueTable implements Serializable{
                 }
 	   	}
 	  
-	    
+
+
+
 	    /**
 	     * @return The highest current Issue ID from the issues list.
 	     */

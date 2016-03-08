@@ -2,6 +2,7 @@ package no.uib.info233.v2016.puz001.esj002.Oblig3.Gui;
 
 import javax.swing.*;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -301,12 +302,38 @@ public class Gui extends JFrame implements Serializable{
 		for(String s : getIt().getUsers()){
 			if(s.equals(lp.getUserText().getText()) && lp.getPasswordText().getText().equals("pass")){
 				getTxtLoggedIn().setText("Logged in as: " + lp.getUserText().getText());
+				listUserIssues();
 				setContentPane(getSpine());
 				return true;
 			} 
 		} 
 		return false;
 	}
+
+
+	public void listUserIssues(){
+		getIt().getModel().setRowCount(0);
+		getIt().getModel().setColumnCount(0);
+		getIt().getModel().addColumn("Issue ID: ");
+		getIt().getModel().addColumn("Assigned to: ");
+		getIt().getModel().addColumn("Created: ");
+		getIt().getModel().addColumn("Issue: ");
+		getIt().getModel().addColumn("Priority: ");
+		getIt().getModel().addColumn("Location: ");
+
+
+		for(Issues issue : it.getIssueList()){
+			if(issue.getAssigned().equals(lp.getUserText().getText())){
+				getIt().getModel().addRow(new Object[]{issue.getId(),
+						issue.getAssigned(),
+						issue.getCreated(),
+						issue.getIssue(),
+						issue.getPriority(),
+						issue.getLocation()});
+			}
+		}
+	}
+
 	
 	
 	/**

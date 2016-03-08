@@ -27,7 +27,7 @@ public class Main implements Serializable{
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SaveProgram.load();
+//		SaveProgram.load();
 		Gui gui = new Gui();
 
 
