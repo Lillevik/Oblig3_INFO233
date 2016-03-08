@@ -44,6 +44,8 @@ public class IssueTable implements Serializable{
 	private Set<String> users = new HashSet <String>();
 	private ArrayList<Issues> issueList = new ArrayList <Issues>();
 	private ArrayList<Integer> prio = new ArrayList<Integer>() ;
+	private ArrayList<String> prioString = new ArrayList<~>() ;
+
 	
 	
 		/**
@@ -67,6 +69,11 @@ public class IssueTable implements Serializable{
 			for (int a = 0; a < 101; a++) {
 			    prio.add(a);
 			}
+			prioString.add("Kritisk");
+			prioString.add("Høy");
+			prioString.add("Normal");
+			prioString.add("Lav");
+			prioString.add("Ikke prioritert");
 		}
 		
 		
@@ -426,6 +433,10 @@ public class IssueTable implements Serializable{
 		return users;
 	}
 
+
+	public ArrayList<String> getPrioString() {
+		return prioString;
+	}
 
 	/**
 	 * @param users the users to set

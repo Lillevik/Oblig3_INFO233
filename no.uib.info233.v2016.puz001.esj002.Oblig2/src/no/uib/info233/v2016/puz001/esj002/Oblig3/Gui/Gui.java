@@ -105,9 +105,9 @@ public class Gui extends JFrame implements Serializable{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private JComboBox chooseUser2 = new JComboBox(it.getUsers().toArray());
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private JComboBox choosePrio2 = new JComboBox(it.getPrio().toArray());
+	private JComboBox choosePrio2 = new JComboBox(it.getPrioString().toArray());
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private JComboBox choosePriority = new JComboBox(it.getPrio().toArray());
+	private JComboBox choosePriority = new JComboBox(it.getPrioString().toArray());
 
 	/*
 	 * The JMenu items make the menue on the top of the program
