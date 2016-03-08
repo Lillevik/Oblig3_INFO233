@@ -27,6 +27,7 @@ public class Main implements Serializable{
 	 * @param args
 	 */
 	public static void main(String[] args) {
+
 		SaveProgram.load();
 		Gui gui = new Gui();
 
@@ -212,12 +213,21 @@ public class Main implements Serializable{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
+
+				String priorString = String.valueOf(gui.getChoosePriority().getSelectedItem());
+				String priority = null;
+
+				if (priorString.equals("Kritisk")){
+
+					priority = "90";
+				}
 				
 				Issues is = new Issues(gui.getIt().maxIssueId() ,
                         gui.getChooseUser().getSelectedItem().toString(),
 						gui.getIt().currentDate(),
 						gui.getIp().getIssueText().getText(),
-						gui.getChoosePriority().getSelectedItem().toString(),
+						priority,
 						gui.getIp().getLocationText().getText());
 			            gui.getIt().getIssueList().add(is);
 			    	    gui.getIt().tableForIssues();

@@ -44,7 +44,7 @@ public class IssueTable implements Serializable{
 	private Set<String> users = new HashSet <String>();
 	private ArrayList<Issues> issueList = new ArrayList <Issues>();
 	private ArrayList<Integer> prio = new ArrayList<Integer>() ;
-	private ArrayList<String> prioString = new ArrayList<~>() ;
+	private ArrayList<String> prioString = new ArrayList<String>() ;
 
 	
 	
@@ -228,25 +228,25 @@ public class IssueTable implements Serializable{
 
                 for (Issues issue : issueList) {
 
-					int prior = Integer.parseInt(String.valueOf(issue.getPriority().trim()));
+						int priorIT = Integer.parseInt(String.valueOf(issue.getPriority().trim()));
 
-					if (prior >= 80){
+					if (priorIT >= 80){
 
 						issue.setPriority("Kritisk");
 					}
-					else if (prior >=60 && prior < 80) {
+					else if (priorIT >=60 && priorIT < 80) {
 
 						issue.setPriority("Høy");
 					}
-					else if (prior >= 40 && prior < 60) {
+					else if (priorIT >= 40 && priorIT < 60) {
 
 						issue.setPriority("Normal");
 					}
-					else if (prior >= 20 && prior < 40) {
+					else if (priorIT >= 20 && priorIT < 40) {
 
 						issue.setPriority("Lav");
 					}
-					else if (prior >= 0 && prior < 40) {
+					else if (priorIT >= 0 && priorIT < 40) {
 
 						issue.setPriority("Ikke prioritert");
 					}
