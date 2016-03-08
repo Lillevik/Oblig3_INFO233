@@ -220,6 +220,30 @@ public class IssueTable implements Serializable{
                 model.addColumn("Location: ");
 
                 for (Issues issue : issueList) {
+
+					int prior = Integer.parseInt(String.valueOf(issue.getPriority().trim()));
+
+					if (prior >= 80){
+
+						issue.setPriority("Kritisk");
+					}
+					else if (prior >=60 && prior < 80) {
+
+						issue.setPriority("Høy");
+					}
+					else if (prior >= 40 && prior < 60) {
+
+						issue.setPriority("Normal");
+					}
+					else if (prior >= 20 && prior < 40) {
+
+						issue.setPriority("Lav");
+					}
+					else if (prior >= 0 && prior < 40) {
+
+						issue.setPriority("Ikke prioritert");
+					}
+
                     model.addRow(new Object[]{issue.getId(),
                            issue.getAssigned(),
                            issue.getCreated(),
@@ -277,11 +301,11 @@ public class IssueTable implements Serializable{
 	            	Element details = doc.createElement("ISSUES");
 		            root.appendChild(details);
 
-		            details.setAttribute("id", i.getId());
-		            details.setAttribute("assigned_user", i.getAssigned());
-		            details.setAttribute("created", i.getCreated());
-		            details.setAttribute("text", i.getIssue());
-		            details.setAttribute("priority", i.getPriority());
+					details.setAttribute("id", i.getId());
+					details.setAttribute("assigned_user", i.getAssigned());
+					details.setAttribute("created", i.getCreated());
+					details.setAttribute("text", i.getIssue());
+					details.setAttribute("priority", i.getPriority());
 		            details.setAttribute("location", i.getLocation());
 	            }
 	            
