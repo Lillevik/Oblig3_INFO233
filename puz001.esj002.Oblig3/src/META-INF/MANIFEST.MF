@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: no.uib.info233.v2016.puz001.esj002.Oblig2.Main.Main
-
