@@ -71,7 +71,7 @@ public class Gui extends JFrame implements Serializable{
 
 	/*
 	 * The JTextPanes are simply displaying
-	 * info and who you are loged in as.
+	 * info and who you are logged in as.
 	 */
 	private JTextPane txtInfo;
 	private JTextPane txtLoggedIn = new JTextPane();
@@ -101,14 +101,11 @@ public class Gui extends JFrame implements Serializable{
 	 * The choose user lets you drop down all users etc.
 	 *
 	 */
-	@SuppressWarnings("rawtypes")
-	private JComboBox<?> chooseUser = new JComboBox();
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private String[] priorities = {"Ikke prioritet", "Lav", "Normal", "Middels", "Høy"};
+	private JComboBox chooseUser = new JComboBox();
 	private JComboBox chooseUser2 = new JComboBox(it.getUsers().toArray());
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private JComboBox choosePrio2 = new JComboBox(it.getPrioString().toArray());
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private JComboBox choosePriority = new JComboBox(it.getPrioString().toArray());
+	private JComboBox choosePrio2 = new JComboBox(priorities);
+	private JComboBox choosePriority = new JComboBox(priorities);
 // te
 	/*
 	 * The JMenu items make the menue on the top of the program
@@ -117,7 +114,6 @@ public class Gui extends JFrame implements Serializable{
 	private JMenu file = new JMenu("File");
 	private JMenu help = new JMenu("Help");
 	private JMenuItem save = new JMenuItem("Save");
-	@SuppressWarnings("unused")
 	private JMenuItem about = new JMenuItem("About");
 
 	/**
@@ -297,7 +293,7 @@ public class Gui extends JFrame implements Serializable{
 	 * a functional user login database.
 	 * @return boolean if authentication was successful or not
 	 */
-	@SuppressWarnings("deprecation")
+
 	public boolean authenticateLogin(){
 		for(String s : getIt().getUsers()){
 			if(s.equals(lp.getUserText().getText()) && lp.getPasswordText().getText().equals("pass")){

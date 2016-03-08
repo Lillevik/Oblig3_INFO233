@@ -265,12 +265,12 @@ public class Main implements Serializable{
 				if(i == -1){
 					System.out.println("Please select a row to edit.");
 				}else{
-				int prio = Integer.parseInt(gui.getqTable().getValueAt(i, 4).toString().trim());
 				String user = gui.getqTable().getValueAt(i, 1).toString();
 					gui.getChooseUser2().setSelectedItem(user);
-					gui.getChoosePrio2().setSelectedItem(prio);			
+					gui.getChoosePrio2().setSelectedItem(gui.getqTable().getValueAt(i, 4).toString());
 					gui.getUp().getIssueText().setText(gui.getqTable().getValueAt(i, 3).toString());
 					gui.getUp().getLocationText().setText(gui.getqTable().getValueAt(i, 5).toString());
+					gui.updateChooseUser();
 					gui.getIt().writeXmlFile();
 					gui.setContentPane(gui.getUp());
 					gui.pack();

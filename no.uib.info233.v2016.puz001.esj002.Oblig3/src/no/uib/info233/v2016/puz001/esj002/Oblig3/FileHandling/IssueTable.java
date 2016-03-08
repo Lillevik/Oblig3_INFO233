@@ -34,13 +34,11 @@ public class IssueTable implements Serializable{
 
 	private static final long serialVersionUID = -6349521349294077303L;
 	//Fields for the IssueTable class
-	Main m = new Main();
 	private File file = new File("old_issues.xml");
 	private File newFile = new File("new_issues.xml");
 	private transient DefaultTableModel model = new DefaultTableModel();
 	private Set<String> users = new HashSet <String>();
 	private ArrayList<Issues> issueList = new ArrayList <Issues>();
-	private ArrayList<Integer> prio = new ArrayList<Integer>() ;
 	private ArrayList<String> prioString = new ArrayList<String>();
 
 	
@@ -52,25 +50,10 @@ public class IssueTable implements Serializable{
 		 */
 		public IssueTable(){
 			users.add("admin");
-			fillPrio();
 			fillUsers();
 			fillIssues();
+		//	changePrio();
 			tableForIssues();
-		}
-	    
-		/**
-		 * This method fills the prio ArrayList 
-		 * with numbers from 1 to 100.
-		 */
-		public void fillPrio(){
-			for (int a = 0; a < 101; a++) {
-			    prio.add(a);
-			}
-			prioString.add("Kritisk");
-			prioString.add("Høy");
-			prioString.add("Normal");
-			prioString.add("Lav");
-			prioString.add("Ikke prioritert");
 		}
 		
 		
@@ -224,40 +207,37 @@ public class IssueTable implements Serializable{
                 model.addColumn("Location: ");
 
                 for (Issues issue : issueList) {
-
-					int prior = Integer.parseInt(String.valueOf(issue.getPriority().trim()));
-
-					if (prior >= 80){
-
-						issue.setPriority("Kritisk");
-					}
-					else if (prior >=60 && prior < 80) {
-
-						issue.setPriority("Høy");
-					}
-					else if (prior >= 40 && prior < 60) {
-
-						issue.setPriority("Normal");
-					}
-					else if (prior >= 20 && prior < 40) {
-
-						issue.setPriority("Lav");
-					}
-					else if (prior >= 0 && prior < 40) {
-
-						issue.setPriority("Ikke prioritert");
-					}
-
                     model.addRow(new Object[]{issue.getId(),
                            issue.getAssigned(),
                            issue.getCreated(),
                            issue.getIssue(),
                            issue.getPriority(),
                            issue.getLocation()});
-	     
                 }
 	   	}
-	  
+
+		public void changePrio(){
+                if(!newFile.exists()) {
+                    for (Issues issue : issueList) {
+                        int prior = Integer.parseInt(String.valueOf(issue.getPriority().trim()));
+                        if (prior >= 80) {
+                            issue.setPriority("Kritisk");
+                        } else if (prior >= 60 && prior < 80) {
+                            issue.setPriority("Høy");
+                        } else if (prior >= 40 && prior < 60) {
+                            issue.setPriority("Normal");
+                        } else if (prior >= 20 && prior < 40) {
+                            issue.setPriority("Lav");
+                        } else if (prior >= 0 && prior < 40) {
+                            issue.setPriority("Ikke prioritert");
+                        }
+                    }
+                }
+        }
+
+
+
+
 
 
 
@@ -391,21 +371,6 @@ public class IssueTable implements Serializable{
 	 */
 	public void setFile(File file) {
 		this.file = file;
-	}
-
-	/**
-	 * @return the prio
-	 */
-	public ArrayList<Integer> getPrio() {
-		return prio;
-	}
-
-
-	/**
-	 * @param prio the prio to set
-	 */
-	public void setPrio(ArrayList<Integer> prio) {
-		this.prio = prio;
 	}
 
 
