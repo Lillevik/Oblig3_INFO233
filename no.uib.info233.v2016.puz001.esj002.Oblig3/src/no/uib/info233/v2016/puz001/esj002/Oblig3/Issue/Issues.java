@@ -35,13 +35,14 @@ public class Issues implements Serializable{
 	 * @param priority
 	 * @param location
 	 */
-	public Issues(String id, String assigned, String created, String issue, String priority, String location){
+	public Issues(String id, String assigned, String created, String issue, String priority, String location, String status){
 		this.id = id;
 		this.assigned = assigned;
 		this.created = created;
 		this.issue = issue;
 		this.priority = priority;
 		this.location = location;
+		this.status = status;
 	}
 
 
@@ -174,6 +175,10 @@ public class Issues implements Serializable{
 	 */
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public String getStatus(){
+		return this.status;
 	}
 	
 	/**

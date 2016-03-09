@@ -124,7 +124,7 @@ public class Gui extends JFrame implements Serializable{
 		super("Issue Tracker");
 		spine = new JPanel(layout);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		spine.setLayout(new BorderLayout(0, 0));
 		spine.setPreferredSize(new Dimension(700, 600));
 		
@@ -316,6 +316,7 @@ public class Gui extends JFrame implements Serializable{
 		getIt().getModel().addColumn("Issue: ");
 		getIt().getModel().addColumn("Priority: ");
 		getIt().getModel().addColumn("Location: ");
+		getIt().getModel().addColumn("Status: ");
 
 
 		for(Issues issue : it.getIssueList()){
@@ -325,7 +326,8 @@ public class Gui extends JFrame implements Serializable{
 						issue.getCreated(),
 						issue.getIssue(),
 						issue.getPriority(),
-						issue.getLocation()});
+						issue.getLocation(),
+						issue.getStatus()});
 			}
 		}
 	}

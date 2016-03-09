@@ -222,7 +222,8 @@ public class Main implements Serializable{
 						gui.getIt().currentDate(),
 						gui.getIp().getIssueText().getText(),
 						gui.getChoosePriority().getSelectedItem().toString(),
-						gui.getIp().getLocationText().getText());
+						gui.getIp().getLocationText().getText(),
+						"Open");
 			            gui.getIt().getIssueList().add(is);
 			    	    gui.getIt().tableForIssues();
 						//Writes to files.
@@ -303,7 +304,6 @@ public class Main implements Serializable{
 					
 				}
 				gui.getIt().writeXmlFile();
-				gui.getIt().writeUsersToXml();
 				gui.setContentPane(gui.getSpine());
 				gui.pack();
 			}

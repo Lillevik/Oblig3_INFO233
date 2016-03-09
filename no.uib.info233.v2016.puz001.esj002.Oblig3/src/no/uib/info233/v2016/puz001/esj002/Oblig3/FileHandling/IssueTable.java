@@ -152,7 +152,8 @@ public class IssueTable implements Serializable {
 							eElement.getAttribute("created"),
 							eElement.getAttribute("text"),
 							eElement.getAttribute("priority"),
-							eElement.getAttribute("location"));
+							eElement.getAttribute("location"),
+							"Not set");
 
 					issueList.add(issue);
 				}
@@ -175,7 +176,8 @@ public class IssueTable implements Serializable {
 							eElement.getAttribute("created"),
 							eElement.getAttribute("text"),
 							eElement.getAttribute("priority"),
-							eElement.getAttribute("location"));
+							eElement.getAttribute("location"),
+							eElement.getAttribute("status"));
 
 					issueList.add(issue);
 				}
@@ -199,6 +201,7 @@ public class IssueTable implements Serializable {
 		model.addColumn("Issue: ");
 		model.addColumn("Priority: ");
 		model.addColumn("Location: ");
+		model.addColumn(("Status: "));
 
 		for (Issues issue : issueList) {
 			model.addRow(new Object[]{issue.getId(),
@@ -206,7 +209,8 @@ public class IssueTable implements Serializable {
 					issue.getCreated(),
 					issue.getIssue(),
 					issue.getPriority(),
-					issue.getLocation()});
+					issue.getLocation(),
+					issue.getStatus()});
 		}
 	}
 
@@ -283,6 +287,7 @@ public class IssueTable implements Serializable {
 				details.setAttribute("text", i.getIssue());
 				details.setAttribute("priority", i.getPriority());
 				details.setAttribute("location", i.getLocation());
+				details.setAttribute("status", i.getStatus());
 			}
 
 
