@@ -2,6 +2,7 @@ package no.uib.info233.v2016.puz001.esj002.Oblig3.Gui;
 
 import javax.swing.*;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -70,7 +71,7 @@ public class Gui extends JFrame implements Serializable{
 
 	/*
 	 * The JTextPanes are simply displaying
-	 * info and who you are loged in as.
+	 * info and who you are logged in as.
 	 */
 	private JTextPane txtInfo;
 	private JTextPane txtLoggedIn = new JTextPane();
@@ -100,14 +101,11 @@ public class Gui extends JFrame implements Serializable{
 	 * The choose user lets you drop down all users etc.
 	 *
 	 */
-	@SuppressWarnings("rawtypes")
-	private JComboBox<?> chooseUser = new JComboBox();
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private String[] priorities = {"Ikke prioritet", "Lav", "Normal", "Høy", "Kritisk"};
+	private JComboBox chooseUser = new JComboBox();
 	private JComboBox chooseUser2 = new JComboBox(it.getUsers().toArray());
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private JComboBox choosePrio2 = new JComboBox(it.getPrioString().toArray());
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private JComboBox choosePriority = new JComboBox(it.getPrioString().toArray());
+	private JComboBox choosePrio2 = new JComboBox(priorities);
+	private JComboBox choosePriority = new JComboBox(priorities);
 // te
 	/*
 	 * The JMenu items make the menue on the top of the program
@@ -116,7 +114,6 @@ public class Gui extends JFrame implements Serializable{
 	private JMenu file = new JMenu("File");
 	private JMenu help = new JMenu("Help");
 	private JMenuItem save = new JMenuItem("Save");
-	@SuppressWarnings("unused")
 	private JMenuItem about = new JMenuItem("About");
 
 	/**
@@ -127,7 +124,7 @@ public class Gui extends JFrame implements Serializable{
 		super("Issue Tracker");
 		spine = new JPanel(layout);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		spine.setLayout(new BorderLayout(0, 0));
 		spine.setPreferredSize(new Dimension(700, 600));
 		
@@ -296,17 +293,45 @@ public class Gui extends JFrame implements Serializable{
 	 * a functional user login database.
 	 * @return boolean if authentication was successful or not
 	 */
-	@SuppressWarnings("deprecation")
+
 	public boolean authenticateLogin(){
 		for(String s : getIt().getUsers()){
 			if(s.equals(lp.getUserText().getText()) && lp.getPasswordText().getText().equals("pass")){
 				getTxtLoggedIn().setText("Logged in as: " + lp.getUserText().getText());
+				listUserIssues();
 				setContentPane(getSpine());
 				return true;
 			} 
 		} 
 		return false;
 	}
+
+
+	public void listUserIssues(){
+		getIt().getModel().setRowCount(0);
+		getIt().getModel().setColumnCount(0);
+		getIt().getModel().addColumn("Issue ID: ");
+		getIt().getModel().addColumn("Assigned to: ");
+		getIt().getModel().addColumn("Created: ");
+		getIt().getModel().addColumn("Issue: ");
+		getIt().getModel().addColumn("Priority: ");
+		getIt().getModel().addColumn("Location: ");
+		getIt().getModel().addColumn("Status: ");
+
+
+		for(Issues issue : it.getIssueList()){
+			if(issue.getAssigned().equals(lp.getUserText().getText())){
+				getIt().getModel().addRow(new Object[]{issue.getId(),
+						issue.getAssigned(),
+						issue.getCreated(),
+						issue.getIssue(),
+						issue.getPriority(),
+						issue.getLocation(),
+						issue.getStatus()});
+			}
+		}
+	}
+
 	
 	
 	/**

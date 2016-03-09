@@ -8,6 +8,7 @@ import java.io.Serializable;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.SaveProgram;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.Gui;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
 
 /**
  * Class to start the program.
@@ -27,7 +28,7 @@ public class Main implements Serializable{
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		SaveProgram.load();
+//		SaveProgram.load();
 		Gui gui = new Gui();
 
 
@@ -108,9 +109,8 @@ public class Main implements Serializable{
 					gui.getIt().getModel().addColumn("Priority: ");
 					gui.getIt().getModel().addColumn("Location: ");
 					for(Issues issue : gui.getIt().getIssueList()){
-						int priorInt = Integer.parseInt(issue.getPriority().trim());
-						int priorTxt = Integer.parseInt(gui.getTxtPriority().getText());
-						if(priorInt == priorTxt){
+
+						if(issue.getPriority().equals(gui.getTxtPriority().getText())){
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 				    			  issue.getAssigned(),
 				    			  issue.getCreated(),
@@ -174,6 +174,7 @@ public class Main implements Serializable{
 
 			@Override
 			public void actionPerformed(ActionEvent e){
+
 				gui.getIt().tableForIssues();
 			}
 		});
@@ -186,9 +187,12 @@ public class Main implements Serializable{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+					//Adds a user to the list
 					gui.getIt().addUser(gui.getTxtSearch().getText());
 					gui.updateChooseUser();
-					gui.getIt().writeXmlFile();
+					//Writes to the userFile
+					gui.getIt().writeUsersToXml();
+					//Changes the panel
 					gui.getIt().listUniqueUsers();
 			}
 		});
@@ -212,16 +216,20 @@ public class Main implements Serializable{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+						//Creates new issue.
 				Issues is = new Issues(gui.getIt().maxIssueId() ,
                         gui.getChooseUser().getSelectedItem().toString(),
 						gui.getIt().currentDate(),
 						gui.getIp().getIssueText().getText(),
 						gui.getChoosePriority().getSelectedItem().toString(),
-						gui.getIp().getLocationText().getText());
+						gui.getIp().getLocationText().getText(),
+						"Open");
 			            gui.getIt().getIssueList().add(is);
 			    	    gui.getIt().tableForIssues();
+						//Writes to files.
 						gui.getIt().writeXmlFile();
+						gui.getIt().writeUsersToXml();
+						//Changes panel
 			    	    gui.setContentPane(gui.getSpine());
 			    	    gui.pack();
 	    	}
@@ -265,13 +273,11 @@ public class Main implements Serializable{
 				if(i == -1){
 					System.out.println("Please select a row to edit.");
 				}else{
-				int prio = Integer.parseInt(gui.getqTable().getValueAt(i, 4).toString().trim());
-				String user = gui.getqTable().getValueAt(i, 1).toString();
-					gui.getChooseUser2().setSelectedItem(user);
-					gui.getChoosePrio2().setSelectedItem(prio);			
+					gui.getChooseUser().setSelectedItem(gui.getqTable().getValueAt(i,1).toString());
+					gui.getChoosePrio2().setSelectedItem(gui.getqTable().getValueAt(i, 4).toString());
 					gui.getUp().getIssueText().setText(gui.getqTable().getValueAt(i, 3).toString());
 					gui.getUp().getLocationText().setText(gui.getqTable().getValueAt(i, 5).toString());
-					gui.getIt().writeXmlFile();
+					gui.updateChooseUser();
 					gui.setContentPane(gui.getUp());
 					gui.pack();
 				}
@@ -310,8 +316,9 @@ public class Main implements Serializable{
 		gui.getSave().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SaveProgram.save(gui.getIt());		
+				SaveProgram.save(gui.getIt());
 				gui.getIt().writeXmlFile();
+				gui.getIt().writeUsersToXml();
 			}
 		});
 		
