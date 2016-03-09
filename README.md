@@ -9,7 +9,7 @@
 
 ######   CHECKPOINTS
 ###### +--------------+
-######   krav 1
+######   krav 1 CHECK
 ######   krav 2 CHECK
 ######   krav 3 
 ######   krav 4
