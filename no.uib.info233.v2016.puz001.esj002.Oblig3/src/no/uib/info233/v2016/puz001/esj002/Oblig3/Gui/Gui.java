@@ -101,7 +101,7 @@ public class Gui extends JFrame implements Serializable{
 	 * The choose user lets you drop down all users etc.
 	 *
 	 */
-	private String[] priorities = {"Ikke prioritet", "Lav", "Normal", "Middels", "Høy"};
+	private String[] priorities = {"Ikke prioritet", "Lav", "Normal", "Høy", "Kritisk"};
 	private JComboBox chooseUser = new JComboBox();
 	private JComboBox chooseUser2 = new JComboBox(it.getUsers().toArray());
 	private JComboBox choosePrio2 = new JComboBox(priorities);

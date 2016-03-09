@@ -21,6 +21,9 @@ public class Issues implements Serializable{
 	private String issue;
 	private String priority;
 	private String location;
+	private String status;
+	private String createdBy;
+	private String lastUpdatedBy;
 	
 	
 	/**
