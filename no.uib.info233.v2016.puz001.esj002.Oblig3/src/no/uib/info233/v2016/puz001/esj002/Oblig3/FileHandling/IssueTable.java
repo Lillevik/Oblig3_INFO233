@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -198,7 +199,6 @@ public class IssueTable implements Serializable {
 		model.addColumn("Issue ID: ");
 		model.addColumn("Assigned to: ");
 		model.addColumn("Created: ");
-		model.addColumn("Issue: ");
 		model.addColumn("Priority: ");
 		model.addColumn("Location: ");
 		model.addColumn(("Status: "));
@@ -207,7 +207,6 @@ public class IssueTable implements Serializable {
 			model.addRow(new Object[]{issue.getId(),
 					issue.getAssigned(),
 					issue.getCreated(),
-					issue.getIssue(),
 					issue.getPriority(),
 					issue.getLocation(),
 					issue.getStatus()});
@@ -240,6 +239,17 @@ public class IssueTable implements Serializable {
 	public String maxIssueId() {
 		Comparator<Issues> iss = Comparator.comparing(Issues::idInt);
 		return Integer.toString(Collections.max(issueList, iss).idInt() + 1);
+	}
+
+	public String getSelectedIssue(JTable table){
+		int j = table.getSelectedRow();
+
+		for(Issues i : issueList){
+			if(i.getId().equals(table.getValueAt(j, 0).toString())){
+				return i.getIssue();
+			}
+		}
+		return null;
 	}
 
 

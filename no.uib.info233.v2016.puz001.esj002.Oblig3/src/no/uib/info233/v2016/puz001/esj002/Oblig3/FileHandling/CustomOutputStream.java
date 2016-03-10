@@ -6,9 +6,7 @@ import java.io.Serializable;
 import javax.swing.JTextArea;
 
 /**
- * This class extends from OutputStream to redirect output to a JTextArrea
- * @author www.codejava.net
- *
+ * Created by mariuslillevik on 10.03.16.
  */
 
 public class CustomOutputStream extends OutputStream implements Serializable{

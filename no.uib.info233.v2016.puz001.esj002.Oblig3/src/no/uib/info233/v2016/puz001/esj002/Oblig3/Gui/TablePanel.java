@@ -23,7 +23,6 @@ public class TablePanel extends JPanel {
         this.pane = pane;
         setLayout(new BorderLayout(1, 1));
         setupComponents();
-        //add(informationPanel, BorderLayout.SOUTH);
         add(pane, BorderLayout.CENTER);
     }
 
@@ -34,7 +33,7 @@ public class TablePanel extends JPanel {
         this.textArea.setEditable(false);
         this.textArea.setLineWrap(true); // Wrap text
         this.textArea.setWrapStyleWord(true); // Wrap by word
-        this.textArea.setText("This is a customOutputStream.");
+
 
         PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
         standardOut = System.out;
@@ -49,13 +48,9 @@ public class TablePanel extends JPanel {
 
         // Add the informationPanel to the bottom og the window
         this.add(informationPanel, BorderLayout.SOUTH);
-
-
-
-
-
-
-
     }
 
+
+
 }
+

@@ -24,6 +24,7 @@ public class Gui extends JFrame implements Serializable{
 	private LoginPanel lp = new LoginPanel();
 	private IssuePanel ip = new IssuePanel();
 	private UpdatePanel up = new UpdatePanel();
+	private DetailsPanel dp = new DetailsPanel();
 
 
 	/*
@@ -32,7 +33,6 @@ public class Gui extends JFrame implements Serializable{
 	 * where panelBackRight is the far back
 	 * alligned right in the program.
 	 */
-	private JPanel panelBackRight;
 	private JPanel panelBackLeft;
 	private JPanel panelBackLeftTop;
 	private JPanel panelBackLeftBot;
@@ -96,8 +96,7 @@ public class Gui extends JFrame implements Serializable{
 	/*
 	 * cardlayout is the layout used in the spine.
 	 */
-	private CardLayout layout = new CardLayout();
-	private BorderLayout border = new BorderLayout();
+	private BorderLayout border = new BorderLayout(2, 2);
 
 	/*
 	 * JComboBoxes are drop down panels
@@ -128,7 +127,7 @@ public class Gui extends JFrame implements Serializable{
 		super("Issue Tracker");
 		spine = new JPanel(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		spine.setLayout(new BorderLayout(0, 0));
+		spine.setLayout(border);
 		setPreferredSize(new Dimension(1000, 650));
 		setResizable(true);
 		setupComponents();
@@ -164,7 +163,6 @@ public class Gui extends JFrame implements Serializable{
 		 *Initialize the JPanels
 		 */
 		panelBackLeft = new JPanel(border);
-		panelBackRight = new JPanel();
 		panelBackLeftTop = new JPanel();
 		panelBackLeftBot = new JPanel();
 
@@ -206,8 +204,6 @@ public class Gui extends JFrame implements Serializable{
 		panelBackLeft.setBackground(Color.gray);
 		panelBackLeft.setLayout(new BorderLayout());
 
-		panelBackRight.setPreferredSize(new Dimension(200, 50));
-		panelBackRight.setBackground(Color.white);
 
 		panelBackLeftTop.setBackground(Color.GRAY);
 		panelBackLeftBot.setBackground(Color.LIGHT_GRAY);
@@ -265,6 +261,7 @@ public class Gui extends JFrame implements Serializable{
 		spine.add(menuBar);
 		spine.add(panelBackLeft, BorderLayout.WEST);
 		spine.add(tp, BorderLayout.CENTER);
+		spine.add(dp, BorderLayout.EAST);
 		panelBackLeft.add(panelBackLeftTop, BorderLayout.NORTH);
 		panelBackLeft.add(panelBackLeftBot, BorderLayout.CENTER);
 		panelBackLeftTop.add(searchLabel);
@@ -609,4 +606,7 @@ public class Gui extends JFrame implements Serializable{
 		return txtId;
 	}
 
+	public DetailsPanel getDp() {
+		return dp;
+	}
 }
