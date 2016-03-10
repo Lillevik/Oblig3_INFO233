@@ -1,6 +1,8 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.Gui;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
@@ -23,6 +25,7 @@ public class Gui extends JFrame implements Serializable{
 	private IssuePanel ip = new IssuePanel();
 	private UpdatePanel up = new UpdatePanel();
 
+
 	/*
 	 * JPanels used in the Gui.
 	 * Can look at it as "Layers",
@@ -31,7 +34,6 @@ public class Gui extends JFrame implements Serializable{
 	 */
 	private JPanel panelBackRight;
 	private JPanel panelBackLeft;
-	private JPanel panelMidTopLeft;
 	private JPanel panelBackLeftTop;
 	private JPanel panelBackLeftBot;
 
@@ -89,11 +91,13 @@ public class Gui extends JFrame implements Serializable{
 	 * which is made from the xml doc.
 	 */
 	private JTable qTable = new JTable(it.getModel());
-
+	private JScrollPane pane = new JScrollPane(qTable);
+	private TablePanel tp = new TablePanel(pane);
 	/*
 	 * cardlayout is the layout used in the spine.
 	 */
 	private CardLayout layout = new CardLayout();
+	private BorderLayout border = new BorderLayout();
 
 	/*
 	 * JComboBoxes are drop down panels
@@ -122,17 +126,15 @@ public class Gui extends JFrame implements Serializable{
 	 */
 	public Gui(){
 		super("Issue Tracker");
-		spine = new JPanel(layout);
+		spine = new JPanel(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		spine.setLayout(new BorderLayout(0, 0));
-		spine.setPreferredSize(new Dimension(700, 600));
-		
+		setPreferredSize(new Dimension(1000, 650));
+		setResizable(true);
 		setupComponents();
 		updateChooseUser();
 		setJMenuBar(menuBar);
-		setContentPane(lp);
-		
+		setContentPane(spine);
 		pack();
 		setVisible(true);
 	}
@@ -142,8 +144,13 @@ public class Gui extends JFrame implements Serializable{
 	 * sets them up with custom designs.
 	 */
 	public void setupComponents(){
+		/*
+		 *	Sets up the JTable qTable
+		 */
 
-		/**
+
+
+		/*
 		 * Sets up the JMenu
 		 */
 		menuBar.add(file);
@@ -152,23 +159,18 @@ public class Gui extends JFrame implements Serializable{
 		JMenuItem about = new JMenuItem("About");
 		file.add(save);
 		help.add(about);
-		
-		/**
-		 * Sets up the JTable.
-		 * makin it a cutetable;)
-		 */
-		qTable.setBackground(Color.white);
-		qTable.getAutoResizeMode();
-		qTable.setFillsViewportHeight(true);
 
 		/**
 		 *Initialize the JPanels
 		 */
-		panelBackLeft = new JPanel();
+		panelBackLeft = new JPanel(border);
 		panelBackRight = new JPanel();
-		panelMidTopLeft = new JPanel();
 		panelBackLeftTop = new JPanel();
 		panelBackLeftBot = new JPanel();
+
+		panelBackLeft.setBorder(new LineBorder(Color.black, 1, true));
+
+
 
 		/**
 		 * init the one and only JLabels in the class
@@ -210,6 +212,7 @@ public class Gui extends JFrame implements Serializable{
 		panelBackLeftTop.setBackground(Color.GRAY);
 		panelBackLeftBot.setBackground(Color.LIGHT_GRAY);
 		panelBackLeftTop.setPreferredSize(new Dimension(100, 525));
+		panelBackLeftBot.setPreferredSize(new Dimension(100, 100));
 
 		searchLabel.setPreferredSize(new Dimension(190, 20));
 		searchLabel.setText("Query here");
@@ -255,14 +258,13 @@ public class Gui extends JFrame implements Serializable{
 		txtLoggedIn.setEditable(false);
 		txtLoggedIn.setPreferredSize(new Dimension(190, 20));
 
-		/**
+		/*
 		 * where all the components are added to the
 		 * correct JPanels or "Layers" of the program.
 		 */
 		spine.add(menuBar);
-		spine.add(panelBackRight, BorderLayout.CENTER);
 		spine.add(panelBackLeft, BorderLayout.WEST);
-		panelBackRight.add(panelMidTopLeft);
+		spine.add(tp, BorderLayout.CENTER);
 		panelBackLeft.add(panelBackLeftTop, BorderLayout.NORTH);
 		panelBackLeft.add(panelBackLeftBot, BorderLayout.CENTER);
 		panelBackLeftTop.add(searchLabel);
@@ -282,7 +284,7 @@ public class Gui extends JFrame implements Serializable{
 		panelBackLeftTop.add(txtInfo);
 		panelBackLeftBot.add(txtLoggedIn);
 		panelBackLeftBot.add(btnSwitchUser);
-		panelMidTopLeft.add(new JScrollPane(qTable));
+
 	}
 
 
@@ -293,7 +295,6 @@ public class Gui extends JFrame implements Serializable{
 	 * a functional user login database.
 	 * @return boolean if authentication was successful or not
 	 */
-
 	public boolean authenticateLogin(){
 		for(String s : getIt().getUsers()){
 			if(s.equals(lp.getUserText().getText()) && lp.getPasswordText().getText().equals("pass")){
