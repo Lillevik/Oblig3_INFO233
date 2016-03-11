@@ -462,4 +462,12 @@ public class IssueTable implements Serializable {
 
 		return users;
 	}
+
+	public void setCurrentUser(String currentUser) {
+		this.currentUser = currentUser;
+	}
+
+	public String getCurrentUser() {
+		return currentUser;
+	}
 }

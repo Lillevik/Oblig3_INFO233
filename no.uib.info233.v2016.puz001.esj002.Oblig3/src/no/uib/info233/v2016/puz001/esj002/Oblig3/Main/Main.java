@@ -219,6 +219,7 @@ public class Main implements Serializable{
 						gui.getChoosePriority().getSelectedItem().toString(),
 						gui.getIp().getLocationText().getText(),
 						"Open");
+						is.setCreatedBy(gui.getIt().getCurrentUser());
 			            gui.getIt().getIssueList().add(is);
 			    	    gui.getIt().tableForIssues();
 						//Writes to files.

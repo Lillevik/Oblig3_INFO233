@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Dataset>
-    <ISSUES assigned_user="Marius" created="2/3/2016" created_by="dryan3" id="1" location="Jatinagara Kulon" priority="Normal" status="Not set" text="placerat praesent blandit nam nulla integer pede justo lacinia eget tincidunt eget"/>
-    <ISSUES assigned_user="mgarrett1" created="6/22/2015" created_by="mgarrett1" id="2" location="Noginsk" priority="Normal" status="Not set" text="euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a"/>
+    <ISSUES assigned_user="cwalkerd" created="2/3/2016" created_by="dryan3" id="1" location="Jatinagara Kulon" priority="Normal" status="Not set" text="placerat praesent blandit nam nulla integer pede justo lacinia eget tincidunt eget"/>
+    <ISSUES assigned_user="ckennedy8" created="6/22/2015" created_by="mgarrett1" id="2" location="Noginsk" priority="Normal" status="Not set" text="euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a"/>
     <ISSUES assigned_user="dmasonc" created="10/6/2015" created_by="dmasonc" id="3" location="QaÅŸr al FarÄ?firah" priority="Kritisk" status="Not set" text="eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros viverra eget congue eget semper rutrum nulla"/>
     <ISSUES assigned_user="nrice2" created="6/21/2015" created_by="nrice2" id="4" location="Orivesi" priority="Lav" status="Not set" text="pharetra magna ac consequat metus sapien ut nunc vestibulum ante ipsum"/>
     <ISSUES assigned_user="pkennedy4" created="5/25/2015" created_by="pkennedy4" id="5" location="GrÃ¤nna" priority="Kritisk" status="Not set" text="congue risus semper porta volutpat quam pede lobortis ligula sit amet eleifend pede libero quis"/>
@@ -1000,4 +1000,7 @@
     <ISSUES assigned_user="dfreemane" created="9/14/2015" created_by="dfreemane" id="998" location="Abuko" priority="Kritisk" status="Not set" text="enim leo rhoncus sed vestibulum sit amet cursus id turpis"/>
     <ISSUES assigned_user="cwalkerd" created="4/11/2015" created_by="cwalkerd" id="999" location="Tsybulevka" priority="Normal" status="Not set" text="nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu"/>
     <ISSUES assigned_user="jgomez0" created="10/14/2015" created_by="jgomez0" id="1000" location="â€˜Ayn an Nasr" priority="Ikke prioritert" status="Not set" text="sit amet lobortis sapien sapien non mi integer ac neque duis bibendum morbi non quam nec dui"/>
+    <ISSUES assigned_user="Marius" created="3/11/2016" created_by="" id="1001" location="Norge" priority="Normal" status="Open" text="Write issue here tororlolold."/>
+    <ISSUES assigned_user="dmasonc" created="3/11/2016" created_by="Logged in as: marius" id="1002" location="Norge'" priority="Normal" status="Open" text="Write issue here.&#10;uagLjbdf&#10;ØJSBD"/>
+    <ISSUES assigned_user="ereid5" created="3/11/2016" created_by="marius" id="1003" location="Norge" priority="Høy" status="Open" text="Write issue here."/>
 </Dataset>
