@@ -32,7 +32,6 @@ public class Main implements Serializable{
 	public static void main(String[] args) {
 //		SaveProgram.load();
 		Gui gui = new Gui();
-		System.out.print("This is a customOutputStream.");
 
 
 		/**
@@ -54,10 +53,10 @@ public class Main implements Serializable{
 					for(Issues issue : gui.getIt().getIssueList()){
 						if(issue.getAssigned().equals(gui.getTxtSearch().getText())){
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
-				    			  issue.getAssigned(),
-				    			  issue.getCreated(),
-				    			  issue.getPriority(),
-				    			  issue.getLocation()});
+								issue.getAssigned(),
+								issue.getCreated(),
+								issue.getPriority(),
+								issue.getLocation()});
 							}
 						}
 					}
@@ -86,8 +85,8 @@ public class Main implements Serializable{
 				    			  issue.getPriority(),
 				    			  issue.getLocation()});
 						gui.getIt().writeXmlFile();
-							}
 						}
+					}
 			}
 		});
 		
@@ -220,6 +219,8 @@ public class Main implements Serializable{
 						gui.getIp().getLocationText().getText(),
 						"Open");
 						is.setCreatedBy(gui.getIt().getCurrentUser());
+						is.setLastUpdatedBy(gui.getIt().getCurrentUser());
+						is.addUpdated(gui.getIt().getCurrentUser());
 			            gui.getIt().getIssueList().add(is);
 			    	    gui.getIt().tableForIssues();
 						//Writes to files.
@@ -270,11 +271,10 @@ public class Main implements Serializable{
 					System.out.println("Please select a row to edit.");
 				}else{
 					//gui.updateChooseUser();
-					gui.getChooseUser().setSelectedItem(gui.getqTable().getValueAt(i,1).toString().trim());
+					gui.getChooseUser().setSelectedItem(gui.getqTable().getValueAt(i, 1).toString().trim());
 					gui.getChoosePrio2().setSelectedItem(gui.getqTable().getValueAt(i, 3).toString());
 					gui.getUp().getIssueText().setText(gui.getIt().getSelectedIssue(gui.getqTable()));
 					gui.getUp().getLocationText().setText(gui.getqTable().getValueAt(i, 4).toString());
-
 					gui.setContentPane(gui.getUp());
 					gui.pack();
 				}
@@ -297,8 +297,11 @@ public class Main implements Serializable{
 						i.setPriority(prio);
 						i.setIssue(gui.getUp().getIssueText().getText());
 						i.setLocation(gui.getUp().getLocationText().getText());
+						i.setLastUpdatedBy(gui.getIt().getCurrentUser());
+						i.addUpdated(gui.getIt().getCurrentUser());
+
 						gui.getIt().tableForIssues();
-						}
+					}
 					
 				}
 				gui.getIt().writeXmlFile();
@@ -345,11 +348,23 @@ public class Main implements Serializable{
 
 		gui.getqTable().addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e){
+			public void mouseClicked(MouseEvent e) {
 				gui.getDp().getIssueText().setText
 						(gui.getIt().getSelectedIssue(gui.getqTable()));
 				gui.getDp().getCreatedBy().setText("Created by: " +
-						 gui.getIt().getCreatedBy(gui.getqTable()));
+						gui.getIt().getCreatedBy(gui.getqTable()));
+				gui.getDp().getLastUpdatedBy().setText("Updated by: " +
+						gui.getIt().getLastUpdated(gui.getqTable())
+				);
+
+			}
+		});
+
+
+		gui.getDp().getUpdates().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gui.getIt().printAllUpdates(gui.getqTable());
 			}
 		});
 	}

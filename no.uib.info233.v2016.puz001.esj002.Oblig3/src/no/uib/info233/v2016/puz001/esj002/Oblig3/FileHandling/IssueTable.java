@@ -157,7 +157,7 @@ public class IssueTable implements Serializable {
 							eElement.getAttribute("location"),
 							"Not set");
 						issue.setCreatedBy(eElement.getAttribute("assigned_user"));
-
+						issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
 					issueList.add(issue);
 				}
 			} catch (Exception e) {
@@ -182,7 +182,7 @@ public class IssueTable implements Serializable {
 							eElement.getAttribute("location"),
 							eElement.getAttribute("status"));
 						issue.setCreatedBy(eElement.getAttribute(("created_by")));
-
+						issue.setLastUpdatedBy(eElement.getAttribute("last_updated_by"));
 
 					issueList.add(issue);
 				}
@@ -267,6 +267,28 @@ public class IssueTable implements Serializable {
 		return null;
 	}
 
+	public String getLastUpdated(JTable table){
+		int j = table.getSelectedRow();
+		for(Issues i : issueList) {
+			if (i.getId().equals(table.getValueAt(j, 0).toString())) {
+				return i.getLastUpdatedBy();
+			}
+		}
+		return null;
+	}
+
+	public void printAllUpdates(JTable table){
+		int j = table.getSelectedRow();
+		for(Issues i : issueList){
+			if (i.getId().equals(table.getValueAt(j, 0).toString())) {
+				System.out.println("This issue has been updated by: ");
+				for(String s : i.getBeenUpdatedBy()){
+					System.out.println(s);
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * This method returns a string of the current date the day it is called.
@@ -304,7 +326,10 @@ public class IssueTable implements Serializable {
 			for (Issues i : issueList) {
 
 				Element details = doc.createElement("ISSUES");
+				Element updaters = doc.createElement("UPDATES");
+				Element user = doc.createElement("USER");
 				root.appendChild(details);
+				details.appendChild(updaters);
 
 				details.setAttribute("id", i.getId());
 				details.setAttribute("assigned_user", i.getAssigned());
@@ -314,6 +339,14 @@ public class IssueTable implements Serializable {
 				details.setAttribute("location", i.getLocation());
 				details.setAttribute("status", i.getStatus());
 				details.setAttribute("created_by", i.getCreatedBy());
+				details.setAttribute("last_updated_by", i.getLastUpdatedBy());
+
+				for(Issues is : issueList){
+					for(String s : is.getBeenUpdatedBy()){
+						updaters.appendChild(user);
+						user.setAttribute("user", s);
+					}
+				}
 			}
 
 

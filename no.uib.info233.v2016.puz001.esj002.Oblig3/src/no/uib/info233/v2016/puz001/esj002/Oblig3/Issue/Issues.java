@@ -25,7 +25,7 @@ public class Issues implements Serializable{
 	private String status;
 	private String createdBy;
 	private String lastUpdatedBy;
-	private ArrayList<String> beenUpdatedBy;
+	private ArrayList<String> beenUpdatedBy = new ArrayList<String>();
 	
 	
 	/**
@@ -47,6 +47,12 @@ public class Issues implements Serializable{
 		this.location = location;
 		this.status = status;
 
+	}
+
+	public void addUpdated(String s){
+		if(!beenUpdatedBy.contains(s)){
+			beenUpdatedBy.add(s);
+		}
 	}
 
 
@@ -201,12 +207,19 @@ public class Issues implements Serializable{
 	public int idInt(){
 		int i = Integer.parseInt(this.id);
 		return i;
-
-
-
-
-
-
 	}
+
+	public void setLastUpdatedBy(String lastUpdatedBy) {
+		this.lastUpdatedBy = lastUpdatedBy;
+	}
+
+	public String getLastUpdatedBy() {
+		return lastUpdatedBy;
+	}
+
+	public ArrayList<String> getBeenUpdatedBy() {
+		return beenUpdatedBy;
+	}
+
 
 }
