@@ -68,6 +68,9 @@ public class IssuePanel extends JPanel implements Serializable{
 		
 		issueText.setBounds(290, 320, 160, 125);
 		panel.add(issueText);
+
+		issueText.setLineWrap(true);
+		issueText.setWrapStyleWord(true);
 	}
 
 	/**

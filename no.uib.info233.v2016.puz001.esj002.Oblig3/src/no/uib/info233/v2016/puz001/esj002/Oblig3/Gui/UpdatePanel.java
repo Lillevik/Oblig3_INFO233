@@ -71,6 +71,9 @@ public class UpdatePanel extends JPanel implements Serializable{
 		
 		backButton.setBounds(390, 480, 80, 25);
 		panel.add(backButton );
+
+		issueText.setLineWrap(true);
+		issueText.setWrapStyleWord(true);
 	}
 
 	/**

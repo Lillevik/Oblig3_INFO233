@@ -2,6 +2,8 @@ package no.uib.info233.v2016.puz001.esj002.Oblig3.Main;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.Serializable;
 
 
@@ -30,6 +32,7 @@ public class Main implements Serializable{
 	public static void main(String[] args) {
 //		SaveProgram.load();
 		Gui gui = new Gui();
+		System.out.print("This is a customOutputStream.");
 
 
 		/**
@@ -44,7 +47,6 @@ public class Main implements Serializable{
 					gui.getIt().getModel().addColumn("Issue ID: ");
 					gui.getIt().getModel().addColumn("Assigned to: ");
 					gui.getIt().getModel().addColumn("Created: ");
-					gui.getIt().getModel().addColumn("Issue: ");
 					gui.getIt().getModel().addColumn("Priority: ");
 					gui.getIt().getModel().addColumn("Location: ");
 
@@ -54,7 +56,6 @@ public class Main implements Serializable{
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 				    			  issue.getAssigned(),
 				    			  issue.getCreated(),
-				    			  issue.getIssue(),
 				    			  issue.getPriority(),
 				    			  issue.getLocation()});
 							}
@@ -74,7 +75,6 @@ public class Main implements Serializable{
 					gui.getIt().getModel().addColumn("Issue ID: ");
 					gui.getIt().getModel().addColumn("Assigned to: ");
 					gui.getIt().getModel().addColumn("Created: ");
-					gui.getIt().getModel().addColumn("Issue: ");
 					gui.getIt().getModel().addColumn("Priority: ");
 					gui.getIt().getModel().addColumn("Location: ");
 					
@@ -83,7 +83,6 @@ public class Main implements Serializable{
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 				    			  issue.getAssigned(),
 				    			  issue.getCreated(),
-				    			  issue.getIssue(),
 				    			  issue.getPriority(),
 				    			  issue.getLocation()});
 						gui.getIt().writeXmlFile();
@@ -105,7 +104,6 @@ public class Main implements Serializable{
 					gui.getIt().getModel().addColumn("Issue ID: ");
 					gui.getIt().getModel().addColumn("Assigned to: ");
 					gui.getIt().getModel().addColumn("Created: ");
-					gui.getIt().getModel().addColumn("Issue: ");
 					gui.getIt().getModel().addColumn("Priority: ");
 					gui.getIt().getModel().addColumn("Location: ");
 					for(Issues issue : gui.getIt().getIssueList()){
@@ -114,7 +112,6 @@ public class Main implements Serializable{
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 				    			  issue.getAssigned(),
 				    			  issue.getCreated(),
-				    			  issue.getIssue(),
 				    			  issue.getPriority(),
 				    			  issue.getLocation()});
                         }
@@ -134,7 +131,6 @@ public class Main implements Serializable{
 					gui.getIt().getModel().addColumn("Issue ID: ");
 					gui.getIt().getModel().addColumn("Assigned to: ");
 					gui.getIt().getModel().addColumn("Created: ");
-					gui.getIt().getModel().addColumn("Issue: ");
 					gui.getIt().getModel().addColumn("Priority: ");
 					gui.getIt().getModel().addColumn("Location: ");
 
@@ -145,7 +141,6 @@ public class Main implements Serializable{
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 				    			  issue.getAssigned(),
 				    			  issue.getCreated(),
-				    			  issue.getIssue(),
 				    			  issue.getPriority(),
 				    			  issue.getLocation()});
                         }
@@ -162,6 +157,7 @@ public class Main implements Serializable{
 			public void actionPerformed(ActionEvent e) {
 				gui.getIt().listUniqueUsers();
 
+
 			}
 		});
 		
@@ -174,7 +170,6 @@ public class Main implements Serializable{
 
 			@Override
 			public void actionPerformed(ActionEvent e){
-
 				gui.getIt().tableForIssues();
 			}
 		});
@@ -342,6 +337,14 @@ public class Main implements Serializable{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gui.setContentPane(gui.getSpine());
+			}
+		});
+
+		gui.getqTable().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e){
+				gui.getDp().getIssueText().setText
+						(gui.getIt().getSelectedIssue(gui.getqTable()));
 			}
 		});
 	}
