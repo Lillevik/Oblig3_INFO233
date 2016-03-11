@@ -44,6 +44,7 @@ public class IssueTable implements Serializable {
 	private transient DefaultTableModel model = new DefaultTableModel();
 	private ArrayList<String> users = new ArrayList<String>();
 	private ArrayList<Issues> issueList = new ArrayList<Issues>();
+	private String currentUser = new String();
 	private SecureRandom random = new SecureRandom();
 
 
@@ -155,6 +156,7 @@ public class IssueTable implements Serializable {
 							eElement.getAttribute("priority"),
 							eElement.getAttribute("location"),
 							"Not set");
+						issue.setCreatedBy(eElement.getAttribute("assigned_user"));
 
 					issueList.add(issue);
 				}
@@ -179,6 +181,8 @@ public class IssueTable implements Serializable {
 							eElement.getAttribute("priority"),
 							eElement.getAttribute("location"),
 							eElement.getAttribute("status"));
+						issue.setCreatedBy(eElement.getAttribute(("created_by")));
+
 
 					issueList.add(issue);
 				}
@@ -244,9 +248,20 @@ public class IssueTable implements Serializable {
 	public String getSelectedIssue(JTable table){
 		int j = table.getSelectedRow();
 
-		for(Issues i : issueList){
-			if(i.getId().equals(table.getValueAt(j, 0).toString())){
+		for(Issues i : issueList) {
+			if (i.getId().equals(table.getValueAt(j, 0).toString())){
 				return i.getIssue();
+			}
+		}
+		return null;
+	}
+
+	public String getCreatedBy(JTable table){
+		int j = table.getSelectedRow();
+
+		for(Issues i : issueList) {
+			if (i.getId().equals(table.getValueAt(j, 0).toString())){
+				return i.getCreatedBy();
 			}
 		}
 		return null;
@@ -298,6 +313,7 @@ public class IssueTable implements Serializable {
 				details.setAttribute("priority", i.getPriority());
 				details.setAttribute("location", i.getLocation());
 				details.setAttribute("status", i.getStatus());
+				details.setAttribute("created_by", i.getCreatedBy());
 			}
 
 

@@ -268,11 +268,12 @@ public class Main implements Serializable{
 				if(i == -1){
 					System.out.println("Please select a row to edit.");
 				}else{
-					gui.getChooseUser().setSelectedItem(gui.getqTable().getValueAt(i,1).toString());
-					gui.getChoosePrio2().setSelectedItem(gui.getqTable().getValueAt(i, 4).toString());
-					gui.getUp().getIssueText().setText(gui.getqTable().getValueAt(i, 3).toString());
-					gui.getUp().getLocationText().setText(gui.getqTable().getValueAt(i, 5).toString());
-					gui.updateChooseUser();
+					//gui.updateChooseUser();
+					gui.getChooseUser().setSelectedItem(gui.getqTable().getValueAt(i,1).toString().trim());
+					gui.getChoosePrio2().setSelectedItem(gui.getqTable().getValueAt(i, 3).toString());
+					gui.getUp().getIssueText().setText(gui.getIt().getSelectedIssue(gui.getqTable()));
+					gui.getUp().getLocationText().setText(gui.getqTable().getValueAt(i, 4).toString());
+
 					gui.setContentPane(gui.getUp());
 					gui.pack();
 				}
@@ -289,6 +290,7 @@ public class Main implements Serializable{
 				String prio = String.valueOf(gui.getChoosePrio2().getSelectedItem());
 				for(Issues i : gui.getIt().getIssueList()){
 					if(i.getId().trim() == gui.getqTable().getValueAt(j, 0).toString()){
+						gui.getChooseUser2();
 						gui.getIt().getModel().removeRow(j);
 						i.setAssigned(gui.getChooseUser2().getSelectedItem().toString());
 						i.setPriority(prio);
@@ -345,6 +347,8 @@ public class Main implements Serializable{
 			public void mouseClicked(MouseEvent e){
 				gui.getDp().getIssueText().setText
 						(gui.getIt().getSelectedIssue(gui.getqTable()));
+				gui.getDp().getCreatedBy().setText("Created by: " +
+						 gui.getIt().getCreatedBy(gui.getqTable()));
 			}
 		});
 	}

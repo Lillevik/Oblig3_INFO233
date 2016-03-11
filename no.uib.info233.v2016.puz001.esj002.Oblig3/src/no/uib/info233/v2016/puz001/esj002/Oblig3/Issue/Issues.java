@@ -4,6 +4,7 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.Issue;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * @author mariuslillevik
@@ -24,6 +25,7 @@ public class Issues implements Serializable{
 	private String status;
 	private String createdBy;
 	private String lastUpdatedBy;
+	private ArrayList<String> beenUpdatedBy;
 	
 	
 	/**
@@ -35,7 +37,8 @@ public class Issues implements Serializable{
 	 * @param priority
 	 * @param location
 	 */
-	public Issues(String id, String assigned, String created, String issue, String priority, String location, String status){
+	public Issues(String id, String assigned, String created, String issue,
+				  			String priority, String location, String status){
 		this.id = id;
 		this.assigned = assigned;
 		this.created = created;
@@ -43,6 +46,7 @@ public class Issues implements Serializable{
 		this.priority = priority;
 		this.location = location;
 		this.status = status;
+
 	}
 
 
@@ -180,7 +184,15 @@ public class Issues implements Serializable{
 	public String getStatus(){
 		return this.status;
 	}
-	
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
 	/**
 	 * This method returns the id field as an Integer instead of string
 	 * and uses this to calculate the highest current id in getMaxId().
@@ -189,5 +201,12 @@ public class Issues implements Serializable{
 	public int idInt(){
 		int i = Integer.parseInt(this.id);
 		return i;
+
+
+
+
+
+
 	}
+
 }

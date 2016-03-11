@@ -105,13 +105,13 @@ public class Gui extends JFrame implements Serializable{
 	 *
 	 */
 	private String[] priorities = {"Ikke prioritet", "Lav", "Normal", "Høy", "Kritisk"};
-	private JComboBox chooseUser = new JComboBox();
+	private JComboBox chooseUser = new JComboBox(it.getUsers().toArray());
 	private JComboBox chooseUser2 = new JComboBox(it.getUsers().toArray());
 	private JComboBox choosePrio2 = new JComboBox(priorities);
 	private JComboBox choosePriority = new JComboBox(priorities);
 // te
 	/*
-	 * The JMenu items make the menue on the top of the program
+	 * The JMenu items make the menu on the top of the program
 	 */
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu file = new JMenu("File");
@@ -167,7 +167,7 @@ public class Gui extends JFrame implements Serializable{
 		panelBackLeftTop = new JPanel();
 		panelBackLeftBot = new JPanel();
 
-		panelBackLeft.setBorder(new LineBorder(Color.black, 1, true));
+		//panelBackLeft.setBorder(new LineBorder(Color.black, 1, true));
 
 
 
@@ -339,8 +339,13 @@ public class Gui extends JFrame implements Serializable{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void updateChooseUser(){
 		chooseUser.setModel(new DefaultComboBoxModel(it.getUsers().toArray()));
-		chooseUser2 = chooseUser;
 	}
+
+		public void updateChooseUser2(){
+		chooseUser.setModel(new DefaultComboBoxModel(it.getUsers().toArray()));
+
+		}
+
 	
 	/**
 	 * The qtable is the table displaying the lists.
