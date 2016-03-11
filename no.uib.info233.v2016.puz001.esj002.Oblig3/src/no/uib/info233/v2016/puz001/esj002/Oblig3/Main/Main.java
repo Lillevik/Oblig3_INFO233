@@ -42,25 +42,24 @@ public class Main implements Serializable{
 		gui.getBtnSearch().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					gui.getIt().getModel().setRowCount(0);
-					gui.getIt().getModel().setColumnCount(0);
-					gui.getIt().getModel().addColumn("Issue ID: ");
-					gui.getIt().getModel().addColumn("Assigned to: ");
-					gui.getIt().getModel().addColumn("Created: ");
-					gui.getIt().getModel().addColumn("Priority: ");
-					gui.getIt().getModel().addColumn("Location: ");
+				gui.getIt().getModel().setRowCount(0);
+				gui.getIt().getModel().setColumnCount(0);
+				gui.getIt().getModel().addColumn("Issue ID: ");
+				gui.getIt().getModel().addColumn("Assigned to: ");
+				gui.getIt().getModel().addColumn("Created: ");
+				gui.getIt().getModel().addColumn("Priority: ");
+				gui.getIt().getModel().addColumn("Location: ");
 
-
-					for(Issues issue : gui.getIt().getIssueList()){
-						if(issue.getAssigned().equals(gui.getTxtSearch().getText())){
+				for(Issues issue : gui.getIt().getIssueList()){
+					if(issue.getAssigned().equals(gui.getTxtSearch().getText())){
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
-				    			  issue.getAssigned(),
-				    			  issue.getCreated(),
-				    			  issue.getPriority(),
-				    			  issue.getLocation()});
-							}
-						}
+								issue.getAssigned(),
+								issue.getCreated(),
+								issue.getPriority(),
+								issue.getLocation()});
 					}
+				}
+			}
 		});
 		
 		/**
@@ -70,24 +69,24 @@ public class Main implements Serializable{
 		gui.getBtnId().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					gui.getIt().getModel().setRowCount(0);
-					gui.getIt().getModel().setColumnCount(0);
-					gui.getIt().getModel().addColumn("Issue ID: ");
-					gui.getIt().getModel().addColumn("Assigned to: ");
-					gui.getIt().getModel().addColumn("Created: ");
-					gui.getIt().getModel().addColumn("Priority: ");
-					gui.getIt().getModel().addColumn("Location: ");
+				gui.getIt().getModel().setRowCount(0);
+				gui.getIt().getModel().setColumnCount(0);
+				gui.getIt().getModel().addColumn("Issue ID: ");
+				gui.getIt().getModel().addColumn("Assigned to: ");
+				gui.getIt().getModel().addColumn("Created: ");
+				gui.getIt().getModel().addColumn("Priority: ");
+				gui.getIt().getModel().addColumn("Location: ");
 					
-					for(Issues issue : gui.getIt().getIssueList()){
-						if(issue.getId().equals(gui.getTxtId().getText())){
+				for(Issues issue : gui.getIt().getIssueList()){
+					if(issue.getId().equals(gui.getTxtId().getText())){
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
-				    			  issue.getAssigned(),
-				    			  issue.getCreated(),
-				    			  issue.getPriority(),
-				    			  issue.getLocation()});
+								issue.getAssigned(),
+								issue.getCreated(),
+								issue.getPriority(),
+								issue.getLocation()});
 						gui.getIt().writeXmlFile();
-							}
-						}
+					}
+				}
 			}
 		});
 		
@@ -99,23 +98,23 @@ public class Main implements Serializable{
 		gui.getBtnPrior().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					gui.getIt().getModel().setRowCount(0);
-					gui.getIt().getModel().setColumnCount(0);
-					gui.getIt().getModel().addColumn("Issue ID: ");
-					gui.getIt().getModel().addColumn("Assigned to: ");
-					gui.getIt().getModel().addColumn("Created: ");
-					gui.getIt().getModel().addColumn("Priority: ");
-					gui.getIt().getModel().addColumn("Location: ");
-					for(Issues issue : gui.getIt().getIssueList()){
+				gui.getIt().getModel().setRowCount(0);
+				gui.getIt().getModel().setColumnCount(0);
+				gui.getIt().getModel().addColumn("Issue ID: ");
+				gui.getIt().getModel().addColumn("Assigned to: ");
+				gui.getIt().getModel().addColumn("Created: ");
+				gui.getIt().getModel().addColumn("Priority: ");
+				gui.getIt().getModel().addColumn("Location: ");
+				for(Issues issue : gui.getIt().getIssueList()){
 
-						if(issue.getPriority().equals(gui.getTxtPriority().getText())){
+					if(issue.getPriority().equals(gui.getTxtPriority().getText())){
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
-				    			  issue.getAssigned(),
-				    			  issue.getCreated(),
-				    			  issue.getPriority(),
-				    			  issue.getLocation()});
-                        }
-                    }
+								issue.getAssigned(),
+								issue.getCreated(),
+								issue.getPriority(),
+								issue.getLocation()});
+					}
+				}
 			}
 		});
 		
@@ -126,26 +125,26 @@ public class Main implements Serializable{
 		gui.getBtnDate().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					gui.getIt().getModel().setRowCount(0);
-					gui.getIt().getModel().setColumnCount(0);
-					gui.getIt().getModel().addColumn("Issue ID: ");
-					gui.getIt().getModel().addColumn("Assigned to: ");
-					gui.getIt().getModel().addColumn("Created: ");
-					gui.getIt().getModel().addColumn("Priority: ");
-					gui.getIt().getModel().addColumn("Location: ");
+				gui.getIt().getModel().setRowCount(0);
+				gui.getIt().getModel().setColumnCount(0);
+				gui.getIt().getModel().addColumn("Issue ID: ");
+				gui.getIt().getModel().addColumn("Assigned to: ");
+				gui.getIt().getModel().addColumn("Created: ");
+				gui.getIt().getModel().addColumn("Priority: ");
+				gui.getIt().getModel().addColumn("Location: ");
 
-					for(Issues issue : gui.getIt().getIssueList()){
-						int dateInt = Integer.parseInt(issue.getCreated().replaceAll("/", ""));
-						int dateTxt = Integer.parseInt(gui.getTxtDate().getText().replaceAll("/", ""));
-						if(dateInt >= dateTxt){
+				for(Issues issue : gui.getIt().getIssueList()){
+					int dateInt = Integer.parseInt(issue.getCreated().replaceAll("/", ""));
+					int dateTxt = Integer.parseInt(gui.getTxtDate().getText().replaceAll("/", ""));
+					if(dateInt >= dateTxt){
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
-				    			  issue.getAssigned(),
-				    			  issue.getCreated(),
-				    			  issue.getPriority(),
-				    			  issue.getLocation()});
-                        }
-                    }
+								issue.getAssigned(),
+								issue.getCreated(),
+								issue.getPriority(),
+								issue.getLocation()});
+					}
 				}
+			}
 		});
 
 		/**
@@ -156,7 +155,6 @@ public class Main implements Serializable{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gui.getIt().listUniqueUsers();
-
 
 			}
 		});
@@ -182,13 +180,13 @@ public class Main implements Serializable{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					//Adds a user to the list
-					gui.getIt().addUser(gui.getTxtSearch().getText());
-					gui.updateChooseUser();
-					//Writes to the userFile
-					gui.getIt().writeUsersToXml();
-					//Changes the panel
-					gui.getIt().listUniqueUsers();
+				//Adds a user to the list
+				gui.getIt().addUser(gui.getTxtSearch().getText());
+				gui.updateChooseUser();
+				//Writes to the userFile
+				gui.getIt().writeUsersToXml();
+				//Changes the panel
+				gui.getIt().listUniqueUsers();
 			}
 		});
 		
@@ -199,8 +197,8 @@ public class Main implements Serializable{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			    	gui.setContentPane(gui.getIp());
-			    	gui.pack();
+				gui.setContentPane(gui.getIp());
+				gui.pack();
 		    }
         });
 		
@@ -211,7 +209,7 @@ public class Main implements Serializable{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-						//Creates new issue.
+				//Creates new issue.
 				Issues is = new Issues(gui.getIt().maxIssueId() ,
                         gui.getChooseUser().getSelectedItem().toString(),
 						gui.getIt().currentDate(),
@@ -267,13 +265,13 @@ public class Main implements Serializable{
 				int i = gui.getqTable().getSelectedRow();
 				if(i == -1){
 					System.out.println("Please select a row to edit.");
+
 				}else{
 					//gui.updateChooseUser();
 					gui.getChooseUser().setSelectedItem(gui.getqTable().getValueAt(i,1).toString().trim());
 					gui.getChoosePrio2().setSelectedItem(gui.getqTable().getValueAt(i, 3).toString());
 					gui.getUp().getIssueText().setText(gui.getIt().getSelectedIssue(gui.getqTable()));
 					gui.getUp().getLocationText().setText(gui.getqTable().getValueAt(i, 4).toString());
-
 					gui.setContentPane(gui.getUp());
 					gui.pack();
 				}
@@ -297,8 +295,7 @@ public class Main implements Serializable{
 						i.setIssue(gui.getUp().getIssueText().getText());
 						i.setLocation(gui.getUp().getLocationText().getText());
 						gui.getIt().tableForIssues();
-						}
-					
+					}
 				}
 				gui.getIt().writeXmlFile();
 				gui.setContentPane(gui.getSpine());
@@ -347,6 +344,7 @@ public class Main implements Serializable{
 			public void mouseClicked(MouseEvent e){
 				gui.getDp().getIssueText().setText
 						(gui.getIt().getSelectedIssue(gui.getqTable()));
+
 				gui.getDp().getCreatedBy().setText("Created by: " +
 						 gui.getIt().getCreatedBy(gui.getqTable()));
 			}

@@ -18,8 +18,6 @@ public class DetailsPanel extends JPanel{
     private JTextArea issueText = new JTextArea(10, 15);
     private JScrollPane pane = new JScrollPane(issueText);
 
-    //Panels
-
     //JLabels
     private JLabel issueLabel = new JLabel("Issue: ");
     private JLabel createdBy = new JLabel(("Created by: "));
