@@ -24,6 +24,7 @@ public class DetailsPanel extends JPanel{
     private JLabel issueLabel = new JLabel("Issue: ");
     private JLabel createdBy = new JLabel(("Created by: "));
     private JLabel lastUpdatedBy = new JLabel("Updated by: ");
+    private JLabel weightLabel = new JLabel();
 
     public DetailsPanel(){
         setLayout(new GridBagLayout());
@@ -51,6 +52,11 @@ public class DetailsPanel extends JPanel{
         gc.gridx = 0;
         gc.gridy = 3;
         add(lastUpdatedBy, gc);
+
+        gc.gridy = 4;
+        gc.gridx = 0;
+        gc.weighty = 3;
+        add(weightLabel, gc);
     }
 
     public void setupComponents(){
@@ -63,5 +69,10 @@ public class DetailsPanel extends JPanel{
 
     public JTextArea getIssueText() {
         return issueText;
+    }
+
+
+    public JLabel getCreatedBy() {
+        return createdBy;
     }
 }
