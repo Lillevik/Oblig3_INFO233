@@ -12,7 +12,7 @@
 ######   krav 1 CHECK
 ######   krav 2 CHECK
 ######   krav 3 
-######   krav 4
+######   krav 4 CHECK
 ######   krav 5
 ######   krav 6
 ######   krav 7
