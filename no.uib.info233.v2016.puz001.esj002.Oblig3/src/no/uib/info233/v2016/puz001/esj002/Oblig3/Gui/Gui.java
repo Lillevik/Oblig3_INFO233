@@ -146,7 +146,8 @@ public class Gui extends JFrame implements Serializable{
 		/*
 		 *	Sets up the JTable qTable
 		 */
-
+		qTable.setAutoCreateRowSorter(true);
+		qTable.getRowSorter().convertRowIndexToView(0);
 
 
 		/*
