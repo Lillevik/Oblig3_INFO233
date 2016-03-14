@@ -10,7 +10,7 @@ import java.io.Serializable;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.SaveProgram;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.Gui;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
-import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
+
 
 /**
  * Class to start the program.
@@ -32,7 +32,6 @@ public class Main implements Serializable{
 	public static void main(String[] args) {
 //		SaveProgram.load();
 		Gui gui = new Gui();
-		System.out.print("This is a customOutputStream.");
 
 
 		/**
@@ -217,6 +216,9 @@ public class Main implements Serializable{
 						gui.getChoosePriority().getSelectedItem().toString(),
 						gui.getIp().getLocationText().getText(),
 						"Open");
+						is.setCreatedBy(gui.getIt().getCurrentUser());
+						is.setLastUpdatedBy(gui.getIt().getCurrentUser());
+						is.addUpdated(gui.getIt().getCurrentUser());
 			            gui.getIt().getIssueList().add(is);
 			    	    gui.getIt().tableForIssues();
 						//Writes to files.
@@ -268,7 +270,7 @@ public class Main implements Serializable{
 
 				}else{
 					//gui.updateChooseUser();
-					gui.getChooseUser().setSelectedItem(gui.getqTable().getValueAt(i,1).toString().trim());
+					gui.getChooseUser().setSelectedItem(gui.getqTable().getValueAt(i, 1).toString().trim());
 					gui.getChoosePrio2().setSelectedItem(gui.getqTable().getValueAt(i, 3).toString());
 					gui.getUp().getIssueText().setText(gui.getIt().getSelectedIssue(gui.getqTable()));
 					gui.getUp().getLocationText().setText(gui.getqTable().getValueAt(i, 4).toString());
@@ -294,6 +296,9 @@ public class Main implements Serializable{
 						i.setPriority(prio);
 						i.setIssue(gui.getUp().getIssueText().getText());
 						i.setLocation(gui.getUp().getLocationText().getText());
+						i.setLastUpdatedBy(gui.getIt().getCurrentUser());
+						i.addUpdated(gui.getIt().getCurrentUser());
+
 						gui.getIt().tableForIssues();
 					}
 				}
@@ -341,12 +346,24 @@ public class Main implements Serializable{
 
 		gui.getqTable().addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e){
+			public void mouseClicked(MouseEvent e) {
 				gui.getDp().getIssueText().setText
 						(gui.getIt().getSelectedIssue(gui.getqTable()));
 
 				gui.getDp().getCreatedBy().setText("Created by: " +
-						 gui.getIt().getCreatedBy(gui.getqTable()));
+						gui.getIt().getCreatedBy(gui.getqTable()));
+				gui.getDp().getLastUpdatedBy().setText("Updated by: " +
+						gui.getIt().getLastUpdated(gui.getqTable())
+				);
+
+			}
+		});
+
+
+		gui.getDp().getUpdates().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gui.getIt().printAllUpdates(gui.getqTable());
 			}
 		});
 	}

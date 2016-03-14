@@ -133,7 +133,7 @@ public class Gui extends JFrame implements Serializable{
 		setupComponents();
 		updateChooseUser();
 		setJMenuBar(menuBar);
-		setContentPane(spine);
+		setContentPane(lp);
 		pack();
 		setVisible(true);
 	}
@@ -297,6 +297,7 @@ public class Gui extends JFrame implements Serializable{
 		for(String s : getIt().getUsers()){
 			if(s.equals(lp.getUserText().getText()) && lp.getPasswordText().getText().equals("pass")){
 				getTxtLoggedIn().setText("Logged in as: " + lp.getUserText().getText());
+				getIt().setCurrentUser(getLp().getUserText().getText());
 				listUserIssues();
 				setContentPane(getSpine());
 				return true;

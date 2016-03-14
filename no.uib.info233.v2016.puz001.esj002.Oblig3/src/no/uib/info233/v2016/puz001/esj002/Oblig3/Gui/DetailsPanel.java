@@ -11,8 +11,7 @@ import java.awt.*;
 public class DetailsPanel extends JPanel{
 
     //JButtons
-    private JButton button = new JButton("Button");
-    private JButton button1 = new JButton("Button1");
+    private JButton updates = new JButton("All updaters");
 
     //TextAres
     private JTextArea issueText = new JTextArea(10, 15);
@@ -51,7 +50,11 @@ public class DetailsPanel extends JPanel{
         gc.gridy = 3;
         add(lastUpdatedBy, gc);
 
+        gc.gridx = 0;
         gc.gridy = 4;
+        add(updates, gc);
+
+        gc.gridy = 5;
         gc.gridx = 0;
         gc.weighty = 3;
         add(weightLabel, gc);
@@ -73,4 +76,18 @@ public class DetailsPanel extends JPanel{
     public JLabel getCreatedBy() {
         return createdBy;
     }
+
+    public JLabel getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(JLabel lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public JButton getUpdates() {
+        return updates;
+    }
 }
+
+
