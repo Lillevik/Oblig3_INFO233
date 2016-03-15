@@ -33,7 +33,7 @@ import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
  * This is a class which deals with handling the xml files
  * and creating lists of strings and object from the xml file.
  */
-public class IssueTable implements Serializable {
+public class IssueTable implements Serializable{
 
 
 	private static final long serialVersionUID = -6349521349294077303L;
@@ -159,7 +159,7 @@ public class IssueTable implements Serializable {
 							"Not set");
 						issue.setCreatedBy(eElement.getAttribute("assigned_user"));
 						issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
-
+						issue.getBeenUpdatedBy().add("assigned_user");
 					issueList.add(issue);
 				}
 			} catch (Exception e) {
@@ -171,9 +171,6 @@ public class IssueTable implements Serializable {
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 				Document doc = dBuilder.parse(newFile);
 				NodeList nodelist = doc.getElementsByTagName("ISSUES");
-				NodeList updateList = doc.getElementsByTagName("UPDATES");
-				NodeList userList = doc.getElementsByTagName(("USER"));
-
 				for (int i = 0; i < nodelist.getLength(); i++) {
 
 					Node node = nodelist.item(i);
@@ -189,13 +186,15 @@ public class IssueTable implements Serializable {
 						issue.setLastUpdatedBy(eElement.getAttribute("last_updated_by"));
 
 
-					Node node1 = nodelist.item(i);
-					Element e = (Element) node;
-						issue.getBeenUpdatedBy().add(e.getTextContent().trim());
-								//getElementsByTagName("USER").item(i).getTextContent());
+
+					NodeList updateList = nodelist.item(i).getChildNodes();
+					for(int j = 0; j < updateList.getLength(); j++){
+						Node updateNode = updateList.item(j);
+						if("UPDATER".equals(updateNode.getNodeName())) {
+							issue.getBeenUpdatedBy().add(updateNode.getTextContent());
+						}
+					}
 					issueList.add(issue);
-
-
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -337,7 +336,7 @@ public class IssueTable implements Serializable {
 			for (Issues i : issueList) {
 
 				Element details = doc.createElement("ISSUES");
-
+				Element updater1 = doc.createElement("UPDATER");
 
 				root.appendChild(details);
 
@@ -354,10 +353,8 @@ public class IssueTable implements Serializable {
 
 					for(String s : i.getBeenUpdatedBy()){
 						Element updater = doc.createElement("UPDATER");
-						updater.appendChild(doc.createTextNode(s));
-						details.appendChild(updater);
-
-
+							updater.setTextContent(s);
+							details.appendChild(updater);
 					}
 			}
 

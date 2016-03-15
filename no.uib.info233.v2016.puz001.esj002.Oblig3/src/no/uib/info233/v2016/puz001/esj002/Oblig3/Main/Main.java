@@ -83,7 +83,6 @@ public class Main implements Serializable{
 								issue.getCreated(),
 								issue.getPriority(),
 								issue.getLocation()});
-						gui.getIt().writeXmlFile();
 					}
 				}
 			}
@@ -222,7 +221,6 @@ public class Main implements Serializable{
 			            gui.getIt().getIssueList().add(is);
 			    	    gui.getIt().tableForIssues();
 						//Writes to files.
-						gui.getIt().getNewFile().delete();
 						gui.getIt().writeXmlFile();
 						gui.getIt().writeUsersToXml();
 						//Changes panel
@@ -301,9 +299,10 @@ public class Main implements Serializable{
 						i.addUpdated(gui.getIt().getCurrentUser());
 
 						gui.getIt().tableForIssues();
+
 					}
 				}
-				gui.getIt().getNewFile().delete();
+
 				gui.getIt().writeXmlFile();
 				gui.setContentPane(gui.getSpine());
 				gui.pack();
@@ -366,6 +365,7 @@ public class Main implements Serializable{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gui.getIt().printAllUpdates(gui.getqTable());
+
 			}
 		});
 	}
