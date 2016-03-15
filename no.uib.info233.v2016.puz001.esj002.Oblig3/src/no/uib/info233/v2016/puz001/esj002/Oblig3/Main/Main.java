@@ -222,6 +222,7 @@ public class Main implements Serializable{
 			            gui.getIt().getIssueList().add(is);
 			    	    gui.getIt().tableForIssues();
 						//Writes to files.
+						gui.getIt().getNewFile().delete();
 						gui.getIt().writeXmlFile();
 						gui.getIt().writeUsersToXml();
 						//Changes panel
@@ -302,6 +303,7 @@ public class Main implements Serializable{
 						gui.getIt().tableForIssues();
 					}
 				}
+				gui.getIt().getNewFile().delete();
 				gui.getIt().writeXmlFile();
 				gui.setContentPane(gui.getSpine());
 				gui.pack();

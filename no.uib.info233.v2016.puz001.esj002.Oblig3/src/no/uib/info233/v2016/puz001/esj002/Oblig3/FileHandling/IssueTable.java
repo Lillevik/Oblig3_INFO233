@@ -145,6 +145,7 @@ public class IssueTable implements Serializable {
 				Document doc = dBuilder.parse(file);
 				NodeList nodelist = doc.getElementsByTagName("ISSUES");
 
+
 				for (int i = 0; i < nodelist.getLength(); i++) {
 
 					Node node = nodelist.item(i);
@@ -158,6 +159,7 @@ public class IssueTable implements Serializable {
 							"Not set");
 						issue.setCreatedBy(eElement.getAttribute("assigned_user"));
 						issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
+
 					issueList.add(issue);
 				}
 			} catch (Exception e) {
@@ -169,6 +171,8 @@ public class IssueTable implements Serializable {
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 				Document doc = dBuilder.parse(newFile);
 				NodeList nodelist = doc.getElementsByTagName("ISSUES");
+				NodeList updateList = doc.getElementsByTagName("UPDATES");
+				NodeList userList = doc.getElementsByTagName(("USER"));
 
 				for (int i = 0; i < nodelist.getLength(); i++) {
 
@@ -184,7 +188,14 @@ public class IssueTable implements Serializable {
 						issue.setCreatedBy(eElement.getAttribute(("created_by")));
 						issue.setLastUpdatedBy(eElement.getAttribute("last_updated_by"));
 
+
+					Node node1 = nodelist.item(i);
+					Element e = (Element) node;
+						issue.getBeenUpdatedBy().add(e.getTextContent().trim());
+								//getElementsByTagName("USER").item(i).getTextContent());
 					issueList.add(issue);
+
+
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -283,7 +294,7 @@ public class IssueTable implements Serializable {
 			if (i.getId().equals(table.getValueAt(j, 0).toString())) {
 				System.out.println("This issue has been updated by: ");
 				for(String s : i.getBeenUpdatedBy()){
-					System.out.println(s);
+					System.out.println(s.trim());
 				}
 			}
 		}
@@ -326,10 +337,9 @@ public class IssueTable implements Serializable {
 			for (Issues i : issueList) {
 
 				Element details = doc.createElement("ISSUES");
-				Element updaters = doc.createElement("UPDATES");
-				Element user = doc.createElement("USER");
+
+
 				root.appendChild(details);
-				details.appendChild(updaters);
 
 				details.setAttribute("id", i.getId());
 				details.setAttribute("assigned_user", i.getAssigned());
@@ -341,12 +351,14 @@ public class IssueTable implements Serializable {
 				details.setAttribute("created_by", i.getCreatedBy());
 				details.setAttribute("last_updated_by", i.getLastUpdatedBy());
 
-				for(Issues is : issueList){
-					for(String s : is.getBeenUpdatedBy()){
-						updaters.appendChild(user);
-						user.setAttribute("user", s);
+
+					for(String s : i.getBeenUpdatedBy()){
+						Element updater = doc.createElement("UPDATER");
+						updater.appendChild(doc.createTextNode(s));
+						details.appendChild(updater);
+
+
 					}
-				}
 			}
 
 
@@ -433,6 +445,8 @@ public class IssueTable implements Serializable {
 
 
 	/**
+	 * This method returns the model used for the qTable
+	 * in gui.
 	 * @return the model
 	 */
 	public DefaultTableModel getModel() {
@@ -441,50 +455,12 @@ public class IssueTable implements Serializable {
 
 
 	/**
-	 * @param model the model to set
-	 */
-	public void setModel(DefaultTableModel model) {
-		this.model = model;
-	}
-
-
-	/**
-	 * @return the serialversionuid
-	 */
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-
-	/**
-	 * @return the file
-	 */
-	public File getFile() {
-		return file;
-	}
-
-
-	/**
-	 * @param file the file to set
-	 */
-	public void setFile(File file) {
-		this.file = file;
-	}
-
-
-	/**
+	 * This method returns the ArrayList issueList
+	 * containing all the Issues objects.
 	 * @return the issueList
 	 */
 	public ArrayList<Issues> getIssueList() {
 		return issueList;
-	}
-
-
-	/**
-	 * @param issueList the issueList to set
-	 */
-	public void setIssueList(ArrayList<Issues> issueList) {
-		this.issueList = issueList;
 	}
 
 
@@ -502,5 +478,9 @@ public class IssueTable implements Serializable {
 
 	public String getCurrentUser() {
 		return currentUser;
+	}
+
+	public File getNewFile() {
+		return newFile;
 	}
 }
