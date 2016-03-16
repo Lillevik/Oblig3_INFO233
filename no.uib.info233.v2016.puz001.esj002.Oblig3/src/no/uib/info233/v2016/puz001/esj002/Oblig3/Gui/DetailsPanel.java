@@ -12,6 +12,7 @@ public class DetailsPanel extends JPanel{
 
     //JButtons
     private JButton updates = new JButton("All updaters");
+    private JButton sortDates = new JButton("Sort by date");
 
     //TextAres
     private JTextArea issueText = new JTextArea(10, 15);
@@ -54,7 +55,11 @@ public class DetailsPanel extends JPanel{
         gc.gridy = 4;
         add(updates, gc);
 
+        gc.gridx = 0;
         gc.gridy = 5;
+        add(sortDates, gc);
+
+        gc.gridy = 6;
         gc.gridx = 0;
         gc.weighty = 3;
         add(weightLabel, gc);
@@ -87,6 +92,10 @@ public class DetailsPanel extends JPanel{
 
     public JButton getUpdates() {
         return updates;
+    }
+
+    public JButton getSortDates() {
+        return sortDates;
     }
 }
 

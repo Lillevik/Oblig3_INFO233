@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 
 
@@ -132,14 +133,6 @@ public class Main implements Serializable{
 		gui.getBtnDate().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.getIt().getModel().setRowCount(0);
-				gui.getIt().getModel().setColumnCount(0);
-				gui.getIt().getModel().addColumn("Issue ID: ");
-				gui.getIt().getModel().addColumn("Assigned to: ");
-				gui.getIt().getModel().addColumn("Created: ");
-				gui.getIt().getModel().addColumn("Priority: ");
-				gui.getIt().getModel().addColumn("Location: ");
-				gui.getIt().getModel().addColumn("Status: ");
 			}
 		});
 /*
@@ -158,6 +151,35 @@ public class Main implements Serializable{
 				}
 			}
 		});
+
+
+		*/
+
+
+		gui.getDp().getSortDates().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gui.getIt().getModel().setRowCount(0);
+				gui.getIt().getModel().setColumnCount(0);
+				gui.getIt().getModel().addColumn("Issue ID: ");
+				gui.getIt().getModel().addColumn("Assigned to: ");
+				gui.getIt().getModel().addColumn("Created: ");
+				gui.getIt().getModel().addColumn("Priority: ");
+				gui.getIt().getModel().addColumn("Location: ");
+				gui.getIt().getModel().addColumn("Status: ");
+
+				Collections.sort(gui.getIt().getIssueList());
+				for(Issues i : gui.getIt().getIssueList()) {
+					gui.getIt().getModel().addRow(new Object[]{i.getId(),
+							i.getAssigned(),
+							gui.getIt().dateToString(i.getCreated()),
+							i.getPriority(),
+							i.getLocation(),
+							i.getStatus()});
+				}
+			}
+		});
+
 
 		/**
 		 * This method lists all the unique users and

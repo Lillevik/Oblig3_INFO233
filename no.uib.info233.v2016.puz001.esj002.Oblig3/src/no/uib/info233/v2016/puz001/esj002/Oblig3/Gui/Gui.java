@@ -150,6 +150,7 @@ public class Gui extends JFrame implements Serializable{
 		qTable.getRowSorter().convertRowIndexToView(0);
 
 
+
 		/*
 		 * Sets up the JMenu
 		 */

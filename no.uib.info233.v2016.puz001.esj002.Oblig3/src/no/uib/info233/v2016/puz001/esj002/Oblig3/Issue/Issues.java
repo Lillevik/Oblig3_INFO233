@@ -12,7 +12,7 @@ import java.util.Date;
  *This class is made to create objects containing the
  *values from the ISSUES elements in the old_issues.xml file.
  */
-public class Issues implements Serializable{
+public class Issues implements Comparable<Issues>, Serializable{
 
 	
 	//These are the fields for the Issues class.
@@ -55,6 +55,11 @@ public class Issues implements Serializable{
 			beenUpdatedBy.add(s);
 		}
 	}
+	@Override
+	public int compareTo(Issues issues) {
+		return getCreated().compareTo(issues.getCreated());
+	}
+
 
 
 
