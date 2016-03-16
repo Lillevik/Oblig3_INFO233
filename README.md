@@ -11,10 +11,10 @@
 ###### +--------------+
 ######   krav 1 CHECK
 ######   krav 2 CHECK
-######   krav 3 
-######   krav 4 CHECK
+######   krav 3 CHECK
+######   krav 4 
 ######   krav 5
-######   krav 6
+######   krav 6 CHECK
 ######   krav 7
 ######   krav 8
 ######   krav 9

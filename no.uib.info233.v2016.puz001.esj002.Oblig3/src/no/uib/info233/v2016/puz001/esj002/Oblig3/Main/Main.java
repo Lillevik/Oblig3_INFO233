@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Date;
 
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.SaveProgram;
@@ -20,12 +22,12 @@ import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 public class Main implements Serializable{
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1834915564586880152L;
 
 	/**
-	 * This method starts the program and connects the different 
+	 * This method starts the program and connects the different
 	 * instances together in one class.
 	 * @param args
 	 */
@@ -48,19 +50,20 @@ public class Main implements Serializable{
 				gui.getIt().getModel().addColumn("Created: ");
 				gui.getIt().getModel().addColumn("Priority: ");
 				gui.getIt().getModel().addColumn("Location: ");
+				gui.getIt().getModel().addColumn("Status: ");
 
 				for(Issues issue : gui.getIt().getIssueList()){
 					if(issue.getAssigned().equals(gui.getTxtSearch().getText())){
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
-								issue.getCreated(),
+								gui.getIt().dateToString(issue.getCreated()),
 								issue.getPriority(),
 								issue.getLocation()});
 					}
 				}
 			}
 		});
-		
+
 		/**
 		 * This is an actionListener for the btnId which 
 		 * finds a specific issues and displays it in the JTable.
@@ -75,20 +78,23 @@ public class Main implements Serializable{
 				gui.getIt().getModel().addColumn("Created: ");
 				gui.getIt().getModel().addColumn("Priority: ");
 				gui.getIt().getModel().addColumn("Location: ");
-					
+				gui.getIt().getModel().addColumn("Status: ");
+
+
 				for(Issues issue : gui.getIt().getIssueList()){
 					if(issue.getId().equals(gui.getTxtId().getText())){
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
-								issue.getCreated(),
+								gui.getIt().dateToString(issue.getCreated()),
 								issue.getPriority(),
-								issue.getLocation()});
-						gui.getIt().writeXmlFile();
+								issue.getLocation(),
+								issue.getStatus()});
+
 					}
 				}
 			}
 		});
-		
+
 
 		/**
 		 * This method finds all the issues with 
@@ -104,24 +110,53 @@ public class Main implements Serializable{
 				gui.getIt().getModel().addColumn("Created: ");
 				gui.getIt().getModel().addColumn("Priority: ");
 				gui.getIt().getModel().addColumn("Location: ");
+				gui.getIt().getModel().addColumn("Status: ");
 				for(Issues issue : gui.getIt().getIssueList()){
 
 					if(issue.getPriority().equals(gui.getTxtPriority().getText())){
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
-								issue.getCreated(),
+								gui.getIt().dateToString(issue.getCreated()),
 								issue.getPriority(),
-								issue.getLocation()});
+								issue.getLocation(),
+								issue.getStatus()});
 					}
 				}
 			}
 		});
-		
-		
+
+
 		/**
+		 * ############ NOT READY ##############
 		 * This method tries to list the issues after a certain date.
 		 */
 		gui.getBtnDate().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+/*
+				for(Issues issue : gui.getIt().getIssueList()){
+					int dateInt = Integer.parseInt(issue.getCreated().replaceAll("/", ""));
+					int dateTxt = Integer.parseInt(gui.getTxtDate().getText().replaceAll("/", ""));
+					if(dateInt >= dateTxt){
+						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
+								issue.getAssigned(),
+								issue.getCreated(),
+								issue.getPriority(),
+								issue.getLocation(),
+								issue.getStatus()});
+
+					}
+				}
+			}
+		});
+
+
+		*/
+
+
+		gui.getDp().getSortDates().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gui.getIt().getModel().setRowCount(0);
@@ -131,23 +166,23 @@ public class Main implements Serializable{
 				gui.getIt().getModel().addColumn("Created: ");
 				gui.getIt().getModel().addColumn("Priority: ");
 				gui.getIt().getModel().addColumn("Location: ");
+				gui.getIt().getModel().addColumn("Status: ");
 
-				for(Issues issue : gui.getIt().getIssueList()){
-					int dateInt = Integer.parseInt(issue.getCreated().replaceAll("/", ""));
-					int dateTxt = Integer.parseInt(gui.getTxtDate().getText().replaceAll("/", ""));
-					if(dateInt >= dateTxt){
-						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
-								issue.getAssigned(),
-								issue.getCreated(),
-								issue.getPriority(),
-								issue.getLocation()});
-					}
+				Collections.sort(gui.getIt().getIssueList());
+				for(Issues i : gui.getIt().getIssueList()) {
+					gui.getIt().getModel().addRow(new Object[]{i.getId(),
+							i.getAssigned(),
+							gui.getIt().dateToString(i.getCreated()),
+							i.getPriority(),
+							i.getLocation(),
+							i.getStatus()});
 				}
 			}
 		});
 
+
 		/**
-		 * This method lists all the uniqe users and
+		 * This method lists all the unique users and
 		 * presents them using a JTable
 		 */
 		gui.getBtnListAllUsers().addActionListener(new ActionListener(){
@@ -157,7 +192,7 @@ public class Main implements Serializable{
 
 			}
 		});
-		
+
 		/**
 		 * This method lists all the issues from the arrayList issues
 		 * and presents them in the JTable qtable using methods from
@@ -170,7 +205,7 @@ public class Main implements Serializable{
 				gui.getIt().tableForIssues();
 			}
 		});
-		
+
 		/**
 		 * This method simply adds a user to the arrayList users
 		 * using methods from IssueTable.
@@ -188,7 +223,7 @@ public class Main implements Serializable{
 				gui.getIt().listUniqueUsers();
 			}
 		});
-		
+
 		/**
 		 * Adds an issue depending on the user input.
 		 */
@@ -200,7 +235,7 @@ public class Main implements Serializable{
 				gui.pack();
 		    }
         });
-		
+
 		/**
 		 * Adds an issue depending on the user input.
 		 */
@@ -211,7 +246,7 @@ public class Main implements Serializable{
 				//Creates new issue.
 				Issues is = new Issues(gui.getIt().maxIssueId() ,
                         gui.getChooseUser().getSelectedItem().toString(),
-						gui.getIt().currentDate(),
+						new Date(),
 						gui.getIp().getIssueText().getText(),
 						gui.getChoosePriority().getSelectedItem().toString(),
 						gui.getIp().getLocationText().getText(),
@@ -229,7 +264,7 @@ public class Main implements Serializable{
 			    	    gui.pack();
 	    	}
         });
-		
+
 		/**
 		 * This actionslistener for the login button
 		 * checks if the user input is in the list of users.
@@ -239,7 +274,7 @@ public class Main implements Serializable{
 		gui.getLp().getLoginButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(gui.authenticateLogin() == false){	
+				if(gui.authenticateLogin() == false){
 					gui.getLp().getStatus().setText("Username or password is incorrect.");
 				}
 			}
@@ -257,7 +292,7 @@ public class Main implements Serializable{
 				gui.pack();
 			}
 		});
-		
+
 		/**
 		 * This method changes the update panel if a row is selected.
 		 */
@@ -279,7 +314,7 @@ public class Main implements Serializable{
 				}
 			}
 		});
-		
+
 		/**
 		 * This method edits a row depending on user inputs.
 		 */
@@ -300,14 +335,16 @@ public class Main implements Serializable{
 						i.addUpdated(gui.getIt().getCurrentUser());
 
 						gui.getIt().tableForIssues();
+
 					}
 				}
+
 				gui.getIt().writeXmlFile();
 				gui.setContentPane(gui.getSpine());
 				gui.pack();
 			}
 		});
-		
+
 		/**
 		 * This button attempts to save the current state of the program
 		 * when the menu button is pushed and writes a file.
@@ -320,8 +357,8 @@ public class Main implements Serializable{
 				gui.getIt().writeUsersToXml();
 			}
 		});
-		
-		
+
+
 		/**
 		 * This is an actionlistener for the backButton in the updatePanel class
 		 * which returns the user to the main panel if the button is pushed.
@@ -332,7 +369,7 @@ public class Main implements Serializable{
 				gui.setContentPane(gui.getSpine());
 			}
 		});
-		
+
 		/**
 		 * This is an actionlistener for the backButton in the IssuePanel class
 		 * which returns the user to the main panel if the button is pushed.
@@ -363,7 +400,13 @@ public class Main implements Serializable{
 		gui.getDp().getUpdates().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.getIt().printAllUpdates(gui.getqTable());
+				int i = gui.getqTable().getSelectedRow();
+				if(i == -1) {
+					System.out.println("Please select a row to list all updaters.");
+				}
+				else {
+					gui.getIt().printAllUpdates(gui.getqTable());
+				}
 			}
 		});
 	}

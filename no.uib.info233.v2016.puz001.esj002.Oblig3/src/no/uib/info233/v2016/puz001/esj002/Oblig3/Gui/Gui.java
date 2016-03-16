@@ -150,6 +150,7 @@ public class Gui extends JFrame implements Serializable{
 		qTable.getRowSorter().convertRowIndexToView(0);
 
 
+
 		/*
 		 * Sets up the JMenu
 		 */
@@ -208,8 +209,9 @@ public class Gui extends JFrame implements Serializable{
 
 		panelBackLeftTop.setBackground(Color.GRAY);
 		panelBackLeftBot.setBackground(Color.LIGHT_GRAY);
+		panelBackLeftBot.setPreferredSize(new Dimension(100, 75));
 		panelBackLeftTop.setPreferredSize(new Dimension(100, 525));
-		panelBackLeftBot.setPreferredSize(new Dimension(100, 100));
+		//panelBackLeftBot.setSize(new Dimension(100, 100));
 
 		searchLabel.setPreferredSize(new Dimension(190, 20));
 		searchLabel.setText("Query here");
@@ -260,11 +262,12 @@ public class Gui extends JFrame implements Serializable{
 		 * correct JPanels or "Layers" of the program.
 		 */
 		spine.add(menuBar);
+		panelBackLeft.add(panelBackLeftTop, BorderLayout.CENTER);
+		panelBackLeft.add(panelBackLeftBot, BorderLayout.NORTH);
 		spine.add(panelBackLeft, BorderLayout.WEST);
 		spine.add(tp, BorderLayout.CENTER);
 		spine.add(dp, BorderLayout.EAST);
-		panelBackLeft.add(panelBackLeftTop, BorderLayout.NORTH);
-		panelBackLeft.add(panelBackLeftBot, BorderLayout.CENTER);
+
 		panelBackLeftTop.add(searchLabel);
 		panelBackLeftTop.add(txtSearch);
 		panelBackLeftTop.add(btnSearch);
@@ -313,7 +316,6 @@ public class Gui extends JFrame implements Serializable{
 		getIt().getModel().addColumn("Issue ID: ");
 		getIt().getModel().addColumn("Assigned to: ");
 		getIt().getModel().addColumn("Created: ");
-		getIt().getModel().addColumn("Issue: ");
 		getIt().getModel().addColumn("Priority: ");
 		getIt().getModel().addColumn("Location: ");
 		getIt().getModel().addColumn("Status: ");
@@ -324,7 +326,6 @@ public class Gui extends JFrame implements Serializable{
 				getIt().getModel().addRow(new Object[]{issue.getId(),
 						issue.getAssigned(),
 						issue.getCreated(),
-						issue.getIssue(),
 						issue.getPriority(),
 						issue.getLocation(),
 						issue.getStatus()});

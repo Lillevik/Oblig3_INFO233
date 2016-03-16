@@ -3,6 +3,9 @@ package no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,6 +24,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import groovy.ui.SystemOutputInterceptor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -33,7 +37,7 @@ import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
  * This is a class which deals with handling the xml files
  * and creating lists of strings and object from the xml file.
  */
-public class IssueTable implements Serializable {
+public class IssueTable implements Serializable{
 
 
 	private static final long serialVersionUID = -6349521349294077303L;
@@ -145,19 +149,21 @@ public class IssueTable implements Serializable {
 				Document doc = dBuilder.parse(file);
 				NodeList nodelist = doc.getElementsByTagName("ISSUES");
 
+
 				for (int i = 0; i < nodelist.getLength(); i++) {
 
 					Node node = nodelist.item(i);
 					Element eElement = (Element) node;
 					Issues issue = new Issues(eElement.getAttribute("id"),
 							eElement.getAttribute("assigned_user"),
-							eElement.getAttribute("created"),
+							stringToDate((eElement.getAttribute("created"))),
 							eElement.getAttribute("text"),
 							eElement.getAttribute("priority"),
 							eElement.getAttribute("location"),
 							"Not set");
 						issue.setCreatedBy(eElement.getAttribute("assigned_user"));
 						issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
+						issue.getBeenUpdatedBy().add(eElement.getAttribute("assigned_user"));
 					issueList.add(issue);
 				}
 			} catch (Exception e) {
@@ -169,14 +175,13 @@ public class IssueTable implements Serializable {
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 				Document doc = dBuilder.parse(newFile);
 				NodeList nodelist = doc.getElementsByTagName("ISSUES");
-
 				for (int i = 0; i < nodelist.getLength(); i++) {
 
 					Node node = nodelist.item(i);
 					Element eElement = (Element) node;
 					Issues issue = new Issues(eElement.getAttribute("id"),
 							eElement.getAttribute("assigned_user"),
-							eElement.getAttribute("created"),
+							stringToDate(eElement.getAttribute("created")),
 							eElement.getAttribute("text"),
 							eElement.getAttribute("priority"),
 							eElement.getAttribute("location"),
@@ -184,6 +189,15 @@ public class IssueTable implements Serializable {
 						issue.setCreatedBy(eElement.getAttribute(("created_by")));
 						issue.setLastUpdatedBy(eElement.getAttribute("last_updated_by"));
 
+
+
+					NodeList updateList = nodelist.item(i).getChildNodes();
+					for(int j = 0; j < updateList.getLength(); j++){
+						Node updateNode = updateList.item(j);
+						if("UPDATER".equals(updateNode.getNodeName())) {
+							issue.getBeenUpdatedBy().add(updateNode.getTextContent());
+						}
+					}
 					issueList.add(issue);
 				}
 			} catch (Exception e) {
@@ -210,7 +224,7 @@ public class IssueTable implements Serializable {
 		for (Issues issue : issueList) {
 			model.addRow(new Object[]{issue.getId(),
 					issue.getAssigned(),
-					issue.getCreated(),
+					dateToString(issue.getCreated()),
 					issue.getPriority(),
 					issue.getLocation(),
 					issue.getStatus()});
@@ -283,28 +297,10 @@ public class IssueTable implements Serializable {
 			if (i.getId().equals(table.getValueAt(j, 0).toString())) {
 				System.out.println("This issue has been updated by: ");
 				for(String s : i.getBeenUpdatedBy()){
-					System.out.println(s);
+					System.out.println(s.trim());
 				}
 			}
 		}
-	}
-
-
-	/**
-	 * This method returns a string of the current date the day it is called.
-	 * Used in the assIssue button.
-	 *
-	 * @return current date as a string
-	 */
-	public String currentDate() {
-		Date d = new Date();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(d);
-		int month = cal.get(Calendar.MONTH) + 1;
-		int day = cal.get(Calendar.DAY_OF_MONTH);
-		int year = cal.get(Calendar.YEAR);
-		String date = month + "/" + day + "/" + year;
-		return date;
 	}
 
 	/**
@@ -314,7 +310,6 @@ public class IssueTable implements Serializable {
 	public void writeXmlFile() {
 
 		try {
-
 			DocumentBuilderFactory dFact = DocumentBuilderFactory.newInstance();
 			DocumentBuilder build = dFact.newDocumentBuilder();
 			Document doc = build.newDocument();
@@ -326,14 +321,13 @@ public class IssueTable implements Serializable {
 			for (Issues i : issueList) {
 
 				Element details = doc.createElement("ISSUES");
-				Element updaters = doc.createElement("UPDATES");
-				Element user = doc.createElement("USER");
+				Element updater1 = doc.createElement("UPDATER");
+
 				root.appendChild(details);
-				details.appendChild(updaters);
 
 				details.setAttribute("id", i.getId());
 				details.setAttribute("assigned_user", i.getAssigned());
-				details.setAttribute("created", i.getCreated());
+				details.setAttribute("created", dateToString(i.getCreated()));
 				details.setAttribute("text", i.getIssue());
 				details.setAttribute("priority", i.getPriority());
 				details.setAttribute("location", i.getLocation());
@@ -341,12 +335,12 @@ public class IssueTable implements Serializable {
 				details.setAttribute("created_by", i.getCreatedBy());
 				details.setAttribute("last_updated_by", i.getLastUpdatedBy());
 
-				for(Issues is : issueList){
-					for(String s : is.getBeenUpdatedBy()){
-						updaters.appendChild(user);
-						user.setAttribute("user", s);
+
+					for(String s : i.getBeenUpdatedBy()){
+						Element updater = doc.createElement("UPDATER");
+							updater.setTextContent(s);
+							details.appendChild(updater);
 					}
-				}
 			}
 
 
@@ -433,6 +427,8 @@ public class IssueTable implements Serializable {
 
 
 	/**
+	 * This method returns the model used for the qTable
+	 * in gui.
 	 * @return the model
 	 */
 	public DefaultTableModel getModel() {
@@ -441,50 +437,12 @@ public class IssueTable implements Serializable {
 
 
 	/**
-	 * @param model the model to set
-	 */
-	public void setModel(DefaultTableModel model) {
-		this.model = model;
-	}
-
-
-	/**
-	 * @return the serialversionuid
-	 */
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-
-	/**
-	 * @return the file
-	 */
-	public File getFile() {
-		return file;
-	}
-
-
-	/**
-	 * @param file the file to set
-	 */
-	public void setFile(File file) {
-		this.file = file;
-	}
-
-
-	/**
+	 * This method returns the ArrayList issueList
+	 * containing all the Issues objects.
 	 * @return the issueList
 	 */
 	public ArrayList<Issues> getIssueList() {
 		return issueList;
-	}
-
-
-	/**
-	 * @param issueList the issueList to set
-	 */
-	public void setIssueList(ArrayList<Issues> issueList) {
-		this.issueList = issueList;
 	}
 
 
@@ -502,5 +460,52 @@ public class IssueTable implements Serializable {
 
 	public String getCurrentUser() {
 		return currentUser;
+	}
+
+	public File getNewFile() {
+		return newFile;
+	}
+
+
+	/**
+	 * This method takes a Date as a parameter and
+	 * converts it to a string with the format month/day/year(mm/dd/yyyy).
+	 * It is used to convert the Dates stored in each issue to display
+	 * them as strings to the user with a specific format.
+	 * @param d
+	 * @return
+	 */
+	public String dateToString(Date d){
+		DateFormat writeFormat = new SimpleDateFormat( "MM/dd/yyyy");
+
+		String formattedDate = "";
+		if( d != null ) {
+			formattedDate = writeFormat.format(d);
+		}
+		return formattedDate;
+	}
+
+	/**
+	 * This method converts a String to a date. The method
+	 * is used for converting the date Strings in the xml documents
+	 * into date formats for each issue. The dates need to be in a
+	 * date format in order to properly sort them.
+	 * @param s
+	 * @return
+	 */
+	public Date stringToDate(String s){
+		DateFormat readFormat = new SimpleDateFormat( "MM/dd/yyyy");
+		Date date = null;
+
+		try{
+			date = readFormat.parse(s);
+		} catch (ParseException e){
+			e.printStackTrace();
+		}
+
+		if(date != null){
+			return date;
+		}
+		return null;
 	}
 }
