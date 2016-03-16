@@ -3,6 +3,9 @@ package no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling;
 import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,6 +24,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import groovy.ui.SystemOutputInterceptor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -152,14 +156,14 @@ public class IssueTable implements Serializable{
 					Element eElement = (Element) node;
 					Issues issue = new Issues(eElement.getAttribute("id"),
 							eElement.getAttribute("assigned_user"),
-							eElement.getAttribute("created"),
+							stringToDate((eElement.getAttribute("created"))),
 							eElement.getAttribute("text"),
 							eElement.getAttribute("priority"),
 							eElement.getAttribute("location"),
 							"Not set");
 						issue.setCreatedBy(eElement.getAttribute("assigned_user"));
 						issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
-						issue.getBeenUpdatedBy().add("assigned_user");
+						issue.getBeenUpdatedBy().add(eElement.getAttribute("assigned_user"));
 					issueList.add(issue);
 				}
 			} catch (Exception e) {
@@ -177,7 +181,7 @@ public class IssueTable implements Serializable{
 					Element eElement = (Element) node;
 					Issues issue = new Issues(eElement.getAttribute("id"),
 							eElement.getAttribute("assigned_user"),
-							eElement.getAttribute("created"),
+							stringToDate(eElement.getAttribute("created")),
 							eElement.getAttribute("text"),
 							eElement.getAttribute("priority"),
 							eElement.getAttribute("location"),
@@ -220,7 +224,7 @@ public class IssueTable implements Serializable{
 		for (Issues issue : issueList) {
 			model.addRow(new Object[]{issue.getId(),
 					issue.getAssigned(),
-					issue.getCreated(),
+					dateToString(issue.getCreated()),
 					issue.getPriority(),
 					issue.getLocation(),
 					issue.getStatus()});
@@ -299,24 +303,6 @@ public class IssueTable implements Serializable{
 		}
 	}
 
-
-	/**
-	 * This method returns a string of the current date the day it is called.
-	 * Used in the assIssue button.
-	 *
-	 * @return current date as a string
-	 */
-	public String currentDate() {
-		Date d = new Date();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(d);
-		int month = cal.get(Calendar.MONTH) + 1;
-		int day = cal.get(Calendar.DAY_OF_MONTH);
-		int year = cal.get(Calendar.YEAR);
-		String date = month + "/" + day + "/" + year;
-		return date;
-	}
-
 	/**
 	 * This method writes all the objects and string in issueList and users list
 	 * into a single xml file containing all their info.
@@ -324,7 +310,6 @@ public class IssueTable implements Serializable{
 	public void writeXmlFile() {
 
 		try {
-
 			DocumentBuilderFactory dFact = DocumentBuilderFactory.newInstance();
 			DocumentBuilder build = dFact.newDocumentBuilder();
 			Document doc = build.newDocument();
@@ -342,7 +327,7 @@ public class IssueTable implements Serializable{
 
 				details.setAttribute("id", i.getId());
 				details.setAttribute("assigned_user", i.getAssigned());
-				details.setAttribute("created", i.getCreated());
+				details.setAttribute("created", dateToString(i.getCreated()));
 				details.setAttribute("text", i.getIssue());
 				details.setAttribute("priority", i.getPriority());
 				details.setAttribute("location", i.getLocation());
@@ -479,5 +464,48 @@ public class IssueTable implements Serializable{
 
 	public File getNewFile() {
 		return newFile;
+	}
+
+
+	/**
+	 * This method takes a Date as a parameter and
+	 * converts it to a string with the format month/day/year(mm/dd/yyyy).
+	 * It is used to convert the Dates stored in each issue to display
+	 * them as strings to the user with a specific format.
+	 * @param d
+	 * @return
+	 */
+	public String dateToString(Date d){
+		DateFormat writeFormat = new SimpleDateFormat( "MM/dd/yyyy");
+
+		String formattedDate = "";
+		if( d != null ) {
+			formattedDate = writeFormat.format(d);
+		}
+		return formattedDate;
+	}
+
+	/**
+	 * This method converts a String to a date. The method
+	 * is used for converting the date Strings in the xml documents
+	 * into date formats for each issue. The dates need to be in a
+	 * date format in order to properly sort them.
+	 * @param s
+	 * @return
+	 */
+	public Date stringToDate(String s){
+		DateFormat readFormat = new SimpleDateFormat( "MM/dd/yyyy");
+		Date date = null;
+
+		try{
+			date = readFormat.parse(s);
+		} catch (ParseException e){
+			e.printStackTrace();
+		}
+
+		if(date != null){
+			return date;
+		}
+		return null;
 	}
 }

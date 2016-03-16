@@ -5,6 +5,7 @@ package no.uib.info233.v2016.puz001.esj002.Oblig3.Issue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author mariuslillevik
@@ -18,7 +19,7 @@ public class Issues implements Serializable{
 	private static final long serialVersionUID = -2428158722130066013L;
 	private String id;
 	private String assigned;
-	private String created;
+	private Date created;
 	private String issue;
 	private String priority;
 	private String location;
@@ -37,7 +38,7 @@ public class Issues implements Serializable{
 	 * @param priority
 	 * @param location
 	 */
-	public Issues(String id, String assigned, String created, String issue,
+	public Issues(String id, String assigned, Date created, String issue,
 				  			String priority, String location, String status){
 		this.id = id;
 		this.assigned = assigned;
@@ -106,7 +107,7 @@ public class Issues implements Serializable{
 	 * returns the current created date value as a string.
 	 * @return the created
 	 */
-	public String getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
@@ -117,7 +118,7 @@ public class Issues implements Serializable{
 	 * sets the value of the field to a different value.
 	 * @param created the created to set
 	 */
-	public void setCreated(String created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 
