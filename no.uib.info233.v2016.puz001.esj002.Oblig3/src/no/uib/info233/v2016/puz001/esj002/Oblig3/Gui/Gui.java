@@ -288,6 +288,10 @@ public class Gui extends JFrame implements Serializable{
 
 	}
 
+	              // @Override
+	public void customCellRederer(){
+		//this.qTable
+	}
 
 	/**
 	 * Used to authenicate user logins.

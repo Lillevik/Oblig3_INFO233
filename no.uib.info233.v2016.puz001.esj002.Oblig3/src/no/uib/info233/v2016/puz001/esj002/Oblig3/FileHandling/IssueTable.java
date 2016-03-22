@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,7 +38,7 @@ import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
  * This is a class which deals with handling the xml files
  * and creating lists of strings and object from the xml file.
  */
-public class IssueTable implements Serializable{
+public class IssueTable extends DefaultTableCellRenderer implements Serializable{
 
 
 	private static final long serialVersionUID = -6349521349294077303L;
@@ -88,6 +89,7 @@ public class IssueTable implements Serializable{
 						users.add(eElement.getAttribute("assigned_user"));
 				}
 			} catch (Exception e) {
+				System.out.println("We were unable to locate the file, old_issues.xml.");
 				e.printStackTrace();
 
 			}
@@ -106,6 +108,7 @@ public class IssueTable implements Serializable{
 						users.add(eElement.getAttribute("name"));
 				}
 			} catch (Exception e) {
+				System.out.println("We were unable to locate the file, issueTracker_users.xml.");
 				e.printStackTrace();
 
 			}
@@ -167,6 +170,7 @@ public class IssueTable implements Serializable{
 					issueList.add(issue);
 				}
 			} catch (Exception e) {
+				System.out.println("We were unable to locate the file, old_issues.xml.");
 				e.printStackTrace();
 			}
 		} else {
@@ -201,6 +205,7 @@ public class IssueTable implements Serializable{
 					issueList.add(issue);
 				}
 			} catch (Exception e) {
+				System.out.println("We were unable to locate the file, new_issues.xml.");
 				e.printStackTrace();
 			}
 		}
@@ -362,7 +367,7 @@ public class IssueTable implements Serializable{
 				StreamResult result = new StreamResult(fos);
 				aTransformer.transform(source, result);
 			} catch (IOException e) {
-
+				System.out.println("Could not write the file.");
 				e.printStackTrace();
 			}
 
@@ -407,7 +412,7 @@ public class IssueTable implements Serializable{
 				StreamResult result = new StreamResult(fos);
 				aTransformer.transform(source, result);
 			} catch (IOException e) {
-
+				System.out.println("Error writing the document. Contact administration.");
 				e.printStackTrace();
 			}
 
@@ -501,6 +506,7 @@ public class IssueTable implements Serializable{
 			date = readFormat.parse(s);
 		} catch (ParseException e){
 			e.printStackTrace();
+			System.out.println("There was a problem converting the String to a Date.");
 		}
 
 		if(date != null){
