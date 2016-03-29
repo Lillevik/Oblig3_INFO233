@@ -5,6 +5,7 @@ package no.uib.info233.v2016.puz001.esj002.Oblig3.Issue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -59,6 +60,14 @@ public class Issues implements Comparable<Issues>, Serializable{
 	public int compareTo(Issues issues) {
 		return getCreated().compareTo(issues.getCreated());
 	}
+
+
+	static class PriorityComparator implements Comparator<Issues> {
+		public int compare(Issues i1, Issues i2) {
+			return i1.getPriority().compareTo(i2.getPriority());
+		}
+	}
+
 
 
 
