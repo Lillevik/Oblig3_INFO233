@@ -65,7 +65,7 @@ public class Gui extends JFrame implements Serializable{
 
 
 	/*
-	 * searchlabel is the label
+	 * Searchlabel is the label
 	 * above the input fields that says
 	 * "query here"
 	 */

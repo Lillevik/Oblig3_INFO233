@@ -38,7 +38,7 @@ import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
  * This is a class which deals with handling the xml files
  * and creating lists of strings and object from the xml file.
  */
-public class IssueTable extends DefaultTableCellRenderer implements Serializable{
+public class IssueTable implements Serializable{
 
 
 	private static final long serialVersionUID = -6349521349294077303L;
@@ -379,6 +379,12 @@ public class IssueTable extends DefaultTableCellRenderer implements Serializable
 		}
 	}
 
+
+	/**
+	 * This method creates writes the users ArrayList to an xml file
+	 * so that it can later be read into the system again the next time it
+	 * is started again.
+	 */
 	public void writeUsersToXml(){
 		try {
 
@@ -465,10 +471,6 @@ public class IssueTable extends DefaultTableCellRenderer implements Serializable
 
 	public String getCurrentUser() {
 		return currentUser;
-	}
-
-	public File getNewFile() {
-		return newFile;
 	}
 
 
