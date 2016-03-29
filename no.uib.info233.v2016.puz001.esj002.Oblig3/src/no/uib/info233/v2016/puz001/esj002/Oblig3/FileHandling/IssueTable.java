@@ -432,6 +432,8 @@ public class IssueTable implements Serializable{
 	}
 
 
+
+
 	public String randomPass() {
 		return new BigInteger(64, random).toString(32);
 	}

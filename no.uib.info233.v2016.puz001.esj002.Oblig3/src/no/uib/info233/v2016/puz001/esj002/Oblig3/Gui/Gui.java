@@ -2,12 +2,14 @@ package no.uib.info233.v2016.puz001.esj002.Oblig3.Gui;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.table.TableRowSorter;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * This class creates a graphical user interface and 
@@ -146,10 +148,17 @@ public class Gui extends JFrame implements Serializable{
 		/*
 		 *	Sets up the JTable qTable
 		 */
-		qTable.setAutoCreateRowSorter(true);
-		qTable.getRowSorter().convertRowIndexToView(0);
+		Comparator intComparator = intComparator = (Object o, Object t1) -> {
+			Integer oInt = Integer.parseInt(((String) o).trim());
+			Integer t1Int = Integer.parseInt(((String) t1).trim());
+			return oInt.compareTo(t1Int);
+		};
 
 
+		TableRowSorter sorter = new TableRowSorter();
+		qTable.setRowSorter(sorter);
+		sorter.setModel(it.getModel());
+		sorter.setComparator(0, intComparator);
 
 		/*
 		 * Sets up the JMenu
