@@ -3005,4 +3005,7 @@
         <UPDATER>dryan3</UPDATER>
         <UPDATER>admin</UPDATER>
     </ISSUES>
+    <ISSUES assigned_user="Marius" created="03/29/2016" created_by="dryan3" id="1002" last_updated_by="dryan3" location="Norge" priority="Normal" status="Open" text="Big issue.">
+        <UPDATER>dryan3</UPDATER>
+    </ISSUES>
 </Dataset>

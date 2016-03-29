@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
@@ -12,6 +14,7 @@ import java.util.Date;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.SaveProgram;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.Gui;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Main.newMain;
 
 
 /**
@@ -409,6 +412,20 @@ public class Main implements Serializable{
 				}
 			}
 		});
+
+		gui.getDp().getNewProgram().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e){
+				File file = new File("newProgram.jar");
+				try{
+				Process proc = Runtime.getRuntime().exec("java -jar newProgram.jar");
+					proc.getOutputStream();
+				} catch (IOException io){
+					System.out.println("Not working.");
+				}
+			}
+		});
+
 	}
 }
 
