@@ -167,7 +167,10 @@ public class IssueTable implements Serializable{
 						issue.setCreatedBy(eElement.getAttribute("assigned_user"));
 						issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
 						issue.getBeenUpdatedBy().add(eElement.getAttribute("assigned_user"));
-					issueList.add(issue);
+							issueList.add(issue);
+
+
+
 				}
 			} catch (Exception e) {
 				System.out.println("We were unable to locate the file, old_issues.xml.");
@@ -194,7 +197,6 @@ public class IssueTable implements Serializable{
 						issue.setLastUpdatedBy(eElement.getAttribute("last_updated_by"));
 
 
-
 					NodeList updateList = nodelist.item(i).getChildNodes();
 					for(int j = 0; j < updateList.getLength(); j++){
 						Node updateNode = updateList.item(j);
@@ -202,10 +204,12 @@ public class IssueTable implements Serializable{
 							issue.getBeenUpdatedBy().add(updateNode.getTextContent());
 						}
 					}
-					issueList.add(issue);
+							issueList.add(issue);
+
+
 				}
 			} catch (Exception e) {
-				System.out.println("We were unable to locate the file, new_issues.xml.");
+				System.out.println("We were unable to locate the file, new_issues.xml");
 				e.printStackTrace();
 			}
 		}
@@ -234,7 +238,29 @@ public class IssueTable implements Serializable{
 					issue.getLocation(),
 					issue.getStatus()});
 		}
-	}
+//		try {
+//			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+//			Document doc = dBuilder.parse(newFile);
+//			NodeList nodelist = doc.getElementsByTagName("ISSUES");
+//			for (int i = 0; i < nodelist.getLength(); i++) {
+//
+//				Node node = nodelist.item(i);
+//				Element eElement = (Element) node;
+//
+//				model.addRow(new Object[] {eElement.getAttribute("id"),
+//								eElement.getAttribute("assigned_user"),
+//								eElement.getAttribute("created"),
+//								eElement.getAttribute("priority"),
+//								eElement.getAttribute(("location")),
+//								eElement.getAttribute("status")});
+//
+//			}
+//			} catch (Exception e) {
+//
+//			}
+
+		}
 
 	public void changePrio() {
 		if (!newFile.exists()) {
@@ -376,6 +402,8 @@ public class IssueTable implements Serializable{
 
 		} catch (ParserConfigurationException ex) {
 			System.out.println("Error building document");
+		} finally {
+			tableForIssues();
 		}
 	}
 
@@ -475,6 +503,9 @@ public class IssueTable implements Serializable{
 		return currentUser;
 	}
 
+	public File getNewFile() {
+		return newFile;
+	}
 
 	/**
 	 * This method takes a Date as a parameter and
@@ -517,5 +548,16 @@ public class IssueTable implements Serializable{
 			return date;
 		}
 		return null;
+	}
+
+	public void tableRows(){
+		model.setRowCount(0);
+		model.setColumnCount(0);
+		model.addColumn("Issue ID: ");
+		model.addColumn("Assigned to: ");
+		model.addColumn("Created: ");
+		model.addColumn("Priority: ");
+		model.addColumn("Location: ");
+		model.addColumn("Status: ");
 	}
 }

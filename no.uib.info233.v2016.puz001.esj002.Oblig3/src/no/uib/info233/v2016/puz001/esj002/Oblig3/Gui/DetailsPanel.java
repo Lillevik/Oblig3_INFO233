@@ -13,6 +13,7 @@ public class DetailsPanel extends JPanel{
     //JButtons
     private JButton updates = new JButton("All updaters");
     private JButton sortDates = new JButton("Sort by date");
+    private JButton newProgram = new JButton("Start program");
 
     //TextAres
     private JTextArea issueText = new JTextArea(10, 15);
@@ -58,8 +59,11 @@ public class DetailsPanel extends JPanel{
         gc.gridx = 0;
         gc.gridy = 5;
         add(sortDates, gc);
-
+        gc.gridx = 0;
         gc.gridy = 6;
+        add(newProgram, gc);
+
+        gc.gridy = 7;
         gc.gridx = 0;
         gc.weighty = 3;
         add(weightLabel, gc);
@@ -77,7 +81,6 @@ public class DetailsPanel extends JPanel{
         return issueText;
     }
 
-
     public JLabel getCreatedBy() {
         return createdBy;
     }
@@ -86,16 +89,16 @@ public class DetailsPanel extends JPanel{
         return lastUpdatedBy;
     }
 
-    public void setLastUpdatedBy(JLabel lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
     public JButton getUpdates() {
         return updates;
     }
 
     public JButton getSortDates() {
         return sortDates;
+    }
+
+    public JButton getNewProgram() {
+        return newProgram;
     }
 }
 
