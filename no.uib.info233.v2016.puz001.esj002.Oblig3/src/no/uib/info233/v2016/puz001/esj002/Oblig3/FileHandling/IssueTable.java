@@ -26,6 +26,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import groovy.ui.SystemOutputInterceptor;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.ErrorFrame;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -33,6 +34,7 @@ import org.w3c.dom.NodeList;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
+import org.xml.sax.SAXException;
 
 /**
  * This is a class which deals with handling the xml files
@@ -40,6 +42,7 @@ import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
  */
 public class IssueTable implements Serializable{
 
+	public static ErrorFrame errorFrame = new ErrorFrame();
 
 	private static final long serialVersionUID = -6349521349294077303L;
 	//Fields for the IssueTable class
@@ -51,7 +54,6 @@ public class IssueTable implements Serializable{
 	private ArrayList<Issues> issueList = new ArrayList<Issues>();
 	private String currentUser = new String();
 	private SecureRandom random = new SecureRandom();
-
 
 	/**
 	 * Constructor for the IssueTable class.
@@ -65,7 +67,6 @@ public class IssueTable implements Serializable{
 		changePrio();
 		tableForIssues();
 	}
-
 
 	/**
 	 * This method takes all the assigned users from the
@@ -89,7 +90,7 @@ public class IssueTable implements Serializable{
 						users.add(eElement.getAttribute("assigned_user"));
 				}
 			} catch (Exception e) {
-				System.out.println("We were unable to locate the file, old_issues.xml.");
+				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, old_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 
 			}
@@ -108,7 +109,7 @@ public class IssueTable implements Serializable{
 						users.add(eElement.getAttribute("name"));
 				}
 			} catch (Exception e) {
-				System.out.println("We were unable to locate the file, issueTracker_users.xml.");
+				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, issuetracker_users.xml.", "Error", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 
 			}
@@ -145,7 +146,43 @@ public class IssueTable implements Serializable{
 	 * as object of Issues into the issues ArrayList.
 	 */
 	public void fillIssues() {
-		if (!newFile.exists()) {
+		if (newFile.exists()) {
+			try {
+				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+				Document doc = dBuilder.parse(newFile);
+				NodeList nodelist = doc.getElementsByTagName("ISSUES");
+				for (int i = 0; i < nodelist.getLength(); i++) {
+
+					Node node = nodelist.item(i);
+					Element eElement = (Element) node;
+					Issues issue = new Issues(eElement.getAttribute("id"),
+							eElement.getAttribute("assigned_user"),
+							stringToDate(eElement.getAttribute("created")),
+							eElement.getAttribute("text"),
+							eElement.getAttribute("priority"),
+							eElement.getAttribute("location"),
+							eElement.getAttribute("status"));
+					issue.setCreatedBy(eElement.getAttribute(("created_by")));
+					issue.setLastUpdatedBy(eElement.getAttribute("last_updated_by"));
+
+
+					NodeList updateList = nodelist.item(i).getChildNodes();
+					for(int j = 0; j < updateList.getLength(); j++){
+						Node updateNode = updateList.item(j);
+						if("UPDATER".equals(updateNode.getNodeName())) {
+							issue.getBeenUpdatedBy().add(updateNode.getTextContent());
+						}
+					}
+					issueList.add(issue);
+
+
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, new_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+		} else {
 			try {
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -164,52 +201,13 @@ public class IssueTable implements Serializable{
 							eElement.getAttribute("priority"),
 							eElement.getAttribute("location"),
 							"Not set");
-						issue.setCreatedBy(eElement.getAttribute("assigned_user"));
-						issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
-						issue.getBeenUpdatedBy().add(eElement.getAttribute("assigned_user"));
-							issueList.add(issue);
-
-
-
+					issue.setCreatedBy(eElement.getAttribute("assigned_user"));
+					issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
+					issue.getBeenUpdatedBy().add(eElement.getAttribute("assigned_user"));
+					issueList.add(issue);
 				}
 			} catch (Exception e) {
-				System.out.println("We were unable to locate the file, old_issues.xml.");
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(newFile);
-				NodeList nodelist = doc.getElementsByTagName("ISSUES");
-				for (int i = 0; i < nodelist.getLength(); i++) {
-
-					Node node = nodelist.item(i);
-					Element eElement = (Element) node;
-					Issues issue = new Issues(eElement.getAttribute("id"),
-							eElement.getAttribute("assigned_user"),
-							stringToDate(eElement.getAttribute("created")),
-							eElement.getAttribute("text"),
-							eElement.getAttribute("priority"),
-							eElement.getAttribute("location"),
-							eElement.getAttribute("status"));
-						issue.setCreatedBy(eElement.getAttribute(("created_by")));
-						issue.setLastUpdatedBy(eElement.getAttribute("last_updated_by"));
-
-
-					NodeList updateList = nodelist.item(i).getChildNodes();
-					for(int j = 0; j < updateList.getLength(); j++){
-						Node updateNode = updateList.item(j);
-						if("UPDATER".equals(updateNode.getNodeName())) {
-							issue.getBeenUpdatedBy().add(updateNode.getTextContent());
-						}
-					}
-							issueList.add(issue);
-
-
-				}
-			} catch (Exception e) {
-				System.out.println("We were unable to locate the file, new_issues.xml");
+				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, old_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 		}
@@ -393,15 +391,17 @@ public class IssueTable implements Serializable{
 				StreamResult result = new StreamResult(fos);
 				aTransformer.transform(source, result);
 			} catch (IOException e) {
-				System.out.println("Could not write the file.");
+				JOptionPane.showMessageDialog(errorFrame, "Could not write the file.", "Error", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 
 		} catch (TransformerException ex) {
-			System.out.println("Error outputting document");
+			JOptionPane.showMessageDialog(errorFrame, "Error outputting document", "Error", JOptionPane.ERROR_MESSAGE);
+
 
 		} catch (ParserConfigurationException ex) {
-			System.out.println("Error building document");
+			JOptionPane.showMessageDialog(errorFrame, "Error building document", "Error", JOptionPane.ERROR_MESSAGE);
+
 		} finally {
 			tableForIssues();
 		}
@@ -446,15 +446,17 @@ public class IssueTable implements Serializable{
 				StreamResult result = new StreamResult(fos);
 				aTransformer.transform(source, result);
 			} catch (IOException e) {
-				System.out.println("Error writing the document. Contact administration.");
+				JOptionPane.showMessageDialog(errorFrame, "Error writing the document. Contact administration.", "Error", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 
 		} catch (TransformerException ex) {
-			System.out.println("Error outputting document");
+			JOptionPane.showMessageDialog(errorFrame, "Error outputting document", "Error", JOptionPane.ERROR_MESSAGE);
+
 
 		} catch (ParserConfigurationException ex) {
-			System.out.println("Error building document");
+			JOptionPane.showMessageDialog(errorFrame, "Error building document", "Error", JOptionPane.ERROR_MESSAGE);
+
 		}
 
 	}
@@ -541,7 +543,8 @@ public class IssueTable implements Serializable{
 			date = readFormat.parse(s);
 		} catch (ParseException e){
 			e.printStackTrace();
-			System.out.println("There was a problem converting the String to a Date.");
+			JOptionPane.showMessageDialog(errorFrame, "There was a problem converting the String to a Date.", "Error", JOptionPane.ERROR_MESSAGE);
+
 		}
 
 		if(date != null){

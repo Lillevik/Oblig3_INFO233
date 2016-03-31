@@ -11,8 +11,11 @@ import java.util.Date;
 
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.SaveProgram;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.ErrorFrame;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.Gui;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
+
+import javax.swing.*;
 
 
 /**
@@ -27,6 +30,7 @@ public class Main implements Serializable {
 	 */
 	private static final long serialVersionUID = 1834915564586880152L;
 	public static Gui gui = new Gui();
+	public static ErrorFrame errorFrame = new ErrorFrame();
 
 	/**
 	 * This method starts the program and connects the different
@@ -65,18 +69,22 @@ public class Main implements Serializable {
 		gui.getBtnId().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.getIt().tableRows();
+				try {
+					gui.getIt().tableRows();
 
-				for (Issues issue : gui.getIt().getIssueList()) {
-					if (issue.getId().equals(gui.getTxtId().getText())) {
-						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
-								issue.getAssigned(),
-								gui.getIt().dateToString(issue.getCreated()),
-								issue.getPriority(),
-								issue.getLocation(),
-								issue.getStatus()});
+					for (Issues issue : gui.getIt().getIssueList()) {
+						if (issue.getId().equals(gui.getTxtId().getText())) {
+							gui.getIt().getModel().addRow(new Object[]{issue.getId(),
+									issue.getAssigned(),
+									gui.getIt().dateToString(issue.getCreated()),
+									issue.getPriority(),
+									issue.getLocation(),
+									issue.getStatus()});
 
+						}
 					}
+				}catch (IndexOutOfBoundsException f){
+					JOptionPane.showMessageDialog(errorFrame, "Error getting ID's");
 				}
 			}
 		});
@@ -128,9 +136,6 @@ public class Main implements Serializable {
 
 			}
 		});
-
-
-
 
 
 		gui.getDp().getSortDates().addActionListener(new ActionListener() {

@@ -2991,16 +2991,14 @@
     <ISSUES assigned_user="dfreemane" created="04/13/2015" created_by="dfreemane" id="997" last_updated_by="dfreemane" location="Banjar Mambalkajanan" priority="Normal" status="Not set" text="nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh">
         <UPDATER>dfreemane</UPDATER>
     </ISSUES>
-    <ISSUES assigned_user="dfreemane" created="09/14/2015" created_by="dfreemane" id="998" last_updated_by="dfreemane" location="Abuko" priority="Kritisk" status="Not set" text="enim leo rhoncus sed vestibulum sit amet cursus id turpis">
+    <ISSUES assigned_user="admin" created="09/14/2015" created_by="dfreemane" id="998" last_updated_by="admin" location="Abuko" priority="Kritisk" status="Not set" text="enim leo rhoncus sed vestibulum sit amet cursus id turpisdd">
         <UPDATER>dfreemane</UPDATER>
+        <UPDATER>admin</UPDATER>
     </ISSUES>
     <ISSUES assigned_user="cwalkerd" created="04/11/2015" created_by="cwalkerd" id="999" last_updated_by="cwalkerd" location="Tsybulevka" priority="Normal" status="Not set" text="nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu">
         <UPDATER>cwalkerd</UPDATER>
     </ISSUES>
     <ISSUES assigned_user="jgomez0" created="10/14/2015" created_by="jgomez0" id="1000" last_updated_by="jgomez0" location="â€˜Ayn an Nasr" priority="Ikke prioritert" status="Not set" text="sit amet lobortis sapien sapien non mi integer ac neque duis bibendum morbi non quam nec dui">
         <UPDATER>jgomez0</UPDATER>
-    </ISSUES>
-    <ISSUES assigned_user="admin" created="03/31/2016" created_by="admin" id="1001" last_updated_by="admin" location="Norge" priority="Lav" status="Open" text="Write issue here.">
-        <UPDATER>admin</UPDATER>
     </ISSUES>
 </Dataset>
