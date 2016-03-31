@@ -109,7 +109,7 @@ public class IssueTable implements Serializable{
 						users.add(eElement.getAttribute("name"));
 				}
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, old_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, issuetracker_users.xml.", "Error", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 
 			}
@@ -146,7 +146,43 @@ public class IssueTable implements Serializable{
 	 * as object of Issues into the issues ArrayList.
 	 */
 	public void fillIssues() {
-		if (!newFile.exists()) {
+		if (newFile.exists()) {
+			try {
+				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+				Document doc = dBuilder.parse(newFile);
+				NodeList nodelist = doc.getElementsByTagName("ISSUES");
+				for (int i = 0; i < nodelist.getLength(); i++) {
+
+					Node node = nodelist.item(i);
+					Element eElement = (Element) node;
+					Issues issue = new Issues(eElement.getAttribute("id"),
+							eElement.getAttribute("assigned_user"),
+							stringToDate(eElement.getAttribute("created")),
+							eElement.getAttribute("text"),
+							eElement.getAttribute("priority"),
+							eElement.getAttribute("location"),
+							eElement.getAttribute("status"));
+					issue.setCreatedBy(eElement.getAttribute(("created_by")));
+					issue.setLastUpdatedBy(eElement.getAttribute("last_updated_by"));
+
+
+					NodeList updateList = nodelist.item(i).getChildNodes();
+					for(int j = 0; j < updateList.getLength(); j++){
+						Node updateNode = updateList.item(j);
+						if("UPDATER".equals(updateNode.getNodeName())) {
+							issue.getBeenUpdatedBy().add(updateNode.getTextContent());
+						}
+					}
+					issueList.add(issue);
+
+
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, new_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+		} else {
 			try {
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -165,57 +201,13 @@ public class IssueTable implements Serializable{
 							eElement.getAttribute("priority"),
 							eElement.getAttribute("location"),
 							"Not set");
-						issue.setCreatedBy(eElement.getAttribute("assigned_user"));
-						issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
-						issue.getBeenUpdatedBy().add(eElement.getAttribute("assigned_user"));
-							issueList.add(issue);
-
-
-
+					issue.setCreatedBy(eElement.getAttribute("assigned_user"));
+					issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
+					issue.getBeenUpdatedBy().add(eElement.getAttribute("assigned_user"));
+					issueList.add(issue);
 				}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, old_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(newFile);
-				NodeList nodelist = doc.getElementsByTagName("ISSUES");
-				for (int i = 0; i < nodelist.getLength(); i++) {
-
-					Node node = nodelist.item(i);
-					Element eElement = (Element) node;
-					Issues issue = new Issues(eElement.getAttribute("id"),
-							eElement.getAttribute("assigned_user"),
-							stringToDate(eElement.getAttribute("created")),
-							eElement.getAttribute("text"),
-							eElement.getAttribute("priority"),
-							eElement.getAttribute("location"),
-							eElement.getAttribute("status"));
-						issue.setCreatedBy(eElement.getAttribute(("created_by")));
-						issue.setLastUpdatedBy(eElement.getAttribute("last_updated_by"));
-
-
-					NodeList updateList = nodelist.item(i).getChildNodes();
-					for(int j = 0; j < updateList.getLength(); j++){
-						Node updateNode = updateList.item(j);
-						if("UPDATER".equals(updateNode.getNodeName())) {
-							issue.getBeenUpdatedBy().add(updateNode.getTextContent());
-						}
-					}
-							issueList.add(issue);
-
-
-				}
-			} catch (IOException e) {
-				System.out.print("still no");
-				//JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, new_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			} catch (ParserConfigurationException e) {
-				e.printStackTrace();
-			} catch (SAXException e) {
 				e.printStackTrace();
 			}
 		}
