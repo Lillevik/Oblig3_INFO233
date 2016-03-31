@@ -34,6 +34,7 @@ import org.w3c.dom.NodeList;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
+import org.xml.sax.SAXException;
 
 /**
  * This is a class which deals with handling the xml files
@@ -209,7 +210,12 @@ public class IssueTable implements Serializable{
 
 				}
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, new_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
+				System.out.print("still no");
+				//JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, new_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			} catch (ParserConfigurationException e) {
+				e.printStackTrace();
+			} catch (SAXException e) {
 				e.printStackTrace();
 			}
 		}
