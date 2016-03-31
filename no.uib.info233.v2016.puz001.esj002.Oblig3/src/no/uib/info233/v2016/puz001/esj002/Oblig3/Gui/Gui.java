@@ -7,7 +7,10 @@ import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This class creates a graphical user interface and 
@@ -147,7 +150,7 @@ public class Gui extends JFrame implements Serializable{
 		 *	Sets up the JTable qTable
 		 */
 		qTable.setAutoCreateRowSorter(true);
-		qTable.getRowSorter().convertRowIndexToView(0);
+//		qTable.getRowSorter().convertRowIndexToView(0);
 
 
 
@@ -168,7 +171,6 @@ public class Gui extends JFrame implements Serializable{
 		panelBackLeftTop = new JPanel();
 		panelBackLeftBot = new JPanel();
 
-		//panelBackLeft.setBorder(new LineBorder(Color.black, 1, true));
 
 
 
@@ -211,7 +213,7 @@ public class Gui extends JFrame implements Serializable{
 		panelBackLeftBot.setBackground(Color.LIGHT_GRAY);
 		panelBackLeftBot.setPreferredSize(new Dimension(100, 75));
 		panelBackLeftTop.setPreferredSize(new Dimension(100, 525));
-		//panelBackLeftBot.setSize(new Dimension(100, 100));
+
 
 		searchLabel.setPreferredSize(new Dimension(190, 20));
 		searchLabel.setText("Query here");
@@ -621,4 +623,26 @@ public class Gui extends JFrame implements Serializable{
 	public DetailsPanel getDp() {
 		return dp;
 	}
+
+	public static void main(String[] args){
+		IssueFrame isf = new IssueFrame();
+
+		isf.getCreateButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//Issues i = new Issues(it.maxIssueId(),
+				//      "",
+					//	new Date(),
+					//	isf.getIssueText().getText(),
+					//	isf.getChoosePrio().getSelectedItem().toString(),
+					//	isf.getLocationText().getText(),
+						//"Open");
+				//it.getIssueList().add(i);
+				//it.writeXmlFile();
+				//it.tableForIssues();
+			}
+
+		});
+	}
+
 }

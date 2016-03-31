@@ -14,13 +14,14 @@ public class IssueFrame extends JFrame implements Serializable {
 
     //These are the fields of the IssuePanel class.
     private static final long serialVersionUID = 4161520540703687836L;
-    private JLabel userLabel = new JLabel("Assign to:");
     private JLabel priority = new JLabel("Priority:");
     private JLabel locationField = new JLabel("Location:");
     private JTextField locationText = new JTextField();
     private JTextArea issueText = new JTextArea("Write issue here.");
     private JButton createButton = new JButton("Create");
     private JButton backButton = new JButton("Cancel");
+    private String[] priorities = {"Ikke prioritet", "Lav", "Normal", "Høy", "Kritisk"};
+    private JComboBox choosePrio = new JComboBox(priorities);
     private JPanel mainPanel = new JPanel(new BorderLayout(2, 2));
 
 
@@ -46,9 +47,8 @@ public class IssueFrame extends JFrame implements Serializable {
     private void placeComponents(JPanel panel) {
         panel.setLayout(null);
 
-        userLabel.setBounds(200, 200, 80, 25);
-        panel.add(userLabel);
-
+        choosePrio.setBounds(290, 240, 160, 25);
+        panel.add(choosePrio);
 
         priority.setBounds(200, 240, 80, 25);
         panel.add(priority);
@@ -113,5 +113,9 @@ public class IssueFrame extends JFrame implements Serializable {
      */
     public void setBackButton(JButton backButton) {
         this.backButton = backButton;
+    }
+
+    public JComboBox getChoosePrio() {
+        return choosePrio;
     }
 }

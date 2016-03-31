@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Dataset>
-    <ISSUES assigned_user="admin" created="02/03/2016" created_by="dryan3" id="1" last_updated_by="admin" location="Jatinagara Kulon" priority="Kritisk" status="Not set" text="placerat praesent blandit nam nulla integer pede justo lacinia eget tincidunt eget">
+    <ISSUES assigned_user="dryan3" created="02/03/2016" created_by="dryan3" id="1" last_updated_by="dryan3" location="Jatinagara Kulon" priority="Kritisk" status="Not set" text="placerat praesent blandit nam nulla integer pede justo lacinia eget tincidunt eget">
         <UPDATER>dryan3</UPDATER>
-        <UPDATER>admin</UPDATER>
     </ISSUES>
     <ISSUES assigned_user="mgarrett1" created="06/22/2015" created_by="mgarrett1" id="2" last_updated_by="mgarrett1" location="Noginsk" priority="Normal" status="Not set" text="euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a">
         <UPDATER>mgarrett1</UPDATER>
@@ -3001,11 +3000,7 @@
     <ISSUES assigned_user="jgomez0" created="10/14/2015" created_by="jgomez0" id="1000" last_updated_by="jgomez0" location="â€˜Ayn an Nasr" priority="Ikke prioritert" status="Not set" text="sit amet lobortis sapien sapien non mi integer ac neque duis bibendum morbi non quam nec dui">
         <UPDATER>jgomez0</UPDATER>
     </ISSUES>
-    <ISSUES assigned_user="admin" created="03/16/2016" created_by="dryan3" id="1001" last_updated_by="admin" location="Norge" priority="Høy" status="Open" text="Write issue here.">
-        <UPDATER>dryan3</UPDATER>
+    <ISSUES assigned_user="admin" created="03/31/2016" created_by="admin" id="1001" last_updated_by="admin" location="Norge" priority="Lav" status="Open" text="Write issue here.">
         <UPDATER>admin</UPDATER>
-    </ISSUES>
-    <ISSUES assigned_user="Marius" created="03/29/2016" created_by="dryan3" id="1002" last_updated_by="dryan3" location="Norge" priority="Normal" status="Open" text="Big issue.">
-        <UPDATER>dryan3</UPDATER>
     </ISSUES>
 </Dataset>

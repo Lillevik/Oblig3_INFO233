@@ -81,17 +81,12 @@ public class DetailsPanel extends JPanel{
         return issueText;
     }
 
-
     public JLabel getCreatedBy() {
         return createdBy;
     }
 
     public JLabel getLastUpdatedBy() {
         return lastUpdatedBy;
-    }
-
-    public void setLastUpdatedBy(JLabel lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
     }
 
     public JButton getUpdates() {
