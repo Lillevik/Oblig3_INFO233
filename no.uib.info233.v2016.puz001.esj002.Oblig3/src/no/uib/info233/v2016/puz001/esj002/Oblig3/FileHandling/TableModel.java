@@ -12,5 +12,6 @@ public class TableModel extends DefaultTableModel{
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return columnClasses[columnIndex];
+
     }
 }

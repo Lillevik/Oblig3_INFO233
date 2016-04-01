@@ -150,8 +150,7 @@ public class IssueTable implements Serializable{
 	 * as object of Issues into the issues ArrayList.
 	 */
 	public void fillIssues(){
-		if (!newFile.exists()) {
-
+		if (newFile.exists()) {
 			try {
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

@@ -353,7 +353,7 @@ public class Gui extends JFrame implements Serializable{
 			if(issue.getAssigned().equals(lp.getUserText().getText())){
 				getIt().getModel().addRow(new Object[]{issue.getId(),
 						issue.getAssigned(),
-						it.dateToString(issue.getCreated()),
+						issue.getCreated(),
 						issue.getPriority(),
 						issue.getLocation(),
 						issue.getStatus()});
