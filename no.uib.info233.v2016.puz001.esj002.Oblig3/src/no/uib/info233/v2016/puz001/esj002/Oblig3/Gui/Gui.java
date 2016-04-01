@@ -174,13 +174,8 @@ public class Gui extends JFrame implements Serializable{
 		it.getModel().getColumnClass(2).isInstance(new Date());
 		sorter.setModel(it.getModel());
 		sorter.setComparator(2, dateComparator);
-
 		sorter.setComparator(0,intComparator);
 		qTable.setRowSorter(sorter);
-
-
-
-
 
 
 		/*

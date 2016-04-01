@@ -248,16 +248,6 @@ public class Issues implements Comparable<Issues>, Serializable {
 		this.createdBy = createdBy;
 	}
 
-	/**
-	 * This method returns the id field as an Integer instead of string
-	 * and uses this to calculate the highest current id in getMaxId().
-	 * @return
-	 */
-//	public int idInt(){
-//		int i = Integer.parseInt(this.id);
-//		return i;
-//	}
-
 	public void setLastUpdatedBy(String lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
@@ -270,5 +260,7 @@ public class Issues implements Comparable<Issues>, Serializable {
 		return beenUpdatedBy;
 	}
 
-
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

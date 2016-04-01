@@ -268,6 +268,19 @@ public class IssueTable implements Serializable{
 		}
 	}
 
+	public void changeStatus(){
+		if(!newFile.exists()){
+			for (Issues issue : issueList) {
+				if(issue.getStatus().equals("Not set")){
+					issue.setStatus("Closed");
+
+				}else{
+					issue.setStatus("Open");
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * @return The highest current Issue ID from the issues list.
