@@ -35,9 +35,6 @@ public class Main implements Serializable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-//		SaveProgram.load();
-
-
 		/**
 		 * This button lists all the issues from the user given
 		 * in the textField and presents these in the JTable qtable.
@@ -66,9 +63,9 @@ public class Main implements Serializable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gui.getIt().tableRows();
+				System.out.print(gui.getIt().getModel().getColumnClass(2));
+				Issues issue = gui.getIt().getIssueMap().get(Integer.parseInt(gui.getTxtId().getText()));
 
-				for (Issues issue : gui.getIt().getIssueList()) {
-					if (issue.getId().equals(gui.getTxtId().getText())) {
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
 								gui.getIt().dateToString(issue.getCreated()),
@@ -76,8 +73,6 @@ public class Main implements Serializable {
 								issue.getLocation(),
 								issue.getStatus()});
 
-					}
-				}
 			}
 		});
 
@@ -130,9 +125,6 @@ public class Main implements Serializable {
 		});
 
 
-
-
-
 		gui.getDp().getSortDates().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -172,7 +164,17 @@ public class Main implements Serializable {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.getIt().tableForIssues();
+				gui.getIt().tableRows();
+
+				for (Issues i : gui.getIt().getIssueList()) {
+					gui.getIt().getModel().addRow(new Object[]{i.getId(),
+							i.getAssigned(),
+							i.getCreated(),
+							i.getPriority(),
+							i.getLocation(),
+							i.getStatus()});
+				}
+				//gui.getIt().tableForIssues();
 			}
 		});
 
@@ -181,7 +183,6 @@ public class Main implements Serializable {
 		 * using methods from IssueTable.
 		 */
 		gui.getBtnAddUser().addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Adds a user to the list
@@ -294,7 +295,7 @@ public class Main implements Serializable {
 				int j = gui.getqTable().getSelectedRow();
 				String prio = String.valueOf(gui.getChoosePrio2().getSelectedItem());
 				for (Issues i : gui.getIt().getIssueList()) {
-					if (i.getId().trim() == gui.getqTable().getValueAt(j, 0).toString()) {
+					if (i.getId()== Integer.parseInt(gui.getqTable().getValueAt(j, 0).toString())) {
 						gui.getChooseUser2();
 						gui.getIt().getModel().removeRow(j);
 						i.setAssigned(gui.getChooseUser2().getSelectedItem().toString());
@@ -303,9 +304,7 @@ public class Main implements Serializable {
 						i.setLocation(gui.getUp().getLocationText().getText());
 						i.setLastUpdatedBy(gui.getIt().getCurrentUser());
 						i.addUpdated(gui.getIt().getCurrentUser());
-
 						gui.getIt().tableForIssues();
-
 					}
 				}
 

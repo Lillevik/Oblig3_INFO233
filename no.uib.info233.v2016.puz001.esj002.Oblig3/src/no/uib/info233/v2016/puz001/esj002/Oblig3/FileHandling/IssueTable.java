@@ -33,10 +33,14 @@ import org.w3c.dom.NodeList;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
+import org.xml.sax.SAXException;
 
 /**
  * This is a class which deals with handling the xml files
  * and creating lists of strings and object from the xml file.
+ * We added a HashMap to this class to get single instances of the Issues
+ * class without having to look through the entire collection. An example of this
+ * the ID search function. Using the hashMap uses the ID of the
  */
 public class IssueTable implements Serializable{
 
@@ -45,10 +49,11 @@ public class IssueTable implements Serializable{
 	//Fields for the IssueTable class
 	private File file = new File("old_issues.xml");
 	private File newFile = new File("new_issues.xml");
-	private File userFile = new File("issueTracker_users.xml");
-	private transient DefaultTableModel model = new DefaultTableModel();
+	private File userFile = new File("users.xml");
+	private TableModel model = new TableModel();
 	private ArrayList<String> users = new ArrayList<String>();
 	private ArrayList<Issues> issueList = new ArrayList<Issues>();
+	private HashMap<Integer, Issues> issueMap = new HashMap<>();
 	private String currentUser = new String();
 	private SecureRandom random = new SecureRandom();
 
@@ -62,6 +67,7 @@ public class IssueTable implements Serializable{
 		addUser("admin");
 		fillUsers();
 		fillIssues();
+		fillMap();
 		changePrio();
 		tableForIssues();
 	}
@@ -144,7 +150,7 @@ public class IssueTable implements Serializable{
 	 * This method adds all the ISSUES elements in the old_issues.xml file
 	 * as object of Issues into the issues ArrayList.
 	 */
-	public void fillIssues() {
+	public void fillIssues(){
 		if (!newFile.exists()) {
 			try {
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -157,7 +163,8 @@ public class IssueTable implements Serializable{
 
 					Node node = nodelist.item(i);
 					Element eElement = (Element) node;
-					Issues issue = new Issues(eElement.getAttribute("id"),
+
+					Issues issue = new Issues(Integer.parseInt(eElement.getAttribute("id")),
 							eElement.getAttribute("assigned_user"),
 							stringToDate((eElement.getAttribute("created"))),
 							eElement.getAttribute("text"),
@@ -186,7 +193,7 @@ public class IssueTable implements Serializable{
 
 					Node node = nodelist.item(i);
 					Element eElement = (Element) node;
-					Issues issue = new Issues(eElement.getAttribute("id"),
+					Issues issue = new Issues(Integer.parseInt(eElement.getAttribute("id")),
 							eElement.getAttribute("assigned_user"),
 							stringToDate(eElement.getAttribute("created")),
 							eElement.getAttribute("text"),
@@ -208,10 +215,19 @@ public class IssueTable implements Serializable{
 
 
 				}
-			} catch (Exception e) {
+			} catch (IOException e) {
 				System.out.println("We were unable to locate the file, new_issues.xml");
-				e.printStackTrace();
+			} catch (ParserConfigurationException pce){
+				System.out.println("Problems parsing through the file, new_issues.xml");
+			} catch (SAXException s){
+
 			}
+		}
+	}
+
+	public void fillMap(){
+		for(Issues i : issueList){
+			issueMap.put(i.getId(),i);
 		}
 	}
 
@@ -233,34 +249,12 @@ public class IssueTable implements Serializable{
 		for (Issues issue : issueList) {
 			model.addRow(new Object[]{issue.getId(),
 					issue.getAssigned(),
-					dateToString(issue.getCreated()),
+					issue.getCreated(),
 					issue.getPriority(),
 					issue.getLocation(),
 					issue.getStatus()});
 		}
-//		try {
-//			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-//			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//			Document doc = dBuilder.parse(newFile);
-//			NodeList nodelist = doc.getElementsByTagName("ISSUES");
-//			for (int i = 0; i < nodelist.getLength(); i++) {
-//
-//				Node node = nodelist.item(i);
-//				Element eElement = (Element) node;
-//
-//				model.addRow(new Object[] {eElement.getAttribute("id"),
-//								eElement.getAttribute("assigned_user"),
-//								eElement.getAttribute("created"),
-//								eElement.getAttribute("priority"),
-//								eElement.getAttribute(("location")),
-//								eElement.getAttribute("status")});
-//
-//			}
-//			} catch (Exception e) {
-//
-//			}
-
-		}
+	}
 
 	public void changePrio() {
 		if (!newFile.exists()) {
@@ -285,16 +279,16 @@ public class IssueTable implements Serializable{
 	/**
 	 * @return The highest current Issue ID from the issues list.
 	 */
-	public String maxIssueId() {
-		Comparator<Issues> iss = Comparator.comparing(Issues::idInt);
-		return Integer.toString(Collections.max(issueList, iss).idInt() + 1);
+	public int maxIssueId() {
+		Comparator<Issues> iss = Comparator.comparing(Issues::getId);
+		return Collections.max(issueList, iss).getId() + 1;
 	}
 
 	public String getSelectedIssue(JTable table){
 		int j = table.getSelectedRow();
 
 		for(Issues i : issueList) {
-			if (i.getId().equals(table.getValueAt(j, 0).toString())){
+			if (i.getId() == Integer.parseInt(table.getValueAt(j, 0).toString())){
 				return i.getIssue();
 			}
 		}
@@ -305,7 +299,7 @@ public class IssueTable implements Serializable{
 		int j = table.getSelectedRow();
 
 		for(Issues i : issueList) {
-			if (i.getId().equals(table.getValueAt(j, 0).toString())){
+			if (i.getId() == Integer.parseInt(table.getValueAt(j, 0).toString())){
 				return i.getCreatedBy();
 			}
 		}
@@ -315,7 +309,7 @@ public class IssueTable implements Serializable{
 	public String getLastUpdated(JTable table){
 		int j = table.getSelectedRow();
 		for(Issues i : issueList) {
-			if (i.getId().equals(table.getValueAt(j, 0).toString())) {
+			if (i.getId() == Integer.parseInt(table.getValueAt(j, 0).toString())) {
 				return i.getLastUpdatedBy();
 			}
 		}
@@ -325,7 +319,7 @@ public class IssueTable implements Serializable{
 	public void printAllUpdates(JTable table){
 		int j = table.getSelectedRow();
 		for(Issues i : issueList){
-			if (i.getId().equals(table.getValueAt(j, 0).toString())) {
+			if (i.getId() == Integer.parseInt(table.getValueAt(j, 0).toString())) {
 				System.out.println("This issue has been updated by: ");
 				for(String s : i.getBeenUpdatedBy()){
 					System.out.println(s.trim());
@@ -350,13 +344,12 @@ public class IssueTable implements Serializable{
 
 
 			for (Issues i : issueList) {
-
 				Element details = doc.createElement("ISSUES");
 				Element updater1 = doc.createElement("UPDATER");
 
 				root.appendChild(details);
 
-				details.setAttribute("id", i.getId());
+				details.setAttribute("id", Integer.toString(i.getId()));
 				details.setAttribute("assigned_user", i.getAssigned());
 				details.setAttribute("created", dateToString(i.getCreated()));
 				details.setAttribute("text", i.getIssue());
@@ -507,6 +500,10 @@ public class IssueTable implements Serializable{
 		return newFile;
 	}
 
+	public HashMap<Integer, Issues> getIssueMap() {
+		return issueMap;
+	}
+
 	/**
 	 * This method takes a Date as a parameter and
 	 * converts it to a string with the format month/day/year(mm/dd/yyyy).
@@ -536,7 +533,6 @@ public class IssueTable implements Serializable{
 	public Date stringToDate(String s){
 		DateFormat readFormat = new SimpleDateFormat( "MM/dd/yyyy");
 		Date date = null;
-
 		try{
 			date = readFormat.parse(s);
 		} catch (ParseException e){
@@ -560,4 +556,6 @@ public class IssueTable implements Serializable{
 		model.addColumn("Location: ");
 		model.addColumn("Status: ");
 	}
+
+
 }

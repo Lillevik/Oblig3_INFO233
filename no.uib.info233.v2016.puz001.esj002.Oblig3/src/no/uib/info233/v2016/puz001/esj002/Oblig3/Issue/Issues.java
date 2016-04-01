@@ -4,21 +4,20 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.Issue;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * @author mariuslillevik
  *This class is made to create objects containing the
  *values from the ISSUES elements in the old_issues.xml file.
  */
-public class Issues implements Comparable<Issues>, Serializable{
+public class Issues implements Comparable<Issues>, Serializable {
 
-	
+
 	//These are the fields for the Issues class.
 	private static final long serialVersionUID = -2428158722130066013L;
-	private String id;
+	private int id;
 	private String assigned;
 	private Date created;
 	private String issue;
@@ -28,10 +27,20 @@ public class Issues implements Comparable<Issues>, Serializable{
 	private String createdBy;
 	private String lastUpdatedBy;
 	private ArrayList<String> beenUpdatedBy = new ArrayList<String>();
-	
-	
+
+	private enum prios {
+		Ikke_prioritet,
+		Lav,
+		Middels,
+		Høy,
+		Kritisk;
+
+	}
+
+
 	/**
 	 * This is the constructor for the Issues class.
+	 *
 	 * @param id
 	 * @param assigned
 	 * @param created
@@ -39,8 +48,8 @@ public class Issues implements Comparable<Issues>, Serializable{
 	 * @param priority
 	 * @param location
 	 */
-	public Issues(String id, String assigned, Date created, String issue,
-				  			String priority, String location, String status){
+	public Issues(int id, String assigned, Date created, String issue,
+				  String priority, String location, String status) {
 		this.id = id;
 		this.assigned = assigned;
 		this.created = created;
@@ -51,22 +60,47 @@ public class Issues implements Comparable<Issues>, Serializable{
 
 	}
 
-	public void addUpdated(String s){
-		if(!beenUpdatedBy.contains(s)){
+	public void addUpdated(String s) {
+		if (!beenUpdatedBy.contains(s)) {
 			beenUpdatedBy.add(s);
 		}
 	}
+
 	@Override
 	public int compareTo(Issues issues) {
 		return getCreated().compareTo(issues.getCreated());
 	}
 
 
-	static class PriorityComparator implements Comparator<Issues> {
-		public int compare(Issues i1, Issues i2) {
+	public void sortPrio() {
+
+
+	String[] order = {"Red", "Green", "Magenta", "Silver"};
+	List<String> definedOrder = Arrays.asList(order);
+	Comparator<Issues> comparator = new Comparator<Issues>() {
+
+		@Override
+		public int compare(final Issues o1, final Issues o2) {
+			// let your comparator look up your car's color in the custom order
+			return Integer.valueOf(
+					definedOrder.indexOf(o1.getPriority()))
+					.compareTo(
+							Integer.valueOf(
+									definedOrder.indexOf(o2.getPriority())));
+		}
+	};
+}
+
+
+	static class priorityComparator implements Comparator<Issues>
+	{
+		public int compare(Issues i1, Issues i2)
+		{
 			return i1.getPriority().compareTo(i2.getPriority());
 		}
 	}
+
+
 
 
 
@@ -77,7 +111,7 @@ public class Issues implements Comparable<Issues>, Serializable{
 	 * returns the current id value as a string.
 	 * @return the id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -88,7 +122,7 @@ public class Issues implements Comparable<Issues>, Serializable{
 	 * sets the value of the field to a different value.
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -219,10 +253,10 @@ public class Issues implements Comparable<Issues>, Serializable{
 	 * and uses this to calculate the highest current id in getMaxId().
 	 * @return
 	 */
-	public int idInt(){
-		int i = Integer.parseInt(this.id);
-		return i;
-	}
+//	public int idInt(){
+//		int i = Integer.parseInt(this.id);
+//		return i;
+//	}
 
 	public void setLastUpdatedBy(String lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;

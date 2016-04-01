@@ -72,6 +72,10 @@ public class IssueFrame extends JFrame implements Serializable {
         issueText.setWrapStyleWord(true);
     }
 
+
+    public void closeWindow(){
+        System.exit(0);
+    }
     /**
      * This is a getter for the field locationText
      * which is used to get location of an issue.

@@ -1,10 +1,11 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.Gui;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.table.TableRowSorter;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.TableModel;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.TableRenderer;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Date;
 
 
 /**
@@ -30,6 +32,7 @@ public class Gui extends JFrame implements Serializable{
 	private IssuePanel ip = new IssuePanel();
 	private UpdatePanel up = new UpdatePanel();
 	private DetailsPanel dp = new DetailsPanel();
+	private TableRenderer tm = new TableRenderer();
 
 
 	/*
@@ -84,10 +87,10 @@ public class Gui extends JFrame implements Serializable{
 	private JTextPane txtLoggedIn = new JTextPane();
 
 	/*
-	 * The gui class gets and instance of the IssueTable class
+	 * The gui class gets andinstance of the IssueTable class
 	 * to get methods from the class.
 	 */
-	private IssueTable it = new IssueTable();
+	private static IssueTable it = new IssueTable();
 
 	/*
 	 * The Jtable qTable (qTable was the intention,
@@ -96,8 +99,10 @@ public class Gui extends JFrame implements Serializable{
 	 * which is made from the xml doc.
 	 */
 	private JTable qTable = new JTable(it.getModel());
+	private TableRowSorter sorter = new TableRowSorter();
 	private JScrollPane pane = new JScrollPane(qTable);
 	private TablePanel tp = new TablePanel(pane);
+
 	/*
 	 * cardlayout is the layout used in the spine.
 	 */
@@ -143,6 +148,7 @@ public class Gui extends JFrame implements Serializable{
 		setVisible(true);
 	}
 
+
 	/**
 	 * Initializes components and
 	 * sets them up with custom designs.
@@ -152,15 +158,30 @@ public class Gui extends JFrame implements Serializable{
 		 *	Sets up the JTable qTable
 		 */
 		Comparator intComparator = intComparator = (Object o, Object t1) -> {
-			Integer oInt = Integer.parseInt(((String) o).trim());
-			Integer t1Int = Integer.parseInt(((String) t1).trim());
-			return oInt.compareTo(t1Int);
+			Integer i = ((Integer) o);
+			Integer i1 = ((Integer) t1);
+			return i.compareTo(i1);
 		};
 
-		TableRowSorter sorter = new TableRowSorter();
-		qTable.setRowSorter(sorter);
+		Comparator dateComparator = (Object o, Object o1) -> {
+			Date d1 = ((Date) o);
+			Date d2 = ((Date) o1);
+			return d1.compareTo(d2);
+		};
+
+
+
+		it.getModel().getColumnClass(2).isInstance(new Date());
 		sorter.setModel(it.getModel());
-		sorter.setComparator(0, intComparator);
+		sorter.setComparator(2, dateComparator);
+
+		sorter.setComparator(0,intComparator);
+		qTable.setRowSorter(sorter);
+
+
+
+
+
 
 		/*
 		 * Sets up the JMenu
@@ -191,7 +212,7 @@ public class Gui extends JFrame implements Serializable{
 		 * init the JTexFields in the class
 		 */
 		txtSearch = new JTextField("search/add User");
-		txtDate = new JTextField("search date mm/dd/yy");
+		txtDate = new JTextField("search date mm/dd/yyyy");
 		txtPriority = new JTextField("search prior");
 		txtId = new JTextField("Search ID");
 
@@ -303,6 +324,7 @@ public class Gui extends JFrame implements Serializable{
 		//this.qTable
 	}
 
+
 	/**
 	 * Used to authenicate user logins.
 	 * Checks if the user and password field is correct.
@@ -325,21 +347,13 @@ public class Gui extends JFrame implements Serializable{
 
 
 	public void listUserIssues(){
-		getIt().getModel().setRowCount(0);
-		getIt().getModel().setColumnCount(0);
-		getIt().getModel().addColumn("Issue ID: ");
-		getIt().getModel().addColumn("Assigned to: ");
-		getIt().getModel().addColumn("Created: ");
-		getIt().getModel().addColumn("Priority: ");
-		getIt().getModel().addColumn("Location: ");
-		getIt().getModel().addColumn("Status: ");
-
+		it.tableRows();
 
 		for(Issues issue : it.getIssueList()){
 			if(issue.getAssigned().equals(lp.getUserText().getText())){
 				getIt().getModel().addRow(new Object[]{issue.getId(),
 						issue.getAssigned(),
-						issue.getCreated(),
+						it.dateToString(issue.getCreated()),
 						issue.getPriority(),
 						issue.getLocation(),
 						issue.getStatus()});
@@ -638,19 +652,27 @@ public class Gui extends JFrame implements Serializable{
 		isf.getCreateButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Issues i = new Issues(it.maxIssueId(),
-				//      "",
-					//	new Date(),
-					//	isf.getIssueText().getText(),
-					//	isf.getChoosePrio().getSelectedItem().toString(),
-					//	isf.getLocationText().getText(),
-						//"Open");
-				//it.getIssueList().add(i);
-				//it.writeXmlFile();
-				//it.tableForIssues();
+				Issues i = new Issues(it.maxIssueId(),
+				    	 "",
+						new Date(),
+						isf.getIssueText().getText(),
+						isf.getChoosePrio().getSelectedItem().toString(),
+						isf.getLocationText().getText(),
+						"Open");
+				it.getIssueList().add(i);
+				it.writeXmlFile();
+				isf.closeWindow();
 			}
 
 		});
+
+		isf.getBackButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				isf.closeWindow();
+			}
+		});
+
 	}
 
 }
