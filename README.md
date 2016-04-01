@@ -16,7 +16,7 @@
 ######   krav 5
 ######   krav 6 CHECK
 ######   krav 7
-######   krav 8
+######   krav 8 CHECK
 ######   krav 9
 ######   krav 10 CHECK
 

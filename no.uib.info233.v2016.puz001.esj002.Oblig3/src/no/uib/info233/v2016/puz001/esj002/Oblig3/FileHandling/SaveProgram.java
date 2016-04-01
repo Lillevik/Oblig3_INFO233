@@ -1,4 +1,7 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.ErrorFrame;
+
+import javax.swing.*;
 import java.io.*;
 
 /**
@@ -14,6 +17,7 @@ public class SaveProgram implements Serializable{
 	private static final long serialVersionUID = 8002287752953013587L;
 	public static final String filename = "IssueTracker.obj";
     public static final String root = "IssueTable";
+    private static ErrorFrame errorFrame = new ErrorFrame();
     
     
     /**
@@ -31,7 +35,7 @@ public class SaveProgram implements Serializable{
                 System.out.println("Saving: " + objectToSerialise);
             }catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Failed to save: " + objectToSerialise);
+                JOptionPane.showMessageDialog(errorFrame, "Failed to save"+ objectToSerialise, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         
@@ -51,7 +55,7 @@ public class SaveProgram implements Serializable{
                     ois.close();
                     System.out.println("Loaded: " + (loadedObject));
                 } catch (ClassNotFoundException | IOException e) {
-                    System.out.println("Failed: Could not load object from file.");
+                    JOptionPane.showMessageDialog(errorFrame, "Failed: Could not load object from file.", "Error", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();                    
                 }  
                 return loadedObject;                
