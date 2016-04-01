@@ -5,6 +5,8 @@ import java.awt.*;
 
 /**
  * Created by Eirik on 31.03.2016.
+ * This class is a panel created to show error dialouges.
+ * Indead of printing errors it will display the errors that are catched in an error box.
  */
 public class ErrorFrame extends JOptionPane {
     private JPanel spine = new JPanel();

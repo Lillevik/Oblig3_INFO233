@@ -169,8 +169,6 @@ public class Gui extends JFrame implements Serializable{
 			return d1.compareTo(d2);
 		};
 
-
-
 		it.getModel().getColumnClass(2).isInstance(new Date());
 		sorter.setModel(it.getModel());
 		sorter.setComparator(2, dateComparator);
@@ -341,6 +339,10 @@ public class Gui extends JFrame implements Serializable{
 	}
 
 
+	/**
+	 * method for listing the issues made by a ceretain user.
+	 *
+	 */
 	public void listUserIssues(){
 		it.tableRows();
 
@@ -637,9 +639,14 @@ public class Gui extends JFrame implements Serializable{
 		return txtId;
 	}
 
+	/**
+	 * getter for the details panel which is the new program panel.
+	 * @return
+     */
 	public DetailsPanel getDp() {
 		return dp;
 	}
+
 
 	public static void main(String[] args){
 		IssueFrame isf = new IssueFrame();
