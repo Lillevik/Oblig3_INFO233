@@ -286,5 +286,7 @@ public class Issues implements Comparable<Issues>, Serializable {
 		return beenUpdatedBy;
 	}
 
-
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }

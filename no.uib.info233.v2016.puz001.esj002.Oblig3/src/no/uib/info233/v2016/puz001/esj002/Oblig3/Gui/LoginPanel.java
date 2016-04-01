@@ -30,7 +30,7 @@ public class LoginPanel extends JPanel implements Serializable{
 	private JButton loginButton = new JButton("login");
 	private JPasswordField passwordText = new JPasswordField(20);
 	private JTextField userText = new JTextField(20);
-	private JLabel info = new JLabel("Example: Username:admin Password:pass");
+	private JLabel info = new JLabel("Example: Username:dryan3 Password:pass");
 	private JLabel status = new JLabel ("Not logged in.");
 	
 	

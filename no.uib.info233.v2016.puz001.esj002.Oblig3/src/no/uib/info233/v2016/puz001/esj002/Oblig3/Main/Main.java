@@ -21,10 +21,10 @@ import javax.swing.*;
 /**
  * Class to start the program.
  * Creates JButton methods.
+ *
  * @author esj002 and puz001
  */
 public class Main implements Serializable {
-
 	/**
 	 *
 	 */
@@ -408,4 +408,5 @@ try {
 	public static void setGui(Gui gui) {
 		Main.gui = gui;
 	}
+
 }

@@ -153,6 +153,31 @@ public class Gui extends JFrame implements Serializable{
 	 */
 	public void setupComponents(){
 		/*
+<<<<<<< HEAD
+=======
+		 *	Sets up the JTable qTable
+		 */
+		Comparator intComparator = intComparator = (Object o, Object t1) -> {
+			Integer i = ((Integer) o);
+			Integer i1 = ((Integer) t1);
+			return i.compareTo(i1);
+		};
+
+		Comparator dateComparator = (Object o, Object o1) -> {
+			Date d1 = ((Date) o);
+			Date d2 = ((Date) o1);
+			return d1.compareTo(d2);
+		};
+
+		it.getModel().getColumnClass(2).isInstance(new Date());
+		sorter.setModel(it.getModel());
+		sorter.setComparator(2, dateComparator);
+		sorter.setComparator(0,intComparator);
+		qTable.setRowSorter(sorter);
+
+
+		/*
+>>>>>>> origin/master
 		 * Sets up the JMenu
 		 */
 		menuBar.add(file);
@@ -309,8 +334,13 @@ public class Gui extends JFrame implements Serializable{
 
 
 	/**
+<<<<<<< HEAD
 	 * This method list all the issues of the current Logged
 	 * in user and presents them in the JTable.
+=======
+	 * method for listing the issues made by a ceretain user.
+	 *
+>>>>>>> origin/master
 	 */
 	public void listUserIssues(){
 		it.tableRows();
@@ -604,8 +634,12 @@ public class Gui extends JFrame implements Serializable{
 	}
 
 	/**
+<<<<<<< HEAD
 	 * This method returns the instance of details
 	 * panel class.
+=======
+	 * getter for the details panel which is the new program panel.
+>>>>>>> origin/master
 	 * @return
      */
 	public DetailsPanel getDp() {
