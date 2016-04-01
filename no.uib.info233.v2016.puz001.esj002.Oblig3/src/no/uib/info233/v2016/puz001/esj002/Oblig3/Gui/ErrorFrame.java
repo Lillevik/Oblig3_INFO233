@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * This class is used for warning the
  * Created by Eirik on 31.03.2016.
  */
 public class ErrorFrame extends JOptionPane {

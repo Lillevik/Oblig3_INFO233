@@ -68,12 +68,11 @@ public class Main implements Serializable {
 			public void actionPerformed(ActionEvent e) {
 try {
 				gui.getIt().tableRows();
-				System.out.print(gui.getIt().getModel().getColumnClass(2));
 				Issues issue = gui.getIt().getIssueMap().get(Integer.parseInt(gui.getTxtId().getText()));
 
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
-								gui.getIt().dateToString(issue.getCreated()),
+								issue.getCreated(),
 								issue.getPriority(),
 								issue.getLocation(),
 								issue.getStatus()});
@@ -121,31 +120,13 @@ try {
 					if (gui.getIt().dateToString(issue.getCreated()).equals(gui.getTxtDate().getText())) {
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
-								gui.getIt().dateToString(issue.getCreated()),
+								issue.getCreated(),
 								issue.getPriority(),
 								issue.getLocation(),
 								issue.getStatus()});
 					}
 				}
 
-			}
-		});
-
-
-		gui.getDp().getSortDates().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				gui.getIt().tableRows();
-
-				Collections.sort(gui.getIt().getIssueList());
-				for (Issues i : gui.getIt().getIssueList()) {
-					gui.getIt().getModel().addRow(new Object[]{i.getId(),
-							i.getAssigned(),
-							gui.getIt().dateToString(i.getCreated()),
-							i.getPriority(),
-							i.getLocation(),
-							i.getStatus()});
-				}
 			}
 		});
 
@@ -357,6 +338,9 @@ try {
 			}
 		});
 
+		/**
+		 * This method lists the IssueText of the currentSelected row.
+		 */
 		gui.getqTable().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -368,11 +352,14 @@ try {
 				gui.getDp().getLastUpdatedBy().setText("Updated by: " +
 								gui.getIt().getLastUpdated(gui.getqTable())
 				);
-
 			}
 		});
 
 
+		/**
+		 * This method prints all the users who have updated the issue
+		 * that is currently selected in the JTable.
+		 */
 		gui.getDp().getUpdates().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -385,6 +372,10 @@ try {
 			}
 		});
 
+		/**
+		 * This method starts a .Jar file which is currently stored
+		 * the same place the project folder is.
+		 */
 		gui.getDp().getNewProgram().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -402,12 +393,18 @@ try {
 	}
 
 
-
-
+	/**
+	 * This method returns the gui instance
+	 * @return
+     */
 	public static Gui getGui() {
 		return gui;
 	}
 
+	/**
+	 * This method sets the guiInstance.
+	 * @param gui
+     */
 	public static void setGui(Gui gui) {
 		Main.gui = gui;
 	}

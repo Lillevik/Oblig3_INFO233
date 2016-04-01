@@ -236,36 +236,52 @@ public class Issues implements Comparable<Issues>, Serializable {
 		this.location = location;
 	}
 
+	/**
+	 * This method returns the status of the current issue.
+	 * @return
+     */
 	public String getStatus(){
 		return this.status;
 	}
 
+	/**
+	 * This method returns the createdDate of the current Issue.
+	 * @return
+     */
 	public String getCreatedBy() {
 		return createdBy;
 	}
 
+	/**
+	 * This method sets the createdDate for an Issue.
+	 * @param createdBy
+     */
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
 	/**
-	 * This method returns the id field as an Integer instead of string
-	 * and uses this to calculate the highest current id in getMaxId().
-	 * @return
-	 */
-//	public int idInt(){
-//		int i = Integer.parseInt(this.id);
-//		return i;
-//	}
-
+	 * This method sets the LastUpdatedBy field to a string value.
+	 * @param lastUpdatedBy
+     */
 	public void setLastUpdatedBy(String lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
 
+	/**
+	 * This method returns a String value of the user
+	 * who updated the issue last.
+	 * @return
+     */
 	public String getLastUpdatedBy() {
 		return lastUpdatedBy;
 	}
 
+	/**
+	 * This method returns a list of all the names
+	 * of users who have updated the Issues.
+	 * @return
+     */
 	public ArrayList<String> getBeenUpdatedBy() {
 		return beenUpdatedBy;
 	}

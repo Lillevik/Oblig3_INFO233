@@ -5,7 +5,6 @@ import javax.swing.table.TableRowSorter;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.TableModel;
-import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.TableRenderer;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
 import java.awt.*;
@@ -32,7 +31,6 @@ public class Gui extends JFrame implements Serializable{
 	private IssuePanel ip = new IssuePanel();
 	private UpdatePanel up = new UpdatePanel();
 	private DetailsPanel dp = new DetailsPanel();
-	private TableRenderer tm = new TableRenderer();
 
 
 	/*
@@ -154,35 +152,6 @@ public class Gui extends JFrame implements Serializable{
 	 * sets them up with custom designs.
 	 */
 	public void setupComponents(){
-		/*
-		 *	Sets up the JTable qTable
-		 */
-		Comparator intComparator = intComparator = (Object o, Object t1) -> {
-			Integer i = ((Integer) o);
-			Integer i1 = ((Integer) t1);
-			return i.compareTo(i1);
-		};
-
-		Comparator dateComparator = (Object o, Object o1) -> {
-			Date d1 = ((Date) o);
-			Date d2 = ((Date) o1);
-			return d1.compareTo(d2);
-		};
-
-
-
-		it.getModel().getColumnClass(2).isInstance(new Date());
-		sorter.setModel(it.getModel());
-		sorter.setComparator(2, dateComparator);
-
-		sorter.setComparator(0,intComparator);
-		qTable.setRowSorter(sorter);
-
-
-
-
-
-
 		/*
 		 * Sets up the JMenu
 		 */
@@ -318,13 +287,6 @@ public class Gui extends JFrame implements Serializable{
 		panelBackLeftBot.add(btnSwitchUser);
 
 	}
-
-	              // @Override
-	public void customCellRederer(){
-		//this.qTable
-	}
-
-
 	/**
 	 * Used to authenicate user logins.
 	 * Checks if the user and password field is correct.
@@ -346,6 +308,10 @@ public class Gui extends JFrame implements Serializable{
 	}
 
 
+	/**
+	 * This method list all the issues of the current Logged
+	 * in user and presents them in the JTable.
+	 */
 	public void listUserIssues(){
 		it.tableRows();
 
@@ -370,11 +336,6 @@ public class Gui extends JFrame implements Serializable{
 	public void updateChooseUser(){
 		chooseUser.setModel(new DefaultComboBoxModel(it.getUsers().toArray()));
 	}
-
-		public void updateChooseUser2(){
-		chooseUser.setModel(new DefaultComboBoxModel(it.getUsers().toArray()));
-
-		}
 
 	
 	/**
@@ -642,10 +603,20 @@ public class Gui extends JFrame implements Serializable{
 		return txtId;
 	}
 
+	/**
+	 * This method returns the instance of details
+	 * panel class.
+	 * @return
+     */
 	public DetailsPanel getDp() {
 		return dp;
 	}
 
+	/**
+	 * This method creates the new program for adding
+	 * anonymous issues into the xml file.
+	 * @param args
+     */
 	public static void main(String[] args){
 		IssueFrame isf = new IssueFrame();
 

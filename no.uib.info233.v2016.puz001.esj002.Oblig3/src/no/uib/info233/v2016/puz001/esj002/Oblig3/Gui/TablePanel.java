@@ -6,6 +6,8 @@ import java.io.PrintStream;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.*;
 
 /**
+ * This is the panel which is placed in the center of the
+ * spine frame in gui. It contains the JTable and a customOutPutstream.
  * Created by mariuslillevik on 10.03.16.
  */
 public class TablePanel extends JPanel {
@@ -18,7 +20,11 @@ public class TablePanel extends JPanel {
     private PrintStream standardOut;
 
 
-
+    /**
+     * This is the constructor of the TablePanel class
+     * which initialized the components the the program.
+     * @param pane
+     */
     public TablePanel(JScrollPane pane){
         this.pane = pane;
         setLayout(new BorderLayout(1, 1));
@@ -26,6 +32,10 @@ public class TablePanel extends JPanel {
         add(pane, BorderLayout.CENTER);
     }
 
+    /**
+     * This is the method that sets up the components and
+     * specifies their size and so on.
+     */
     public void setupComponents(){
         // Initialize the text area
         this.textArea = new JTextArea(10, 0);

@@ -1,18 +1,17 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.Gui;
 
-import sun.plugin.javascript.JSClassLoader;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
+ * This Class only server as a panel for displaying details about Issues.
  * Created by mariuslillevik on 10.03.16.
  */
 public class DetailsPanel extends JPanel{
 
     //JButtons
     private JButton updates = new JButton("All updaters");
-    private JButton sortDates = new JButton("Sort by date");
     private JButton newProgram = new JButton("Start program");
 
     //TextAres
@@ -25,6 +24,11 @@ public class DetailsPanel extends JPanel{
     private JLabel lastUpdatedBy = new JLabel("Updated by: ");
     private JLabel weightLabel = new JLabel();
 
+
+    /**
+     * This is the constructor of the DetailsPanel class
+     * which insitializes it and runs it.
+     */
     public DetailsPanel(){
         setLayout(new GridBagLayout());
         setupComponents();
@@ -32,6 +36,10 @@ public class DetailsPanel extends JPanel{
     }
 
 
+    /**
+     * This is a method for constraining and placing the
+     * components in the Panel using gridbagConstraints.
+     */
     public void gridbagConstaints(){
         GridBagConstraints gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.LINE_START;
@@ -57,9 +65,6 @@ public class DetailsPanel extends JPanel{
         add(updates, gc);
 
         gc.gridx = 0;
-        gc.gridy = 5;
-        add(sortDates, gc);
-        gc.gridx = 0;
         gc.gridy = 6;
         add(newProgram, gc);
 
@@ -69,6 +74,11 @@ public class DetailsPanel extends JPanel{
         add(weightLabel, gc);
     }
 
+
+    /**
+     * This is the method that sets up most of the components with their
+     * values and different positions.
+     */
     public void setupComponents(){
         pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -91,10 +101,6 @@ public class DetailsPanel extends JPanel{
 
     public JButton getUpdates() {
         return updates;
-    }
-
-    public JButton getSortDates() {
-        return sortDates;
     }
 
     public JButton getNewProgram() {

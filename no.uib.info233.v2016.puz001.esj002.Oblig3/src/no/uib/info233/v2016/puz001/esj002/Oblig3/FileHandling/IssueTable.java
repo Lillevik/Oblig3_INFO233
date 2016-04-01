@@ -32,8 +32,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
-import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.User;
-import org.xml.sax.SAXException;
+
 
 /**
  * This is a class which deals with handling the xml files
@@ -249,6 +248,10 @@ public class IssueTable implements Serializable{
 		}
 	}
 
+	/**
+	 * This method converts all the int priorities into 5 different Strings
+	 * depending on the value if the integer.
+	 */
 	public void changePrio() {
 		if (!newFile.exists()) {
 			for (Issues issue : issueList) {
@@ -277,6 +280,12 @@ public class IssueTable implements Serializable{
 		return Collections.max(issueList, iss).getId() + 1;
 	}
 
+	/**
+	 * This method returns the selected issue depending on the current
+	 * selected row in the JTable.
+	 * @param table
+	 * @return
+     */
 	public String getSelectedIssue(JTable table){
 		int j = table.getSelectedRow();
 
@@ -288,6 +297,12 @@ public class IssueTable implements Serializable{
 		return null;
 	}
 
+	/**
+	 * This method returns the created by field in an issue
+	 * if the field ID entered is the same as an Issue ID.
+	 * @param table
+	 * @return
+     */
 	public String getCreatedBy(JTable table){
 		int j = table.getSelectedRow();
 
@@ -299,6 +314,12 @@ public class IssueTable implements Serializable{
 		return null;
 	}
 
+	/**
+	 * This method takes a table as a parameter and returns a string
+	 * of the Issues field of lastUpdatedBy()
+	 * @param table
+	 * @return
+     */
 	public String getLastUpdated(JTable table){
 		int j = table.getSelectedRow();
 		for(Issues i : issueList) {
@@ -309,6 +330,11 @@ public class IssueTable implements Serializable{
 		return null;
 	}
 
+	/**
+	 * This method prints all of the updaters on an issue
+	 * to the CustomOutPrint textArea.
+	 * @param table
+     */
 	public void printAllUpdates(JTable table){
 		int j = table.getSelectedRow();
 		for(Issues i : issueList){
@@ -450,13 +476,6 @@ public class IssueTable implements Serializable{
 	}
 
 
-
-
-	public String randomPass() {
-		return new BigInteger(64, random).toString(32);
-	}
-
-
 	/**
 	 * This method returns the model used for the qTable
 	 * in gui.
@@ -478,6 +497,7 @@ public class IssueTable implements Serializable{
 
 
 	/**
+	 * This method returns the users ArrayList
 	 * @return the users
 	 */
 	public ArrayList<String> getUsers() {
@@ -485,18 +505,27 @@ public class IssueTable implements Serializable{
 		return users;
 	}
 
+	/**
+	 * This method sets the currentUser of the program.
+	 * @param currentUser
+     */
 	public void setCurrentUser(String currentUser) {
 		this.currentUser = currentUser;
 	}
 
+	/**
+	 * This method returns the current user String
+	 * who is currently logged in to the program.
+	 * @return
+     */
 	public String getCurrentUser() {
 		return currentUser;
 	}
 
-	public File getNewFile() {
-		return newFile;
-	}
-
+	/**
+	 * This method returns the IssueMap containing issues.
+	 * @return
+     */
 	public HashMap<Integer, Issues> getIssueMap() {
 		return issueMap;
 	}
@@ -544,6 +573,10 @@ public class IssueTable implements Serializable{
 		return null;
 	}
 
+	/**
+	 * This method is made to reduce code duplication
+	 * by reusing some code where possible.
+	 */
 	public void tableRows(){
 		model.setRowCount(0);
 		model.setColumnCount(0);
