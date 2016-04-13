@@ -48,12 +48,13 @@ public class Main implements Serializable {
 			public void actionPerformed(ActionEvent e) {
 				gui.getIt().tableRows();
 				for (Issues issue : gui.getIt().getIssueList()) {
-					if (issue.getAssigned().equals(gui.getTxtSearch().getText())) {
+					if (issue.getAssigned().toString().trim().equals(gui.getTxtSearch().getText().trim())) {
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
-								gui.getIt().dateToString(issue.getCreated()),
+								issue.getCreated(),
 								issue.getPriority(),
-								issue.getLocation()});
+								issue.getLocation(),
+								issue.getStatus()});
 					}
 				}
 			}
@@ -94,12 +95,9 @@ try {
 				System.out.println(gui.getSearchPrior().getSelectedItem().toString());
 
 				for (Issues issue : gui.getIt().getIssueList()) {
-
-					//if (issue.getPriority().equals(gui.getTxtPriority().getText())) {
 					if (issue.getPriority().equals(gui.getSearchPrior().getSelectedItem().toString())) {
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
-								//gui.getIt().dateToString(issue.getCreated()),
 								issue.getCreated(),
 								issue.getPriority(),
 								issue.getLocation(),
