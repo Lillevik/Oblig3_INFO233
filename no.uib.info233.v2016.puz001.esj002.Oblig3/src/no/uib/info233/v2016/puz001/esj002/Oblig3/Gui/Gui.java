@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import com.sun.tools.internal.ws.processor.model.Model;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.TableModel;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
@@ -123,6 +122,7 @@ public class Gui extends JFrame implements Serializable{
 	private JComboBox chooseUser2 = new JComboBox(it.getUsers().toArray());
 	private JComboBox choosePrio2 = new JComboBox(priorities);
 	private JComboBox choosePriority = new JComboBox(priorities);
+	private JComboBox searchPrior = new JComboBox(priorities);
 // te
 	/*
 	 * The JMenu items make the menu on the top of the program
@@ -159,6 +159,17 @@ public class Gui extends JFrame implements Serializable{
 	 */
 	public void setupComponents(){
 
+		Comparator dateComparator = (Object o, Object o1) -> {
+			Date d1 = ((Date) o);
+			Date d2 = ((Date) o1);
+			return d1.compareTo(d2);
+		};
+
+		it.getModel().getColumnClass(2).isInstance(new Date());
+		sorter.setModel(it.getModel());
+		sorter.setComparator(2, dateComparator);
+		qTable.setRowSorter(sorter);
+
 
 
 
@@ -192,7 +203,6 @@ public class Gui extends JFrame implements Serializable{
 		 */
 		txtSearch = new JTextField("search/add User");
 		txtDate = new JTextField("search date mm/dd/yyyy");
-		txtPriority = new JTextField("search prior");
 		txtId = new JTextField("Search ID");
 
 		/**
@@ -228,7 +238,7 @@ public class Gui extends JFrame implements Serializable{
 
 		txtSearch.setPreferredSize(new Dimension(190, 20));
 		txtDate.setPreferredSize(new Dimension(190, 20));
-		txtPriority.setPreferredSize(new Dimension(190, 20));
+		searchPrior.setPreferredSize(new Dimension(190, 20));
 		txtId.setPreferredSize(new Dimension(190, 20));
 
 		btnSearch = new JButton("Search");
@@ -284,7 +294,7 @@ public class Gui extends JFrame implements Serializable{
 		panelBackLeftTop.add(btnAddUser);
 		panelBackLeftTop.add(txtDate);
 		panelBackLeftTop.add(btnDate);
-		panelBackLeftTop.add(txtPriority);
+		panelBackLeftTop.add(searchPrior);
 		panelBackLeftTop.add(btnPrior);
 		panelBackLeftTop.add(txtId);
 		panelBackLeftTop.add(btnId);
@@ -346,6 +356,7 @@ public class Gui extends JFrame implements Serializable{
 	public void updateChooseUser(){
 		chooseUser.setModel(new DefaultComboBoxModel(it.getUsers().toArray()));
 	}
+
 
 	
 	/**
@@ -622,6 +633,4 @@ public class Gui extends JFrame implements Serializable{
 	public DetailsPanel getDp() {
 		return dp;
 	}
-
-
 }
