@@ -91,13 +91,16 @@ try {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gui.getIt().tableRows();
+				System.out.println(gui.getSearchPrior().getSelectedItem().toString());
 
 				for (Issues issue : gui.getIt().getIssueList()) {
 
-					if (issue.getPriority().equals(gui.getTxtPriority().getText())) {
+					//if (issue.getPriority().equals(gui.getTxtPriority().getText())) {
+					if (issue.getPriority().equals(gui.getSearchPrior().getSelectedItem().toString())) {
 						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
-								gui.getIt().dateToString(issue.getCreated()),
+								//gui.getIt().dateToString(issue.getCreated()),
+								issue.getCreated(),
 								issue.getPriority(),
 								issue.getLocation(),
 								issue.getStatus()});
