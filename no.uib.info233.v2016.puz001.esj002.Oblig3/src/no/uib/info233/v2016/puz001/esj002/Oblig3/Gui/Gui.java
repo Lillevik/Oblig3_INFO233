@@ -31,6 +31,10 @@ public class Gui extends JFrame implements Serializable{
 	private IssuePanel ip = new IssuePanel();
 	private UpdatePanel up = new UpdatePanel();
 	private DetailsPanel dp = new DetailsPanel();
+/*
+	private Listener listener;
+
+	public void setListener(Listener listener) */
 
 
 	/*
@@ -153,8 +157,6 @@ public class Gui extends JFrame implements Serializable{
 	 */
 	public void setupComponents(){
 		/*
-<<<<<<< HEAD
-=======
 		 *	Sets up the JTable qTable
 		 */
 		Comparator intComparator = intComparator = (Object o, Object t1) -> {
@@ -169,15 +171,11 @@ public class Gui extends JFrame implements Serializable{
 			return d1.compareTo(d2);
 		};
 
-		it.getModel().getColumnClass(2).isInstance(new Date());
-		sorter.setModel(it.getModel());
-		sorter.setComparator(2, dateComparator);
-		sorter.setComparator(0,intComparator);
-		qTable.setRowSorter(sorter);
+
+
 
 
 		/*
->>>>>>> origin/master
 		 * Sets up the JMenu
 		 */
 		menuBar.add(file);
@@ -193,9 +191,6 @@ public class Gui extends JFrame implements Serializable{
 		panelBackLeft = new JPanel(border);
 		panelBackLeftTop = new JPanel();
 		panelBackLeftBot = new JPanel();
-
-
-
 
 		/**
 		 * init the one and only JLabels in the class
@@ -334,13 +329,8 @@ public class Gui extends JFrame implements Serializable{
 
 
 	/**
-<<<<<<< HEAD
 	 * This method list all the issues of the current Logged
 	 * in user and presents them in the JTable.
-=======
-	 * method for listing the issues made by a ceretain user.
-	 *
->>>>>>> origin/master
 	 */
 	public void listUserIssues(){
 		it.tableRows();

@@ -28,15 +28,6 @@ public class Issues implements Comparable<Issues>, Serializable {
 	private String lastUpdatedBy;
 	private ArrayList<String> beenUpdatedBy = new ArrayList<String>();
 
-	private enum prios {
-		Ikke_prioritet,
-		Lav,
-		Middels,
-		Høy,
-		Kritisk;
-
-	}
-
 
 	/**
 	 * This is the constructor for the Issues class.
@@ -90,15 +81,6 @@ public class Issues implements Comparable<Issues>, Serializable {
 		}
 	};
 }
-
-
-	static class priorityComparator implements Comparator<Issues>
-	{
-		public int compare(Issues i1, Issues i2)
-		{
-			return i1.getPriority().compareTo(i2.getPriority());
-		}
-	}
 
 
 

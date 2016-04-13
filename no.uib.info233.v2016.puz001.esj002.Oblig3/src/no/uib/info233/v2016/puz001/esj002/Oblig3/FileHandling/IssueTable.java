@@ -55,7 +55,6 @@ public class IssueTable implements Serializable{
 	private ArrayList<Issues> issueList = new ArrayList<Issues>();
 	private HashMap<Integer, Issues> issueMap = new HashMap<>();
 	private String currentUser = new String();
-	private SecureRandom random = new SecureRandom();
 
 	/**
 	 * Constructor for the IssueTable class.
@@ -77,8 +76,6 @@ public class IssueTable implements Serializable{
 	 */
 	public void fillUsers() {
 		if (!userFile.exists()) {
-
-
 			try {
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -600,6 +597,5 @@ public class IssueTable implements Serializable{
 		model.addColumn("Location: ");
 		model.addColumn("Status: ");
 	}
-
 
 }

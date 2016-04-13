@@ -10,12 +10,14 @@ import java.util.Date;
  */
 public class TableModel extends DefaultTableModel{
 
-    final Class<?>[] columnClasses = new Class<?>[] {Integer.class, String.class, Date.class, String.class, String.class, String.class};
+    final Class<?>[] columnClasses = new Class<?>[] {Integer.class, String.class, Date.class, Integer.class, String.class, String.class};
+
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return columnClasses[columnIndex];
-
     }
+
+
 
 
 }
