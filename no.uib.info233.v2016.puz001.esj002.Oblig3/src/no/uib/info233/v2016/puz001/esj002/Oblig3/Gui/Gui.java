@@ -157,20 +157,17 @@ public class Gui extends JFrame implements Serializable{
 	 * sets them up with custom designs.
 	 */
 	public void setupComponents(){
-		/*
-		 *	Sets up the JTable qTable
-		 */
-		Comparator intComparator = intComparator = (Object o, Object t1) -> {
-			Integer i = ((Integer) o);
-			Integer i1 = ((Integer) t1);
-			return i.compareTo(i1);
-		};
 
 		Comparator dateComparator = (Object o, Object o1) -> {
 			Date d1 = ((Date) o);
 			Date d2 = ((Date) o1);
 			return d1.compareTo(d2);
 		};
+
+		it.getModel().getColumnClass(2).isInstance(new Date());
+		sorter.setModel(it.getModel());
+		sorter.setComparator(2, dateComparator);
+		qTable.setRowSorter(sorter);
 
 
 
