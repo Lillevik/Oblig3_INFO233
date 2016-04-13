@@ -1,8 +1,10 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.Gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.sun.tools.internal.ws.processor.model.Model;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.TableModel;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
@@ -92,7 +94,7 @@ public class Gui extends JFrame implements Serializable{
 	 * The gui class gets andinstance of the IssueTable class
 	 * to get methods from the class.
 	 */
-	private static IssueTable it = new IssueTable();
+	private IssueTable it = new IssueTable();
 
 	/*
 	 * The Jtable qTable (qTable was the intention,
@@ -156,25 +158,13 @@ public class Gui extends JFrame implements Serializable{
 	 * sets them up with custom designs.
 	 */
 	public void setupComponents(){
-		/*
-		 *	Sets up the JTable qTable
-		 */
-		Comparator intComparator = intComparator = (Object o, Object t1) -> {
-			Integer i = ((Integer) o);
-			Integer i1 = ((Integer) t1);
-			return i.compareTo(i1);
-		};
-
-		Comparator dateComparator = (Object o, Object o1) -> {
-			Date d1 = ((Date) o);
-			Date d2 = ((Date) o1);
-			return d1.compareTo(d2);
-		};
 
 
 
 
 
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(it.getModel());
+		qTable.setRowSorter(sorter);
 		/*
 		 * Sets up the JMenu
 		 */
@@ -624,50 +614,14 @@ public class Gui extends JFrame implements Serializable{
 	}
 
 	/**
-<<<<<<< HEAD
 	 * This method returns the instance of details
 	 * panel class.
-=======
 	 * getter for the details panel which is the new program panel.
->>>>>>> origin/master
 	 * @return
      */
 	public DetailsPanel getDp() {
 		return dp;
 	}
 
-	/**
-	 * This method creates the new program for adding
-	 * anonymous issues into the xml file.
-	 * @param args
-     */
-	public static void main(String[] args){
-		IssueFrame isf = new IssueFrame();
-
-		isf.getCreateButton().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Issues i = new Issues(it.maxIssueId(),
-				    	 "",
-						new Date(),
-						isf.getIssueText().getText(),
-						isf.getChoosePrio().getSelectedItem().toString(),
-						isf.getLocationText().getText(),
-						"Open");
-				it.getIssueList().add(i);
-				it.writeXmlFile();
-				isf.closeWindow();
-			}
-
-		});
-
-		isf.getBackButton().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				isf.closeWindow();
-			}
-		});
-
-	}
 
 }

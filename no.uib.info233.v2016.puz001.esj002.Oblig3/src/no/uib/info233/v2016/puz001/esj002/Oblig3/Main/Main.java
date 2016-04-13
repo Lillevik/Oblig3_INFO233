@@ -11,6 +11,7 @@ import java.util.Date;
 
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.SaveProgram;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.XmlFilehandling;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.ErrorFrame;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.Gui;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
@@ -29,8 +30,7 @@ public class Main implements Serializable {
 	 *
 	 */
 	private static final long serialVersionUID = 1834915564586880152L;
-	public static Gui gui = new Gui();
-	public static ErrorFrame errorFrame = new ErrorFrame();
+
 
 	/**
 	 * This method starts the program and connects the different
@@ -39,6 +39,11 @@ public class Main implements Serializable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		XmlFilehandling xfh = new XmlFilehandling();
+		Gui gui = new Gui();
+
+
+
 		/**
 		 * This button lists all the issues from the user given
 		 * in the textField and presents these in the JTable qtable.
@@ -66,18 +71,18 @@ public class Main implements Serializable {
 		gui.getBtnId().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-try {
-				gui.getIt().tableRows();
-				Issues issue = gui.getIt().getIssueMap().get(Integer.parseInt(gui.getTxtId().getText()));
+				try {
+					gui.getIt().tableRows();
+					Issues issue = gui.getIt().getIssueMap().get(Integer.parseInt(gui.getTxtId().getText()));
 
-						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
-								issue.getAssigned(),
-								issue.getCreated(),
-								issue.getPriority(),
-								issue.getLocation(),
-								issue.getStatus()});
-				}catch (IndexOutOfBoundsException f){
-					JOptionPane.showMessageDialog(errorFrame, "Error getting ID's");
+					gui.getIt().getModel().addRow(new Object[]{issue.getId(),
+							issue.getAssigned(),
+							issue.getCreated(),
+							issue.getPriority(),
+							issue.getLocation(),
+							issue.getStatus()});
+				} catch (IndexOutOfBoundsException f) {
+					JOptionPane.showMessageDialog(gui.getIt().errorFrame, "Error getting ID's");
 				}
 			}
 		});
@@ -177,7 +182,7 @@ try {
 				gui.getIt().addUser(gui.getTxtSearch().getText());
 				gui.updateChooseUser();
 				//Writes to the userFile
-				gui.getIt().writeUsersToXml();
+				xfh.writeUsersToXml(gui.getIt());
 				//Changes the panel
 				gui.getIt().listUniqueUsers();
 			}
@@ -203,7 +208,7 @@ try {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Creates new issue.
-				Issues is = new Issues(gui.getIt().maxIssueId(),
+				Issues is = new Issues(Integer.parseInt(xfh.getHighest()),
 						gui.getChooseUser().getSelectedItem().toString(),
 						new Date(),
 						gui.getIp().getIssueText().getText(),
@@ -215,9 +220,10 @@ try {
 				is.addUpdated(gui.getIt().getCurrentUser());
 				gui.getIt().getIssueList().add(is);
 				gui.getIt().tableForIssues();
+
 				//Writes to files.
-				gui.getIt().writeXmlFile();
-				gui.getIt().writeUsersToXml();
+				xfh.writeXmlFile(gui.getIt());
+				xfh.writeUsersToXml(gui.getIt());
 				//Changes panel
 				gui.setContentPane(gui.getSpine());
 				gui.pack();
@@ -283,7 +289,7 @@ try {
 				int j = gui.getqTable().getSelectedRow();
 				String prio = String.valueOf(gui.getChoosePrio2().getSelectedItem());
 				for (Issues i : gui.getIt().getIssueList()) {
-					if (i.getId()== Integer.parseInt(gui.getqTable().getValueAt(j, 0).toString())) {
+					if (i.getId() == Integer.parseInt(gui.getqTable().getValueAt(j, 0).toString())) {
 						gui.getChooseUser2();
 						gui.getIt().getModel().removeRow(j);
 						i.setAssigned(gui.getChooseUser2().getSelectedItem().toString());
@@ -296,7 +302,7 @@ try {
 					}
 				}
 
-				gui.getIt().writeXmlFile();
+				xfh.writeXmlFile(gui.getIt());
 				gui.setContentPane(gui.getSpine());
 				gui.pack();
 			}
@@ -310,8 +316,8 @@ try {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SaveProgram.save(gui.getIt());
-				gui.getIt().writeXmlFile();
-				gui.getIt().writeUsersToXml();
+				xfh.writeXmlFile(gui.getIt());
+				xfh.writeUsersToXml(gui.getIt());
 			}
 		});
 
@@ -390,23 +396,14 @@ try {
 				}
 			}
 		});
+
+		gui.getDp().getUpdateList().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				xfh.fillIssues(gui.getIt());
+				gui.getIt().tableForIssues();
+			}
+		});
+
 	}
-
-
-	/**
-	 * This method returns the gui instance
-	 * @return
-     */
-	public static Gui getGui() {
-		return gui;
-	}
-
-	/**
-	 * This method sets the guiInstance.
-	 * @param gui
-     */
-	public static void setGui(Gui gui) {
-		Main.gui = gui;
-	}
-
 }

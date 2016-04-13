@@ -44,17 +44,14 @@ import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 public class IssueTable implements Serializable{
 
 	public static ErrorFrame errorFrame = new ErrorFrame();
-
 	private static final long serialVersionUID = -6349521349294077303L;
 	//Fields for the IssueTable class
-	private File file = new File("old_issues.xml");
-	private File newFile = new File("new_issues.xml");
-	private File userFile = new File("users.xml");
 	private TableModel model = new TableModel();
 	private ArrayList<String> users = new ArrayList<String>();
 	private ArrayList<Issues> issueList = new ArrayList<Issues>();
 	private HashMap<Integer, Issues> issueMap = new HashMap<>();
 	private String currentUser = new String();
+	private XmlFilehandling xfh = new XmlFilehandling();
 
 	/**
 	 * Constructor for the IssueTable class.
@@ -63,59 +60,12 @@ public class IssueTable implements Serializable{
 	 */
 	public IssueTable() {
 		addUser("admin");
-		fillUsers();
-		fillIssues();
+		xfh.fillUsers(this);
+		xfh.fillIssues(this);
 		fillMap();
 		changePrio();
 		tableForIssues();
 	}
-
-	/**
-	 * This method takes all the assigned users from the
-	 * xml document "old_issues.xml" and places them into the ArrayList users.
-	 */
-	public void fillUsers() {
-		if (!userFile.exists()) {
-			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(file);
-				doc.getDocumentElement().normalize();
-
-				NodeList nodelist = doc.getElementsByTagName("ISSUES");
-				for (int i = 0; i < nodelist.getLength(); i++) {
-					Node node = nodelist.item(i);
-					Element eElement = (Element) node;
-					if (!users.contains(eElement.getAttribute("assigned_user")))
-						users.add(eElement.getAttribute("assigned_user"));
-				}
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, old_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-
-			}
-		} else {
-			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(userFile);
-				doc.getDocumentElement().normalize();
-
-				NodeList nodelist = doc.getElementsByTagName("USER");
-				for (int i = 0; i < nodelist.getLength(); i++) {
-					Node node = nodelist.item(i);
-					Element eElement = (Element) node;
-					if (!users.contains(eElement.getAttribute("name")))
-						users.add(eElement.getAttribute("name"));
-				}
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, issuetracker_users.xml.", "Error", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-
-			}
-		}
-	}
-
 
 	/**
 	 * This method Lists all the users from the ArrayList users
@@ -140,79 +90,6 @@ public class IssueTable implements Serializable{
 		users.add(name);
 	}
 
-
-	/**
-	 * This method adds all the ISSUES elements in the old_issues.xml file
-	 * as object of Issues into the issues ArrayList.
-	 */
-	public void fillIssues(){
-		if (newFile.exists()) {
-			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(newFile);
-				NodeList nodelist = doc.getElementsByTagName("ISSUES");
-				for (int i = 0; i < nodelist.getLength(); i++) {
-
-					Node node = nodelist.item(i);
-					Element eElement = (Element) node;
-
-					Issues issue = new Issues(Integer.parseInt(eElement.getAttribute("id")),
-							eElement.getAttribute("assigned_user"),
-							stringToDate(eElement.getAttribute("created")),
-							eElement.getAttribute("text"),
-							eElement.getAttribute("priority"),
-							eElement.getAttribute("location"),
-							eElement.getAttribute("status"));
-					issue.setCreatedBy(eElement.getAttribute(("created_by")));
-					issue.setLastUpdatedBy(eElement.getAttribute("last_updated_by"));
-
-
-					NodeList updateList = nodelist.item(i).getChildNodes();
-					for(int j = 0; j < updateList.getLength(); j++){
-						Node updateNode = updateList.item(j);
-						if("UPDATER".equals(updateNode.getNodeName())) {
-							issue.getBeenUpdatedBy().add(updateNode.getTextContent());
-						}
-					}
-					issueList.add(issue);
-
-
-				}
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, new_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(file);
-				NodeList nodelist = doc.getElementsByTagName("ISSUES");
-
-
-				for (int i = 0; i < nodelist.getLength(); i++) {
-
-					Node node = nodelist.item(i);
-					Element eElement = (Element) node;
-					Issues issue = new Issues(Integer.parseInt(eElement.getAttribute("id")),
-							eElement.getAttribute("assigned_user"),
-							stringToDate((eElement.getAttribute("created"))),
-							eElement.getAttribute("text"),
-							eElement.getAttribute("priority"),
-							eElement.getAttribute("location"),
-							"Not set");
-					issue.setCreatedBy(eElement.getAttribute("assigned_user"));
-					issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
-					issue.getBeenUpdatedBy().add(eElement.getAttribute("assigned_user"));
-					issueList.add(issue);
-				}
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(errorFrame, "We were unable to locate the file, old_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			}
-		}
-	}
 
 	public void fillMap(){
 		for(Issues i : issueList){
@@ -250,7 +127,7 @@ public class IssueTable implements Serializable{
 	 * depending on the value if the integer.
 	 */
 	public void changePrio() {
-		if (!newFile.exists()) {
+		if (!XmlFilehandling.getNewFile().exists()) {
 			for (Issues issue : issueList) {
 				int prior = Integer.parseInt(String.valueOf(issue.getPriority().trim()));
 				if (prior >= 80) {
@@ -263,19 +140,6 @@ public class IssueTable implements Serializable{
 					issue.setPriority("Lav");
 				} else if (prior >= 0 && prior < 40) {
 					issue.setPriority("Ikke prioritert");
-				}
-			}
-		}
-	}
-
-	public void changeStatus(){
-		if(!newFile.exists()){
-			for (Issues issue : issueList) {
-				if(issue.getStatus().equals("Not set")){
-					issue.setStatus("Closed");
-
-				}else{
-					issue.setStatus("Open");
 				}
 			}
 		}
@@ -355,134 +219,6 @@ public class IssueTable implements Serializable{
 				}
 			}
 		}
-	}
-
-	/**
-	 * This method writes all the objects and string in issueList and users list
-	 * into a single xml file containing all their info.
-	 */
-	public void writeXmlFile() {
-
-		try {
-			DocumentBuilderFactory dFact = DocumentBuilderFactory.newInstance();
-			DocumentBuilder build = dFact.newDocumentBuilder();
-			Document doc = build.newDocument();
-
-			Element root = doc.createElement("Dataset");
-			doc.appendChild(root);
-
-
-			for (Issues i : issueList) {
-				Element details = doc.createElement("ISSUES");
-				Element updater1 = doc.createElement("UPDATER");
-
-				root.appendChild(details);
-
-				details.setAttribute("id", Integer.toString(i.getId()));
-				details.setAttribute("assigned_user", i.getAssigned());
-				details.setAttribute("created", dateToString(i.getCreated()));
-				details.setAttribute("text", i.getIssue());
-				details.setAttribute("priority", i.getPriority());
-				details.setAttribute("location", i.getLocation());
-				details.setAttribute("status", i.getStatus());
-				details.setAttribute("created_by", i.getCreatedBy());
-				details.setAttribute("last_updated_by", i.getLastUpdatedBy());
-
-
-					for(String s : i.getBeenUpdatedBy()){
-						Element updater = doc.createElement("UPDATER");
-							updater.setTextContent(s);
-							details.appendChild(updater);
-					}
-			}
-
-
-
-			// Save the document to the disk file
-			TransformerFactory tranFactory = TransformerFactory.newInstance();
-			Transformer aTransformer = tranFactory.newTransformer();
-
-			// format the XML nicely
-			aTransformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-
-			aTransformer.setOutputProperty(
-					"{http://xml.apache.org/xslt}indent-amount", "4");
-			aTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-			DOMSource source = new DOMSource(doc);
-			try {
-				FileWriter fos = new FileWriter(newFile);
-				StreamResult result = new StreamResult(fos);
-				aTransformer.transform(source, result);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(errorFrame, "Could not write the file.", "Error", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			}
-
-		} catch (TransformerException ex) {
-			JOptionPane.showMessageDialog(errorFrame, "Error outputting document", "Error", JOptionPane.ERROR_MESSAGE);
-
-
-		} catch (ParserConfigurationException ex) {
-			JOptionPane.showMessageDialog(errorFrame, "Error building document", "Error", JOptionPane.ERROR_MESSAGE);
-
-		} finally {
-			tableForIssues();
-		}
-	}
-
-
-	/**
-	 * This method creates writes the users ArrayList to an xml file
-	 * so that it can later be read into the system again the next time it
-	 * is started again.
-	 */
-	public void writeUsersToXml(){
-		try {
-
-			DocumentBuilderFactory dFact = DocumentBuilderFactory.newInstance();
-			DocumentBuilder build = dFact.newDocumentBuilder();
-			Document doc = build.newDocument();
-
-			Element root = doc.createElement("Users");
-			doc.appendChild(root);
-
-			for (String i : users) {
-				Element user = doc.createElement("USER");
-				root.appendChild(user);
-				user.setAttribute("name", i);
-			}
-
-			// Save the document to the disk file
-			TransformerFactory tranFactory = TransformerFactory.newInstance();
-			Transformer aTransformer = tranFactory.newTransformer();
-
-			// format the XML nicely
-			aTransformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-
-			aTransformer.setOutputProperty(
-					"{http://xml.apache.org/xslt}indent-amount", "4");
-			aTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-			DOMSource source = new DOMSource(doc);
-			try {
-				FileWriter fos = new FileWriter(userFile);
-				StreamResult result = new StreamResult(fos);
-				aTransformer.transform(source, result);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(errorFrame, "Error writing the document. Contact administration.", "Error", JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			}
-
-		} catch (TransformerException ex) {
-			JOptionPane.showMessageDialog(errorFrame, "Error outputting document", "Error", JOptionPane.ERROR_MESSAGE);
-
-
-		} catch (ParserConfigurationException ex) {
-			JOptionPane.showMessageDialog(errorFrame, "Error building document", "Error", JOptionPane.ERROR_MESSAGE);
-
-		}
-
 	}
 
 
@@ -573,7 +309,8 @@ public class IssueTable implements Serializable{
 			date = readFormat.parse(s);
 		} catch (ParseException e){
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(errorFrame, "There was a problem converting the String to a Date.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(errorFrame,
+					"There was a problem converting the String to a Date.", "Error", JOptionPane.ERROR_MESSAGE);
 
 		}
 
@@ -597,5 +334,4 @@ public class IssueTable implements Serializable{
 		model.addColumn("Location: ");
 		model.addColumn("Status: ");
 	}
-
 }

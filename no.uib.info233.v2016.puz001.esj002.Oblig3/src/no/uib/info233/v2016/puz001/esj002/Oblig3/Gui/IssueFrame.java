@@ -19,7 +19,7 @@ public class IssueFrame extends JFrame implements Serializable {
     private JTextField locationText = new JTextField();
     private JTextArea issueText = new JTextArea("Write issue here.");
     private JButton createButton = new JButton("Create");
-    private JButton backButton = new JButton("Cancel");
+    private JButton backButton = new JButton("Exit");
     private String[] priorities = {"Ikke prioritet", "Lav", "Normal", "Høy", "Kritisk"};
     private JComboBox choosePrio = new JComboBox(priorities);
     private JPanel mainPanel = new JPanel(new BorderLayout(2, 2));
