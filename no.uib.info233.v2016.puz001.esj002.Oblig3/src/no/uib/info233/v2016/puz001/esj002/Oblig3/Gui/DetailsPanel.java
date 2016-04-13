@@ -13,6 +13,7 @@ public class DetailsPanel extends JPanel{
     //JButtons
     private JButton updates = new JButton("All updaters");
     private JButton newProgram = new JButton("Start program");
+    private JButton updateList = new JButton("Update List");
 
     //TextAres
     private JTextArea issueText = new JTextArea(10, 15);
@@ -72,6 +73,11 @@ public class DetailsPanel extends JPanel{
         gc.gridx = 0;
         gc.weighty = 3;
         add(weightLabel, gc);
+
+        gc.gridy = 8;
+        gc.gridx = 0;
+        gc.weightx = 3;
+        add(updateList, gc);
     }
 
 
@@ -105,6 +111,10 @@ public class DetailsPanel extends JPanel{
 
     public JButton getNewProgram() {
         return newProgram;
+    }
+
+    public JButton getUpdateList() {
+        return updateList;
     }
 }
 
