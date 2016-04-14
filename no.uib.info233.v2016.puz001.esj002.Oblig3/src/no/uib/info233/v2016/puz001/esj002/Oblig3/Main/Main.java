@@ -65,13 +65,13 @@ public class Main implements Serializable {
 
 		/**
 		 * This is an actionListener for the btnId which 
-		 * finds a specific issues and displays it in the JTable.
+		 * finds a specific issue and displays it in the JTable.
 		 */
 		gui.getBtnId().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					it.tableRows();
+				/*	it.tableRows();
 					Issues issue = it.getIssueMap().get(Integer.parseInt(gui.getTxtId().getText()));
 
 					it.getModel().addRow(new Object[]{issue.getId(),
@@ -80,6 +80,20 @@ public class Main implements Serializable {
 							issue.getPriority(),
 							issue.getLocation(),
 							issue.getStatus()});
+				} catch (IndexOutOfBoundsException f) {
+					JOptionPane.showMessageDialog(it.errorFrame, "Error getting ID's");
+				}*/
+
+					Issues issue = it.getIssueList().get(Integer.parseInt(gui.getTxtId().getText()) - 1);
+
+					it.tableRows();
+					it.getModel().addRow(new Object[]{issue.getId(),
+							issue.getAssigned(),
+							issue.getCreated(),
+							issue.getPriority(),
+							issue.getLocation(),
+							issue.getStatus()});
+					System.out.println(issue.getId());
 				} catch (IndexOutOfBoundsException f) {
 					JOptionPane.showMessageDialog(it.errorFrame, "Error getting ID's");
 				}
