@@ -50,14 +50,17 @@ public class Main implements Serializable {
 		gui.getBtnSearch().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
 				it.tableRows();
 				for (Issues issue : it.getIssueList()) {
-					if (issue.getAssigned().equals(gui.getTxtSearch().getText())) {
+					if (issue.getAssigned().toString().trim().equals(gui.getTxtSearch().getText().trim())) {
 						it.getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
-								it.dateToString(issue.getCreated()),
+								issue.getCreated(),
+
 								issue.getPriority(),
-								issue.getLocation()});
+								issue.getLocation(),
+								issue.getStatus()});
 					}
 				}
 			}
@@ -109,13 +112,13 @@ public class Main implements Serializable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				it.tableRows();
+				System.out.println(gui.getSearchPrior().getSelectedItem().toString());
 
 				for (Issues issue : it.getIssueList()) {
-
-					if (issue.getPriority().equals(gui.getTxtPriority().getText())) {
+					if (issue.getPriority().equals(gui.getSearchPrior().getSelectedItem().toString())) {
 						it.getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
-								it.dateToString(issue.getCreated()),
+								issue.getCreated(),
 								issue.getPriority(),
 								issue.getLocation(),
 								issue.getStatus()});

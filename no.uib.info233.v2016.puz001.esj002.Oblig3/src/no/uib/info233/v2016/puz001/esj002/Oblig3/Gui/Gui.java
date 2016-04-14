@@ -119,6 +119,7 @@ public class Gui extends JFrame implements Serializable{
 	private JComboBox chooseUser2;
 	private JComboBox choosePrio2 = new JComboBox(priorities);
 	private JComboBox choosePriority = new JComboBox(priorities);
+	private JComboBox searchPrior = new JComboBox(priorities);
 // te
 	/*
 	 * The JMenu items make the menu on the top of the program
@@ -154,12 +155,12 @@ public class Gui extends JFrame implements Serializable{
 	 * sets them up with custom designs.
 	 */
 	public void setupComponents(){
+
 		qTable = new JTable(it.getModel());
 		pane = new JScrollPane(qTable);
 		tp = new TablePanel(pane);
 		chooseUser = new JComboBox(it.getUsers().toArray());
 		chooseUser2 = new JComboBox(it.getUsers().toArray());
-
 
 		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(it.getModel());
 		qTable.setRowSorter(sorter);
@@ -192,7 +193,6 @@ public class Gui extends JFrame implements Serializable{
 		 */
 		txtSearch = new JTextField("search/add User");
 		txtDate = new JTextField("search date mm/dd/yyyy");
-		txtPriority = new JTextField("search prior");
 		txtId = new JTextField("Search ID");
 
 		/**
@@ -228,7 +228,7 @@ public class Gui extends JFrame implements Serializable{
 
 		txtSearch.setPreferredSize(new Dimension(190, 20));
 		txtDate.setPreferredSize(new Dimension(190, 20));
-		txtPriority.setPreferredSize(new Dimension(190, 20));
+		searchPrior.setPreferredSize(new Dimension(190, 20));
 		txtId.setPreferredSize(new Dimension(190, 20));
 
 		btnSearch = new JButton("Search");
@@ -284,7 +284,7 @@ public class Gui extends JFrame implements Serializable{
 		panelBackLeftTop.add(btnAddUser);
 		panelBackLeftTop.add(txtDate);
 		panelBackLeftTop.add(btnDate);
-		panelBackLeftTop.add(txtPriority);
+		panelBackLeftTop.add(searchPrior);
 		panelBackLeftTop.add(btnPrior);
 		panelBackLeftTop.add(txtId);
 		panelBackLeftTop.add(btnId);
@@ -346,6 +346,7 @@ public class Gui extends JFrame implements Serializable{
 	public void updateChooseUser(){
 		chooseUser.setModel(new DefaultComboBoxModel(it.getUsers().toArray()));
 	}
+
 
 	
 	/**
@@ -509,6 +510,10 @@ public class Gui extends JFrame implements Serializable{
 		return choosePriority;
 	}
 
+	public JComboBox getSearchPrior() {
+		return searchPrior;
+	}
+
 	/**
 	 * The ip is an instance of the class "IssuePanel".
 	 * The panel is initialized in gui and has a getter so that methods from
@@ -608,6 +613,4 @@ public class Gui extends JFrame implements Serializable{
 	public DetailsPanel getDp() {
 		return dp;
 	}
-
-
 }
