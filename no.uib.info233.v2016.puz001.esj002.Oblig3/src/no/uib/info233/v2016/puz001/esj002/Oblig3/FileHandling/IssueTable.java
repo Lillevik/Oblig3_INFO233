@@ -51,15 +51,16 @@ public class IssueTable implements Serializable{
 	private ArrayList<Issues> issueList = new ArrayList<Issues>();
 	private HashMap<Integer, Issues> issueMap = new HashMap<>();
 	private String currentUser = new String();
-	private XmlFilehandling xfh = new XmlFilehandling();
+	private XmlFilehandling xfh;
 
 	/**
 	 * Constructor for the IssueTable class.
 	 * The constructor runs some methods at runtime to fill
 	 * certain arrays and arrayLists.
 	 */
-	public IssueTable() {
+	public IssueTable(XmlFilehandling xfh) {
 		addUser("admin");
+		this.xfh = xfh;
 		xfh.fillUsers(this);
 		xfh.fillIssues(this);
 		fillMap();

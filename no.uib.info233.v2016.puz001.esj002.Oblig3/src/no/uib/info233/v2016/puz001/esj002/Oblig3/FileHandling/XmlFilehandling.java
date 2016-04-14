@@ -308,7 +308,7 @@ public class XmlFilehandling {
      * into a single xml file containing all their info. This method is used in newProgram.
      */
     public void writeXmlFileNewProgram(IssueFrame i) {
-         IssueTable it = new IssueTable();
+         IssueTable it = new IssueTable(new XmlFilehandling());
         File f = null;
        if(newFile.exists()) {
        f = newFile;
