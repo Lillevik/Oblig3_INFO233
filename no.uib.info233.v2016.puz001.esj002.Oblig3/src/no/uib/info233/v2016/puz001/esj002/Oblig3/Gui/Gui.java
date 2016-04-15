@@ -1,13 +1,12 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.Gui;
 
 import javax.swing.*;
+import java.awt.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
-
-import java.awt.*;
 
 import java.io.Serializable;
 
@@ -114,7 +113,7 @@ public class Gui extends JFrame implements Serializable{
 	 * The choose user lets you drop down all users etc.
 	 *
 	 */
-	private String[] priorities = {"Ikke prioritet", "Lav", "Normal", "Høy", "Kritisk"};
+	private String[] priorities = {"Ikke prioritert", "Lav", "Normal", "Høy", "Kritisk"};
 	private JComboBox chooseUser;
 	private JComboBox chooseUser2;
 	private JComboBox choosePrio2 = new JComboBox(priorities);

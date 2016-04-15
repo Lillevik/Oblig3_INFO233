@@ -1,38 +1,76 @@
-/*package Tests;
+package Tests;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.XmlFilehandling;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Test.*;
+
 
 /**
- * Created by marius on 31.03.2016.
- *
-public class IssueTableTest extends IssueTable {
+ * Created by goat on 15.04.16.
+ */
+public class IssueTableTest{
+IssueTable it = new IssueTable(new XmlFilehandling());
 
-    @org.junit.Before
+    @Before
     public void setUp() throws Exception {
 
     }
 
-    @org.junit.After
+    @After
     public void tearDown() throws Exception {
 
     }
 
-    @org.junit.Test
-    public void testChangePrio() throws Exception {
+    @Test
+    public void testChangePrioSingle() throws Exception {
+        Issues issue = new Issues(1, "user", new Date(), "Issue here", "44", "Norway", "Closed");
+
+        String expected = "Normal";
+        String result = it.changePrioSingle(issue);
+
+        assertEquals(expected,result);
+
+
+
+
 
     }
 
-    @org.junit.Test
+    @Test
     public void testDateToString() throws Exception {
+        Date d = new Date();
+
+        String expected = "04/15/2016";
+        String result = it.dateToString(d);
+
+        assertEquals(expected , result);
+
+
 
     }
 
-    @org.junit.Test
+    @Test
     public void testStringToDate() throws Exception {
 
-    }
-}
+        String date = "04/15/2016";
 
-*/
+        Date expected = new Date();
+        Date result = it.stringToDate(date);
+
+        assertEquals(expected, result);
+
+        System.out.print(result);
+    }
+
+
+
+
+}

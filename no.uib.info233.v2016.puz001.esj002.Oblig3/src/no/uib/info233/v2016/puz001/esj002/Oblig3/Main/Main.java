@@ -6,7 +6,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Date;
 
 
@@ -136,7 +135,6 @@ public class Main implements Serializable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				it.tableRows();
-
 				for (Issues issue : it.getIssueList()) {
 					if (it.dateToString(issue.getCreated()).equals(gui.getTxtDate().getText())) {
 						it.getModel().addRow(new Object[]{issue.getId(),
@@ -145,6 +143,7 @@ public class Main implements Serializable {
 								issue.getPriority(),
 								issue.getLocation(),
 								issue.getStatus()});
+						System.out.print(issue.getCreated());
 					}
 				}
 

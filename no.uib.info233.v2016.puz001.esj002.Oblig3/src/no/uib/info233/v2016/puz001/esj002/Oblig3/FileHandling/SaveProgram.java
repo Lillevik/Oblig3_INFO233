@@ -3,6 +3,7 @@ import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.ErrorFrame;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.*;
 
 /**
  * This class creates and object file and saves it to the system
@@ -35,7 +36,7 @@ public class SaveProgram implements Serializable{
                 System.out.println("Saving: " + objectToSerialise);
             }catch (IOException e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(errorFrame, "Failed to save"+ objectToSerialise, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(errorFrame, "Failed to save" + objectToSerialise, "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         
