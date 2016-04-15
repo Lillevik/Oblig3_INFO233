@@ -1,19 +1,15 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.Gui;
 
 import javax.swing.*;
+import java.awt.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
-import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.TableModel;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.Serializable;
-import java.util.Comparator;
-import java.util.Date;
+
 
 
 /**
@@ -93,7 +89,7 @@ public class Gui extends JFrame implements Serializable{
 	 * The gui class gets andinstance of the IssueTable class
 	 * to get methods from the class.
 	 */
-	private IssueTable it = new IssueTable();
+	private IssueTable it;
 
 	/*
 	 * The Jtable qTable (qTable was the intention,
@@ -101,10 +97,10 @@ public class Gui extends JFrame implements Serializable{
 	 * table that displays the arraylist
 	 * which is made from the xml doc.
 	 */
-	private JTable qTable = new JTable(it.getModel());
+	private JTable qTable;
 	private TableRowSorter sorter = new TableRowSorter();
-	private JScrollPane pane = new JScrollPane(qTable);
-	private TablePanel tp = new TablePanel(pane);
+	private JScrollPane pane;
+	private TablePanel tp;
 
 	/*
 	 * cardlayout is the layout used in the spine.
@@ -117,9 +113,9 @@ public class Gui extends JFrame implements Serializable{
 	 * The choose user lets you drop down all users etc.
 	 *
 	 */
-	private String[] priorities = {"Ikke prioritet", "Lav", "Normal", "Høy", "Kritisk"};
-	private JComboBox chooseUser = new JComboBox(it.getUsers().toArray());
-	private JComboBox chooseUser2 = new JComboBox(it.getUsers().toArray());
+	private String[] priorities = {"Ikke prioritert", "Lav", "Normal", "Høy", "Kritisk"};
+	private JComboBox chooseUser;
+	private JComboBox chooseUser2;
 	private JComboBox choosePrio2 = new JComboBox(priorities);
 	private JComboBox choosePriority = new JComboBox(priorities);
 	private JComboBox searchPrior = new JComboBox(priorities);
@@ -131,14 +127,14 @@ public class Gui extends JFrame implements Serializable{
 	private JMenu file = new JMenu("File");
 	private JMenu help = new JMenu("Help");
 	private JMenuItem save = new JMenuItem("Save");
-	private JMenuItem about = new JMenuItem("About");
 
 	/**
 	 * Constructor for the Gui class which extends from JFrame.
 	 * Creates the Gui and fills it with components.
 	 */
-	public Gui(){
+	public Gui(IssueTable issueTable){
 		super("Issue Tracker");
+		this.it = issueTable;
 		spine = new JPanel(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		spine.setLayout(border);
@@ -159,23 +155,16 @@ public class Gui extends JFrame implements Serializable{
 	 */
 	public void setupComponents(){
 
-		Comparator dateComparator = (Object o, Object o1) -> {
-			Date d1 = ((Date) o);
-			Date d2 = ((Date) o1);
-			return d1.compareTo(d2);
-		};
-
-		it.getModel().getColumnClass(2).isInstance(new Date());
-		sorter.setModel(it.getModel());
-		sorter.setComparator(2, dateComparator);
-		qTable.setRowSorter(sorter);
-
-
-
-
+		qTable = new JTable(it.getModel());
+		pane = new JScrollPane(qTable);
+		tp = new TablePanel(pane);
+		chooseUser = new JComboBox(it.getUsers().toArray());
+		chooseUser2 = new JComboBox(it.getUsers().toArray());
 
 		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(it.getModel());
 		qTable.setRowSorter(sorter);
+
+
 		/*
 		 * Sets up the JMenu
 		 */
@@ -315,10 +304,10 @@ public class Gui extends JFrame implements Serializable{
 	 * @return boolean if authentication was successful or not
 	 */
 	public boolean authenticateLogin(){
-		for(String s : getIt().getUsers()){
+		for(String s : it.getUsers()){
 			if(s.equals(lp.getUserText().getText()) && lp.getPasswordText().getText().equals("pass")){
 				getTxtLoggedIn().setText("Logged in as: " + lp.getUserText().getText());
-				getIt().setCurrentUser(getLp().getUserText().getText());
+				it.setCurrentUser(getLp().getUserText().getText());
 				listUserIssues();
 				setContentPane(getSpine());
 				return true;
@@ -337,7 +326,7 @@ public class Gui extends JFrame implements Serializable{
 
 		for(Issues issue : it.getIssueList()){
 			if(issue.getAssigned().equals(lp.getUserText().getText())){
-				getIt().getModel().addRow(new Object[]{issue.getId(),
+				it.getModel().addRow(new Object[]{issue.getId(),
 						issue.getAssigned(),
 						issue.getCreated(),
 						issue.getPriority(),
@@ -369,20 +358,6 @@ public class Gui extends JFrame implements Serializable{
 		return qTable;
 	}
 
-	/**
-	 * hehe get it?
-	 * it is an instance of the IssueTable class.
-	 * It has a getter in Gui since it is required in
-	 * other classes, but we dont want to initialize the
-	 * class more than one time.
-	 * So getting a method in main from issuetable is
-	 * possible via:
-	 * gui.getIt().getSomethingFromIt();
-	 * @return the it
-	 */
-	public IssueTable getIt() {
-		return it;
-	}
 
 	/**
 	 * The spine is the ship
@@ -532,6 +507,10 @@ public class Gui extends JFrame implements Serializable{
 	 */
 	public JComboBox<?> getChoosePriority() {
 		return choosePriority;
+	}
+
+	public JComboBox getSearchPrior() {
+		return searchPrior;
 	}
 
 	/**

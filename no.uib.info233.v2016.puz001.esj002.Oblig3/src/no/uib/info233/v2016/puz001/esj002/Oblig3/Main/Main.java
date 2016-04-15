@@ -6,10 +6,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Date;
 
 
+import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.SaveProgram;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.XmlFilehandling;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.ErrorFrame;
@@ -26,21 +26,19 @@ import javax.swing.*;
  * @author esj002 and puz001
  */
 public class Main implements Serializable {
-	/**
-	 *
-	 */
+
 	private static final long serialVersionUID = 1834915564586880152L;
 
 
 	/**
 	 * This method starts the program and connects the different
 	 * instances together in one class.
-	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		XmlFilehandling xfh = new XmlFilehandling();
-		Gui gui = new Gui();
+		IssueTable it = new IssueTable(xfh);
+		Gui gui = new Gui(it);
 
 
 
@@ -51,12 +49,14 @@ public class Main implements Serializable {
 		gui.getBtnSearch().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.getIt().tableRows();
-				for (Issues issue : gui.getIt().getIssueList()) {
+
+				it.tableRows();
+				for (Issues issue : it.getIssueList()) {
 					if (issue.getAssigned().toString().trim().equals(gui.getTxtSearch().getText().trim())) {
-						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
+						it.getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
 								issue.getCreated(),
+
 								issue.getPriority(),
 								issue.getLocation(),
 								issue.getStatus()});
@@ -67,23 +67,37 @@ public class Main implements Serializable {
 
 		/**
 		 * This is an actionListener for the btnId which 
-		 * finds a specific issues and displays it in the JTable.
+		 * finds a specific issue and displays it in the JTable.
 		 */
 		gui.getBtnId().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					gui.getIt().tableRows();
-					Issues issue = gui.getIt().getIssueMap().get(Integer.parseInt(gui.getTxtId().getText()));
+				/*	it.tableRows();
+					Issues issue = it.getIssueMap().get(Integer.parseInt(gui.getTxtId().getText()));
 
-					gui.getIt().getModel().addRow(new Object[]{issue.getId(),
+					it.getModel().addRow(new Object[]{issue.getId(),
 							issue.getAssigned(),
 							issue.getCreated(),
 							issue.getPriority(),
 							issue.getLocation(),
 							issue.getStatus()});
 				} catch (IndexOutOfBoundsException f) {
-					JOptionPane.showMessageDialog(gui.getIt().errorFrame, "Error getting ID's");
+					JOptionPane.showMessageDialog(it.errorFrame, "Error getting ID's");
+				}*/
+
+					Issues issue = it.getIssueList().get(Integer.parseInt(gui.getTxtId().getText()) - 1);
+
+					it.tableRows();
+					it.getModel().addRow(new Object[]{issue.getId(),
+							issue.getAssigned(),
+							issue.getCreated(),
+							issue.getPriority(),
+							issue.getLocation(),
+							issue.getStatus()});
+					System.out.println(issue.getId());
+				} catch (IndexOutOfBoundsException f) {
+					JOptionPane.showMessageDialog(it.errorFrame, "Error getting ID's");
 				}
 			}
 		});
@@ -96,12 +110,12 @@ public class Main implements Serializable {
 		gui.getBtnPrior().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.getIt().tableRows();
+				it.tableRows();
 				System.out.println(gui.getSearchPrior().getSelectedItem().toString());
 
-				for (Issues issue : gui.getIt().getIssueList()) {
+				for (Issues issue : it.getIssueList()) {
 					if (issue.getPriority().equals(gui.getSearchPrior().getSelectedItem().toString())) {
-						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
+						it.getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
 								issue.getCreated(),
 								issue.getPriority(),
@@ -120,16 +134,16 @@ public class Main implements Serializable {
 		gui.getBtnDate().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.getIt().tableRows();
-
-				for (Issues issue : gui.getIt().getIssueList()) {
-					if (gui.getIt().dateToString(issue.getCreated()).equals(gui.getTxtDate().getText())) {
-						gui.getIt().getModel().addRow(new Object[]{issue.getId(),
+				it.tableRows();
+				for (Issues issue : it.getIssueList()) {
+					if (it.dateToString(issue.getCreated()).equals(gui.getTxtDate().getText())) {
+						it.getModel().addRow(new Object[]{issue.getId(),
 								issue.getAssigned(),
 								issue.getCreated(),
 								issue.getPriority(),
 								issue.getLocation(),
 								issue.getStatus()});
+						System.out.print(issue.getCreated());
 					}
 				}
 
@@ -144,7 +158,7 @@ public class Main implements Serializable {
 		gui.getBtnListAllUsers().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.getIt().listUniqueUsers();
+				it.listUniqueUsers();
 
 			}
 		});
@@ -158,17 +172,17 @@ public class Main implements Serializable {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.getIt().tableRows();
+				it.tableRows();
 
-				for (Issues i : gui.getIt().getIssueList()) {
-					gui.getIt().getModel().addRow(new Object[]{i.getId(),
+				for (Issues i : it.getIssueList()) {
+					it.getModel().addRow(new Object[]{i.getId(),
 							i.getAssigned(),
 							i.getCreated(),
 							i.getPriority(),
 							i.getLocation(),
 							i.getStatus()});
 				}
-				//gui.getIt().tableForIssues();
+				//it.tableForIssues();
 			}
 		});
 
@@ -180,12 +194,12 @@ public class Main implements Serializable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Adds a user to the list
-				gui.getIt().addUser(gui.getTxtSearch().getText());
+				it.addUser(gui.getTxtSearch().getText());
 				gui.updateChooseUser();
 				//Writes to the userFile
-				xfh.writeUsersToXml(gui.getIt());
+				xfh.writeUsersToXml(it);
 				//Changes the panel
-				gui.getIt().listUniqueUsers();
+				it.listUniqueUsers();
 			}
 		});
 
@@ -216,15 +230,15 @@ public class Main implements Serializable {
 						gui.getChoosePriority().getSelectedItem().toString(),
 						gui.getIp().getLocationText().getText(),
 						"Open");
-				is.setCreatedBy(gui.getIt().getCurrentUser());
-				is.setLastUpdatedBy(gui.getIt().getCurrentUser());
-				is.addUpdated(gui.getIt().getCurrentUser());
-				gui.getIt().getIssueList().add(is);
-				gui.getIt().tableForIssues();
+				is.setCreatedBy(it.getCurrentUser());
+				is.setLastUpdatedBy(it.getCurrentUser());
+				is.addUpdated(it.getCurrentUser());
+				it.getIssueList().add(is);
+				it.tableForIssues();
 
 				//Writes to files.
-				xfh.writeXmlFile(gui.getIt());
-				xfh.writeUsersToXml(gui.getIt());
+				xfh.writeXmlFile(it);
+				xfh.writeUsersToXml(it);
 				//Changes panel
 				gui.setContentPane(gui.getSpine());
 				gui.pack();
@@ -273,7 +287,7 @@ public class Main implements Serializable {
 					//gui.updateChooseUser();
 					gui.getChooseUser().setSelectedItem(gui.getqTable().getValueAt(i, 1).toString().trim());
 					gui.getChoosePrio2().setSelectedItem(gui.getqTable().getValueAt(i, 3).toString());
-					gui.getUp().getIssueText().setText(gui.getIt().getSelectedIssue(gui.getqTable()));
+					gui.getUp().getIssueText().setText(it.getSelectedIssue(gui.getqTable()));
 					gui.getUp().getLocationText().setText(gui.getqTable().getValueAt(i, 4).toString());
 					gui.setContentPane(gui.getUp());
 					gui.pack();
@@ -289,21 +303,21 @@ public class Main implements Serializable {
 			public void actionPerformed(ActionEvent e) {
 				int j = gui.getqTable().getSelectedRow();
 				String prio = String.valueOf(gui.getChoosePrio2().getSelectedItem());
-				for (Issues i : gui.getIt().getIssueList()) {
+				for (Issues i : it.getIssueList()) {
 					if (i.getId() == Integer.parseInt(gui.getqTable().getValueAt(j, 0).toString())) {
 						gui.getChooseUser2();
-						gui.getIt().getModel().removeRow(j);
+						it.getModel().removeRow(j);
 						i.setAssigned(gui.getChooseUser2().getSelectedItem().toString());
 						i.setPriority(prio);
 						i.setIssue(gui.getUp().getIssueText().getText());
 						i.setLocation(gui.getUp().getLocationText().getText());
-						i.setLastUpdatedBy(gui.getIt().getCurrentUser());
-						i.addUpdated(gui.getIt().getCurrentUser());
-						gui.getIt().tableForIssues();
+						i.setLastUpdatedBy(it.getCurrentUser());
+						i.addUpdated(it.getCurrentUser());
+						it.tableForIssues();
 					}
 				}
 
-				xfh.writeXmlFile(gui.getIt());
+				xfh.writeXmlFile(it);
 				gui.setContentPane(gui.getSpine());
 				gui.pack();
 			}
@@ -316,9 +330,9 @@ public class Main implements Serializable {
 		gui.getSave().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SaveProgram.save(gui.getIt());
-				xfh.writeXmlFile(gui.getIt());
-				xfh.writeUsersToXml(gui.getIt());
+				SaveProgram.save(it);
+				xfh.writeXmlFile(it);
+				xfh.writeUsersToXml(it);
 			}
 		});
 
@@ -352,12 +366,12 @@ public class Main implements Serializable {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				gui.getDp().getIssueText().setText
-						(gui.getIt().getSelectedIssue(gui.getqTable()));
+						(it.getSelectedIssue(gui.getqTable()));
 
 				gui.getDp().getCreatedBy().setText("Created by: " +
-						gui.getIt().getCreatedBy(gui.getqTable()));
+						it.getCreatedBy(gui.getqTable()));
 				gui.getDp().getLastUpdatedBy().setText("Updated by: " +
-								gui.getIt().getLastUpdated(gui.getqTable())
+								it.getLastUpdated(gui.getqTable())
 				);
 			}
 		});
@@ -374,7 +388,7 @@ public class Main implements Serializable {
 				if (i == -1) {
 					System.out.println("Please select a row to list all updaters.");
 				} else {
-					gui.getIt().printAllUpdates(gui.getqTable());
+					it.printAllUpdates(gui.getqTable());
 				}
 			}
 		});
@@ -401,8 +415,8 @@ public class Main implements Serializable {
 		gui.getDp().getUpdateList().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				xfh.fillIssues(gui.getIt());
-				gui.getIt().tableForIssues();
+				xfh.fillIssues(it);
+				it.tableForIssues();
 			}
 		});
 

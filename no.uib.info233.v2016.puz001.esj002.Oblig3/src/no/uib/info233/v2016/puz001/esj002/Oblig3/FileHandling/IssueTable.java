@@ -1,36 +1,15 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling;
 
-import java.lang.reflect.Array;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Serializable;
+import java.util.*;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Gui.ErrorFrame;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
 
@@ -51,15 +30,16 @@ public class IssueTable implements Serializable{
 	private ArrayList<Issues> issueList = new ArrayList<Issues>();
 	private HashMap<Integer, Issues> issueMap = new HashMap<>();
 	private String currentUser = new String();
-	private XmlFilehandling xfh = new XmlFilehandling();
+	private XmlFilehandling xfh;
 
 	/**
 	 * Constructor for the IssueTable class.
 	 * The constructor runs some methods at runtime to fill
 	 * certain arrays and arrayLists.
 	 */
-	public IssueTable() {
+	public IssueTable(XmlFilehandling xfh) {
 		addUser("admin");
+		this.xfh = xfh;
 		xfh.fillUsers(this);
 		xfh.fillIssues(this);
 		fillMap();
@@ -103,14 +83,7 @@ public class IssueTable implements Serializable{
 	 * the issues ArrayList and represent them in the JTable qTable.
 	 */
 	public void tableForIssues() {
-		model.setRowCount(0);
-		model.setColumnCount(0);
-		model.addColumn("Issue ID: ");
-		model.addColumn("Assigned to: ");
-		model.addColumn("Created: ");
-		model.addColumn("Priority: ");
-		model.addColumn("Location: ");
-		model.addColumn(("Status: "));
+		tableRows();
 
 		for (Issues issue : issueList) {
 			model.addRow(new Object[]{issue.getId(),
@@ -127,8 +100,18 @@ public class IssueTable implements Serializable{
 	 * depending on the value if the integer.
 	 */
 	public void changePrio() {
-		if (!XmlFilehandling.getNewFile().exists()) {
+		if (!xfh.getNewFile().exists()) {
 			for (Issues issue : issueList) {
+				issue.setPriority(changePrioSingle(issue));
+			}
+		}
+	}
+
+	/**
+	 * This method converts all the int priorities into 5 different Strings
+	 * depending on the value if the integer.
+	 */
+	public String changePrioSingle(Issues issue) {
 				int prior = Integer.parseInt(String.valueOf(issue.getPriority().trim()));
 				if (prior >= 80) {
 					issue.setPriority("Kritisk");
@@ -138,20 +121,10 @@ public class IssueTable implements Serializable{
 					issue.setPriority("Normal");
 				} else if (prior >= 20 && prior < 40) {
 					issue.setPriority("Lav");
-				} else if (prior >= 0 && prior < 40) {
+				} else if (prior >= 0 && prior < 20) {
 					issue.setPriority("Ikke prioritert");
 				}
-			}
-		}
-	}
-
-
-	/**
-	 * @return The highest current Issue ID from the issues list.
-	 */
-	public int maxIssueId() {
-		Comparator<Issues> iss = Comparator.comparing(Issues::getId);
-		return Collections.max(issueList, iss).getId() + 1;
+		return issue.getPriority();
 	}
 
 	/**
