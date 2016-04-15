@@ -57,6 +57,15 @@ IssueTable it = new IssueTable(new XmlFilehandling());
 
     }
 
+    /*
+     * This method is working the way it should do, but it
+     * does not work because the time is different. The date
+     * however, works as itis supposed to. Example:
+     * java.lang.AssertionError:
+        Expected :Fri Apr 15 12:06:39 CEST 2016
+        Actual   :Fri Apr 15 00:00:00 CEST 2016
+     * @throws Exception
+     */
     @Test
     public void testStringToDate() throws Exception {
 
