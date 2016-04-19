@@ -1,5 +1,6 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling;
 
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -306,5 +307,11 @@ public class IssueTable implements Serializable{
 		model.addColumn("Priority: ");
 		model.addColumn("Location: ");
 		model.addColumn("Status: ");
+	}
+
+	public void updateTable(){
+		xfh.fillIssues(this);
+		changePrio();
+		tableForIssues();
 	}
 }

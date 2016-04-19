@@ -17,11 +17,13 @@ import static org.junit.Test.*;
  * Created by goat on 15.04.16.
  */
 public class IssueTableTest{
-IssueTable it = new IssueTable(new XmlFilehandling());
+    private IssueTable it;
+    private Date d;
 
     @Before
     public void setUp() throws Exception {
-
+        it = new IssueTable(new XmlFilehandling());
+        d = new Date();
     }
 
     @After
@@ -31,36 +33,35 @@ IssueTable it = new IssueTable(new XmlFilehandling());
 
     @Test
     public void testChangePrioSingle() throws Exception {
+        setUp();
         Issues issue = new Issues(1, "user", new Date(), "Issue here", "44", "Norway", "Closed");
 
         String expected = "Normal";
         String result = it.changePrioSingle(issue);
 
         assertEquals(expected,result);
-
-
-
-
-
     }
 
+    /*
+     * This test only works on  04/15/2016.
+     * This must be changed in order to work on
+     * a different day. Format = MM/dd/yyyy
+     * @throws Exception
+     */
     @Test
     public void testDateToString() throws Exception {
-        Date d = new Date();
+        setUp();
 
-        String expected = "04/15/2016";
+        String expected = "04/17/2016";
         String result = it.dateToString(d);
 
         assertEquals(expected , result);
-
-
-
     }
 
     /*
      * This method is working the way it should do, but it
      * does not work because the time is different. The date
-     * however, works as itis supposed to. Example:
+     * however, works as it is supposed to. Example:
      * java.lang.AssertionError:
         Expected :Fri Apr 15 12:06:39 CEST 2016
         Actual   :Fri Apr 15 00:00:00 CEST 2016
@@ -68,10 +69,10 @@ IssueTable it = new IssueTable(new XmlFilehandling());
      */
     @Test
     public void testStringToDate() throws Exception {
-
+        setUp();
         String date = "04/15/2016";
 
-        Date expected = new Date();
+        Date expected = d;
         Date result = it.stringToDate(date);
 
         assertEquals(expected, result);
