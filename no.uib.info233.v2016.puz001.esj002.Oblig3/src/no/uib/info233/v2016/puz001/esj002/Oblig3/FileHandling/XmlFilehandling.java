@@ -27,15 +27,15 @@ import java.util.Date;
 /**
  * Created by mariuslillevik on 13.04.16.
  * This class handles everything that has
- * to do with the xml files for the main program,
+ * to do with the xml files,
  * both reading and writing the the files.
  * @Author Marius
  */
 public class XmlFilehandling {
 
-    private static File file = new File("old_issues.xml");
-    private static File newFile = new File("new_issues.xml");
-    private static File userFile = new File("users.xml");
+    private File file = new File(System.getProperty("user.dir") + "/old_issues.xml");
+    private File newFile = new File(System.getProperty("user.dir") + "/new_issues.xml");
+    private File userFile = new File(System.getProperty("user.dir") + "/users.xml");
 
     /**
      * This method writes all the objects and string in issueList and users list
@@ -219,17 +219,13 @@ public class XmlFilehandling {
      * @param it
      */
     public void fillIssues(IssueTable it){
-        it.getIssueList().clear();
-        File f = null;
+
         if(newFile.exists()) {
-            f = newFile;
-        } else {
-            f = file;
-        }
+            it.getIssueList().clear();
             try {
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                Document doc = dBuilder.parse(f);
+                Document doc = dBuilder.parse(newFile);
                 NodeList nodelist = doc.getElementsByTagName("ISSUES");
                 for (int i = 0; i < nodelist.getLength(); i++) {
 
@@ -247,9 +243,9 @@ public class XmlFilehandling {
 
 
                     NodeList updateList = nodelist.item(i).getChildNodes();
-                    for(int j = 0; j < updateList.getLength(); j++){
+                    for (int j = 0; j < updateList.getLength(); j++) {
                         Node updateNode = updateList.item(j);
-                        if("UPDATER".equals(updateNode.getNodeName())) {
+                        if ("UPDATER".equals(updateNode.getNodeName())) {
                             issue.getBeenUpdatedBy().add(updateNode.getTextContent());
                         }
                     }
@@ -257,14 +253,52 @@ public class XmlFilehandling {
 
                 }
             } catch (ParserConfigurationException e) {
-                JOptionPane.showMessageDialog(it.errorFrame, "We were unable to locate the file, new_issues.xml. PC", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(it.errorFrame, "Parser config error.", "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
-            } catch(SAXException s) {
-                System.out.print("SAX");
-            }catch(IOException s) {
-                System.out.print("IO");
+            } catch (SAXException s) {
+                JOptionPane.showMessageDialog(it.errorFrame, "SAX parser error.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException s) {
+                JOptionPane.showMessageDialog(it.errorFrame, "We were unable to locate the file, new_issues.xml. PC", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } else if (!newFile.exists()){
+            try {
+                it.getIssueList().clear();
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(file);
+                NodeList nodelist = doc.getElementsByTagName("ISSUES");
+                for (int i = 0; i < nodelist.getLength(); i++) {
+
+                    Node node = nodelist.item(i);
+                    Element eElement = (Element) node;
+                    Issues issue = new Issues(Integer.parseInt(eElement.getAttribute("id")),
+                            eElement.getAttribute("assigned_user"),
+                            it.stringToDate(eElement.getAttribute("created")),
+                            eElement.getAttribute("text"),
+                            eElement.getAttribute("priority"),
+                            eElement.getAttribute("location"),
+                            "Not set");
+                    issue.setCreatedBy(eElement.getAttribute(("assigned_user")));
+                    issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
+                    issue.getBeenUpdatedBy().add(eElement.getAttribute("assigned_user"));
+
+                    it.getIssueList().add(issue);
+
+                }
+            } catch (ParserConfigurationException e) {
+                JOptionPane.showMessageDialog(it.errorFrame, "Parser config error.", "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            } catch (SAXException s) {
+                JOptionPane.showMessageDialog(it.errorFrame, "SAX parser error.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException s) {
+                JOptionPane.showMessageDialog(it.errorFrame, "We were unable to locate the file, old_issues.xml. PC", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+        else {
+            JOptionPane.showMessageDialog(it.errorFrame, "We were unable to locate the file, old_issues.xml or new_issues.xml. PC", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 
     /**
@@ -378,7 +412,7 @@ public class XmlFilehandling {
 
 
 
-    public static File getNewFile() {
+    public File getNewFile() {
         return newFile;
     }
 }
