@@ -40,8 +40,9 @@ public class Main implements Serializable {
 		XmlFilehandling xfh = new XmlFilehandling();
 		IssueTable it = new IssueTable(xfh);
 		Gui gui = new Gui(it);
+		gui.prioColumnSorter();
 		Controls controls = new Controls(gui, it, xfh);
 		controls.addActions();
-		System.out.println("Working Directory = " + System.getProperty("user.dir"));
+
 	}
 }

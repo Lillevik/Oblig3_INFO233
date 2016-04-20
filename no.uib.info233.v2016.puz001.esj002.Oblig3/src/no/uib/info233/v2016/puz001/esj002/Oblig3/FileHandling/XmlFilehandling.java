@@ -19,9 +19,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Date;
 
 /**
@@ -33,12 +31,12 @@ import java.util.Date;
  */
 public class XmlFilehandling {
 
-    private File file = new File(System.getProperty("user.dir") + "/old_issues.xml");
-    private File newFile = new File(System.getProperty("user.dir") + "/new_issues.xml");
-    private File userFile = new File(System.getProperty("user.dir") + "/users.xml");
+    private File file = new File(System.getProperty("user.dir") + "/Files/old_issues.xml");
+    private File newFile = new File(System.getProperty("user.dir") + "/Files/new_issues.xml");
+    private File userFile = new File(System.getProperty("user.dir") + "/Files/users.xml");
 
     /**
-     * This method writes all the objects and string in issueList and users list
+     * This method writes all the objects and string in issueList
      * into a single xml file containing all their info.
      */
     public void writeXmlFile(IssueTable it) {
@@ -61,7 +59,7 @@ public class XmlFilehandling {
                 details.setAttribute("assigned_user", i.getAssigned());
                 details.setAttribute("created", it.dateToString(i.getCreated()));
                 details.setAttribute("text", i.getIssue());
-                details.setAttribute("priority", i.getPriority());
+                details.setAttribute("priority", Integer.toString(i.getPriority()));
                 details.setAttribute("location", i.getLocation());
                 details.setAttribute("status", i.getStatus());
                 details.setAttribute("created_by", i.getCreatedBy());
@@ -74,8 +72,6 @@ public class XmlFilehandling {
                     details.appendChild(updater);
                 }
             }
-
-
 
             // Save the document to the disk file
             TransformerFactory tranFactory = TransformerFactory.newInstance();
@@ -90,8 +86,10 @@ public class XmlFilehandling {
 
             DOMSource source = new DOMSource(doc);
             try {
-                FileWriter fos = new FileWriter(newFile);
-                StreamResult result = new StreamResult(fos);
+                OutputStream os = new FileOutputStream(newFile);
+                OutputStreamWriter bufferedWriter = new OutputStreamWriter(os, "UTF8");
+                //FileWriter fos = new FileWriter(newFile);
+                StreamResult result = new StreamResult(bufferedWriter);
                 aTransformer.transform(source, result);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(it.errorFrame, "Could not write the file.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -109,8 +107,6 @@ public class XmlFilehandling {
             it.tableForIssues();
         }
     }
-
-
 
 
 
@@ -169,7 +165,8 @@ public class XmlFilehandling {
 
     /**
      * This method takes all the assigned users from the
-     * xml document "old_issues.xml" and places them into the ArrayList users.
+     * xml document "old_issues.xml" or the new "users.xml"
+     * and places them into the ArrayList users.
      */
     public void fillUsers(IssueTable it) {
         if (!userFile.exists()) {
@@ -216,16 +213,17 @@ public class XmlFilehandling {
     /**
      * This method clears the list of issues and fetches the new
      * issues from the xml file and puts them into the list.
-     * @param it
+     * @param it an instance is the IssueTable class.
      */
     public void fillIssues(IssueTable it){
 
         if(newFile.exists()) {
-            it.getIssueList().clear();
             try {
+                it.getIssueList().clear();
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
                 Document doc = dBuilder.parse(newFile);
+                doc.getDocumentElement().normalize();
                 NodeList nodelist = doc.getElementsByTagName("ISSUES");
                 for (int i = 0; i < nodelist.getLength(); i++) {
 
@@ -235,7 +233,7 @@ public class XmlFilehandling {
                             eElement.getAttribute("assigned_user"),
                             it.stringToDate(eElement.getAttribute("created")),
                             eElement.getAttribute("text"),
-                            eElement.getAttribute("priority"),
+                            Integer.parseInt(eElement.getAttribute("priority").trim()),
                             eElement.getAttribute("location"),
                             eElement.getAttribute("status"));
                     issue.setCreatedBy(eElement.getAttribute(("created_by")));
@@ -251,14 +249,19 @@ public class XmlFilehandling {
                     }
                     it.getIssueList().add(issue);
 
+
                 }
+                it.changePrio();
             } catch (ParserConfigurationException e) {
                 JOptionPane.showMessageDialog(it.errorFrame, "Parser config error.", "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
+            } catch (FileNotFoundException f){
+                JOptionPane.showMessageDialog(it.errorFrame, "We were unable to locate the file, new_issues.xml. ", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (SAXException s) {
                 JOptionPane.showMessageDialog(it.errorFrame, "SAX parser error.", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (IOException s) {
-                JOptionPane.showMessageDialog(it.errorFrame, "We were unable to locate the file, new_issues.xml. PC", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(it.errorFrame, "Something went wrong while parsing new_issues.xml", "Error", JOptionPane.ERROR_MESSAGE);
+                s.printStackTrace();
             }
 
         } else if (!newFile.exists()){
@@ -267,6 +270,7 @@ public class XmlFilehandling {
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
                 Document doc = dBuilder.parse(file);
+                doc.getDocumentElement().normalize();
                 NodeList nodelist = doc.getElementsByTagName("ISSUES");
                 for (int i = 0; i < nodelist.getLength(); i++) {
 
@@ -276,27 +280,32 @@ public class XmlFilehandling {
                             eElement.getAttribute("assigned_user"),
                             it.stringToDate(eElement.getAttribute("created")),
                             eElement.getAttribute("text"),
-                            eElement.getAttribute("priority"),
+                            Integer.parseInt(eElement.getAttribute("priority").trim()),
                             eElement.getAttribute("location"),
-                            "Not set");
+                            "Closed");
                     issue.setCreatedBy(eElement.getAttribute(("assigned_user")));
                     issue.setLastUpdatedBy(eElement.getAttribute("assigned_user"));
                     issue.getBeenUpdatedBy().add(eElement.getAttribute("assigned_user"));
 
                     it.getIssueList().add(issue);
-
                 }
+                it.changePrio();
             } catch (ParserConfigurationException e) {
                 JOptionPane.showMessageDialog(it.errorFrame, "Parser config error.", "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             } catch (SAXException s) {
                 JOptionPane.showMessageDialog(it.errorFrame, "SAX parser error.", "Error", JOptionPane.ERROR_MESSAGE);
-            } catch (IOException s) {
+
+            } catch (FileNotFoundException f){
+                System.out.println(f.getMessage());
                 JOptionPane.showMessageDialog(it.errorFrame, "We were unable to locate the file, old_issues.xml. PC", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException s) {
+                s.printStackTrace();
+                JOptionPane.showMessageDialog(it.errorFrame, "Something went wrong during parsing the file old_issues.xml.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
         else {
-            JOptionPane.showMessageDialog(it.errorFrame, "We were unable to locate the file, old_issues.xml or new_issues.xml. PC", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(it.errorFrame, "We were unable to locate the file, old_issues.xml or new_issues.xml. ", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -304,7 +313,7 @@ public class XmlFilehandling {
     /**
      * This method looks through the xml documents and fetches the
      * highest id number in order to use this when creating new issues.
-     * @return String of the highest id
+     * @return String of the highest id + 1
      */
     public String getHighest() {
         String currentResult = null;
@@ -363,7 +372,7 @@ public class XmlFilehandling {
                details.setAttribute("assigned_user", "");
                details.setAttribute("created", it.dateToString(new Date()));
                details.setAttribute("text", i.getIssueText().getText());
-               details.setAttribute("priority", i.getChoosePrio().getSelectedItem().toString());
+               details.setAttribute("priority", Integer.toString(Gui.convertChoosePriority(i.getChoosePrio())));
                details.setAttribute("location", i.getLocationText().getText());
                details.setAttribute("status", "Open");
                details.setAttribute("created_by", "");
@@ -388,8 +397,13 @@ public class XmlFilehandling {
 
                DOMSource source = new DOMSource(doc);
                try {
-                   FileWriter fos = new FileWriter(newFile);
-                   StreamResult result = new StreamResult(fos);
+
+
+                   OutputStream os = new FileOutputStream(newFile);
+                   OutputStreamWriter bufferedWriter = new OutputStreamWriter(os, "UTF8");
+
+                   //FileWriter fos = new FileWriter(newFile);
+                   StreamResult result = new StreamResult(bufferedWriter);
                    aTransformer.transform(source, result);
                } catch (IOException e) {
                    JOptionPane.showMessageDialog(it.errorFrame, "Could not write the file.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -411,7 +425,11 @@ public class XmlFilehandling {
        }
 
 
-
+    /**
+     * Getter for the newFile that is created
+     * when the application adds or updates any issues.
+     * @return the newFile
+     */
     public File getNewFile() {
         return newFile;
     }

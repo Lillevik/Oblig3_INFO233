@@ -6,10 +6,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.PriorityRenderer;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
 import java.io.Serializable;
-
 
 
 /**
@@ -28,6 +28,7 @@ public class Gui extends JFrame implements Serializable{
 	private IssuePanel ip = new IssuePanel();
 	private UpdatePanel up = new UpdatePanel();
 	private DetailsPanel dp = new DetailsPanel();
+	private PriorityRenderer pr = new PriorityRenderer();
 /*
 	private Listener listener;
 
@@ -98,7 +99,7 @@ public class Gui extends JFrame implements Serializable{
 	 * which is made from the xml doc.
 	 */
 	private JTable qTable;
-	private TableRowSorter sorter = new TableRowSorter();
+	private TableRowSorter<DefaultTableModel> sorter;
 	private JScrollPane pane;
 	private TablePanel tp;
 
@@ -135,6 +136,7 @@ public class Gui extends JFrame implements Serializable{
 	public Gui(IssueTable issueTable){
 		super("Issue Tracker");
 		this.it = issueTable;
+		sorter = new TableRowSorter<DefaultTableModel>(it.getModel());
 		spine = new JPanel(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		spine.setLayout(border);
@@ -143,7 +145,7 @@ public class Gui extends JFrame implements Serializable{
 		setupComponents();
 		updateChooseUser();
 		setJMenuBar(menuBar);
-		setContentPane(lp);
+		setContentPane(spine);
 		pack();
 		setVisible(true);
 	}
@@ -161,8 +163,11 @@ public class Gui extends JFrame implements Serializable{
 		chooseUser = new JComboBox(it.getUsers().toArray());
 		chooseUser2 = new JComboBox(it.getUsers().toArray());
 
-		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(it.getModel());
+
 		qTable.setRowSorter(sorter);
+
+
+
 
 
 		/*
@@ -332,8 +337,15 @@ public class Gui extends JFrame implements Serializable{
 						issue.getPriority(),
 						issue.getLocation(),
 						issue.getStatus()});
+				prioColumnSorter();
 			}
 		}
+	}
+
+
+
+	public void prioColumnSorter(){
+		qTable.getColumnModel().getColumn(3).setCellRenderer(pr);
 	}
 
 	
@@ -347,13 +359,45 @@ public class Gui extends JFrame implements Serializable{
 	}
 
 
-	
-	/**
-	 * The qtable is the table displaying the lists.
-	 * the contents of the table are edited by other methods
-	 * mainly it contains users and issues.
-	 * @return the qTable
-	 */
+	public static int convertChoosePriority(JComboBox box) {
+		if (box.getSelectedItem().toString().equals("Kritisk")) {
+			return 1;
+		} else if (box.getSelectedItem().toString().equals(("Høy"))) {
+			return 2;
+		} else if (box.getSelectedItem().toString().equals(("Normal"))) {
+			return 3;
+		} else if (box.getSelectedItem().toString().equals(("Lav"))) {
+			return 4;
+		} else if (box.getSelectedItem().toString().equals(("Ikke prioritert"))) {
+			return 5;
+		}
+		return 0;
+	}
+
+	public String updateBox(int i){
+		if(i == 1){
+			return "Kritisk";
+		} else if(i == 2){
+			return "Høy";
+		} else if(i == 3){
+			return "Normal";
+		} else if(i == 4){
+			return "Lav";
+		} else if(i == 5){
+			return "Ikke prioritert";
+		}
+		return null;
+	}
+
+
+
+
+			/**
+             * The qtable is the table displaying the lists.
+             * the contents of the table are edited by other methods
+             * mainly it contains users and issues.
+             * @return the qTable
+             */
 	public JTable getqTable() {
 		return qTable;
 	}

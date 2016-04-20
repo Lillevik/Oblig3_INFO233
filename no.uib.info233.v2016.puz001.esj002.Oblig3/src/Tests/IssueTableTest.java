@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.swing.*;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
@@ -34,16 +35,16 @@ public class IssueTableTest{
     @Test
     public void testChangePrioSingle() throws Exception {
         setUp();
-        Issues issue = new Issues(1, "user", new Date(), "Issue here", "44", "Norway", "Closed");
+        Issues issue = new Issues(1, "user", new Date(), "Issue here", 44, "Norway", "Closed");
 
-        String expected = "Normal";
-        String result = it.changePrioSingle(issue);
+        int expected = 3;
+        int result = it.changePrioSingle(issue);
 
-        assertEquals(expected,result);
+       assertEquals(expected,result);
     }
 
     /*
-     * This test only works on  04/15/2016.
+     * This test only works on  04/20/2016.
      * This must be changed in order to work on
      * a different day. Format = MM/dd/yyyy
      * @throws Exception
@@ -52,7 +53,7 @@ public class IssueTableTest{
     public void testDateToString() throws Exception {
         setUp();
 
-        String expected = "04/17/2016";
+        String expected = "04/20/2016";
         String result = it.dateToString(d);
 
         assertEquals(expected , result);
