@@ -27,11 +27,12 @@ public class IssueTableTest{
         d = new Date();
     }
 
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
+    /**
+     * This method tests the changePrioSingle
+     * method. It works as it is supposed to
+     * but the looks of it.
+     * @throws Exception
+     */
     @Test
     public void testChangePrioSingle() throws Exception {
         setUp();
@@ -43,8 +44,8 @@ public class IssueTableTest{
        assertEquals(expected,result);
     }
 
-    /*
-     * This test only works on  04/20/2016.
+    /**
+     * This test only works on  04/21/2016.
      * This must be changed in order to work on
      * a different day. Format = MM/dd/yyyy
      * @throws Exception
@@ -53,13 +54,13 @@ public class IssueTableTest{
     public void testDateToString() throws Exception {
         setUp();
 
-        String expected = "04/20/2016";
+        String expected = "04/21/2016";
         String result = it.dateToString(d);
 
         assertEquals(expected , result);
     }
 
-    /*
+    /**
      * This method is working the way it should do, but it
      * does not work because the time is different. The date
      * however, works as it is supposed to. Example:

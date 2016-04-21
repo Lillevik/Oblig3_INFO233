@@ -145,7 +145,7 @@ public class Gui extends JFrame implements Serializable{
 		setupComponents();
 		updateChooseUser();
 		setJMenuBar(menuBar);
-		setContentPane(spine);
+		setContentPane(lp);
 		pack();
 		setVisible(true);
 	}

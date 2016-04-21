@@ -59,7 +59,7 @@ public class Controls {
 
 
     /**
-     * This method adds and action listener to the
+     * This method adds an action listener to the
      * btnSearch JButton from gui so  that is searches
      * for all issues by the given user.
      */
@@ -445,7 +445,7 @@ public class Controls {
         public void actionPerformed(ActionEvent e) {
             try {
                 File file = new File("newProgram.jar");
-                Process proc = Runtime.getRuntime().exec("java -jar" + file);// newProgram.jar");
+                Process proc = Runtime.getRuntime().exec("java -jar newProgram.jar");
                 proc.getOutputStream();
                 System.out.println("A new program was started successfully! :D");
             }catch (FileNotFoundException io) {
