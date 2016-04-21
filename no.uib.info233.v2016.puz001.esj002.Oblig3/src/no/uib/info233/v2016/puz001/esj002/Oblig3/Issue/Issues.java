@@ -11,7 +11,7 @@ import java.util.*;
  *This class is made to create objects containing the
  *values from the ISSUES elements in the old_issues.xml file.
  */
-public class Issues implements Comparable<Issues>, Serializable {
+public class Issues implements Serializable {
 
 
 	//These are the fields for the Issues class.
@@ -20,7 +20,7 @@ public class Issues implements Comparable<Issues>, Serializable {
 	private String assigned;
 	private Date created;
 	private String issue;
-	private String priority;
+	private int priority;
 	private String location;
 	private String status;
 	private String createdBy;
@@ -39,7 +39,7 @@ public class Issues implements Comparable<Issues>, Serializable {
 	 * @param location
 	 */
 	public Issues(int id, String assigned, Date created, String issue,
-				  String priority, String location, String status) {
+				  int priority, String location, String status) {
 		this.id = id;
 		this.assigned = assigned;
 		this.created = created;
@@ -47,7 +47,6 @@ public class Issues implements Comparable<Issues>, Serializable {
 		this.priority = priority;
 		this.location = location;
 		this.status = status;
-
 	}
 
 	public void addUpdated(String s) {
@@ -55,37 +54,6 @@ public class Issues implements Comparable<Issues>, Serializable {
 			beenUpdatedBy.add(s);
 		}
 	}
-
-	@Override
-	public int compareTo(Issues issues) {
-		return getCreated().compareTo(issues.getCreated());
-	}
-
-
-	public void sortPrio() {
-
-
-	String[] order = {"Red", "Green", "Magenta", "Silver"};
-	List<String> definedOrder = Arrays.asList(order);
-	Comparator<Issues> comparator = new Comparator<Issues>() {
-
-		@Override
-		public int compare(final Issues o1, final Issues o2) {
-			// let your comparator look up your car's color in the custom order
-			return Integer.valueOf(
-					definedOrder.indexOf(o1.getPriority()))
-					.compareTo(
-							Integer.valueOf(
-									definedOrder.indexOf(o2.getPriority())));
-		}
-	};
-}
-
-
-
-
-
-
 
 	/**
 	 * This is a getter for the field id which
@@ -180,7 +148,7 @@ public class Issues implements Comparable<Issues>, Serializable {
 	 * returns the current priority value as a string.
 	 * @return the priority
 	 */
-	public String getPriority() {
+	public int getPriority() {
 		return priority;
 	}
 
@@ -191,7 +159,7 @@ public class Issues implements Comparable<Issues>, Serializable {
 	 * sets the value of the field to a different value.
 	 * @param priority the priority to set
 	 */
-	public void setPriority(String priority) {
+	public void setPriority(int priority) {
 		this.priority = priority;
 	}
 
@@ -267,6 +235,11 @@ public class Issues implements Comparable<Issues>, Serializable {
 		return beenUpdatedBy;
 	}
 
+	/**
+	 * This is a setter for the status which takes a string
+	 * as an input and changes the status acordingly.
+	 * @param status
+	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}

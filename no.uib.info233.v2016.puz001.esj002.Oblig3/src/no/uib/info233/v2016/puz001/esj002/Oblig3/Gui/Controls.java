@@ -1,7 +1,6 @@
 package no.uib.info233.v2016.puz001.esj002.Oblig3.Gui;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
-import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.SaveProgram;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.XmlFilehandling;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
@@ -10,12 +9,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
-import java.util.EventListener;
+
 
 /**
- * Created by goat on 19.04.16.
+ * The purpose of this class was to gather all the
+ * action listeners in one class to easily have "control"
+ * of them instead of spending time searching for them.
+ * Created by Marius on 19.04.16.
  */
 public class Controls {
     private Gui gui;
@@ -33,17 +37,23 @@ public class Controls {
         idSearch();
         prioritySearch();
         dateSearch();
+
         listAllusers();
         listAllIssues();
+
         addNewUser();
         changeToIssuePanel();
         createNewIssue();
+
         login();
         switchUser();
+
         updatePanel();
         updateIssue();
+
         returnFromUpdatePanel();
         returnFromIssuePanel();
+
         showIssueText();
         listAllUpdaters();
         startNewProgram();
@@ -52,7 +62,7 @@ public class Controls {
 
 
     /**
-     * This method adds and action listener to the
+     * This method adds an action listener to the
      * btnSearch JButton from gui so  that is searches
      * for all issues by the given user.
      */
@@ -68,10 +78,10 @@ public class Controls {
                         it.getModel().addRow(new Object[]{issue.getId(),
                                 issue.getAssigned(),
                                 issue.getCreated(),
-
                                 issue.getPriority(),
                                 issue.getLocation(),
                                 issue.getStatus()});
+                        gui.prioColumnSorter();
                     }
                 }
             }
@@ -89,19 +99,7 @@ public class Controls {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-				/*	it.tableRows();
-					Issues issue = it.getIssueMap().get(Integer.parseInt(gui.getTxtId().getText()));
-
-					it.getModel().addRow(new Object[]{issue.getId(),
-							issue.getAssigned(),
-							issue.getCreated(),
-							issue.getPriority(),
-							issue.getLocation(),
-							issue.getStatus()});
-				} catch (IndexOutOfBoundsException f) {
-					JOptionPane.showMessageDialog(it.errorFrame, "Error getting ID's");
-				}*/
-
+                    //This method is efficient, but only works when the list is ordered. Which it was in this case.
                     Issues issue = it.getIssueList().get(Integer.parseInt(gui.getTxtId().getText()) - 1);
 
                     it.tableRows();
@@ -111,7 +109,7 @@ public class Controls {
                             issue.getPriority(),
                             issue.getLocation(),
                             issue.getStatus()});
-                    System.out.println(issue.getId());
+                    gui.prioColumnSorter();
                 } catch (IndexOutOfBoundsException f) {
                     JOptionPane.showMessageDialog(it.errorFrame, "Error getting ID's");
                 }
@@ -131,13 +129,14 @@ public class Controls {
                 it.tableRows();
 
                 for (Issues issue : it.getIssueList()) {
-                    if (issue.getPriority().equals(gui.getSearchPrior().getSelectedItem().toString())) {
+                    if (issue.getPriority() == gui.convertChoosePriority(gui.getSearchPrior())) {
                         it.getModel().addRow(new Object[]{issue.getId(),
                                 issue.getAssigned(),
                                 issue.getCreated(),
                                 issue.getPriority(),
                                 issue.getLocation(),
                                 issue.getStatus()});
+                        gui.prioColumnSorter();
                     }
                 }
             }
@@ -162,7 +161,7 @@ public class Controls {
                                 issue.getPriority(),
                                 issue.getLocation(),
                                 issue.getStatus()});
-                        System.out.print(issue.getCreated());
+                        gui.prioColumnSorter();
                     }
                 }
 
@@ -198,24 +197,20 @@ public class Controls {
             @Override
             public void actionPerformed(ActionEvent e) {
                 it.tableRows();
+                it.tableForIssues();
+                gui.prioColumnSorter();
 
-                for (Issues i : it.getIssueList()) {
-                    it.getModel().addRow(new Object[]{i.getId(),
-                            i.getAssigned(),
-                            i.getCreated(),
-                            i.getPriority(),
-                            i.getLocation(),
-                            i.getStatus()});
-                }
+
             }
         });
     }
 
+    /**
+     * This method simply adds a user to the arrayList users
+     * using methods from IssueTable.
+     */
     public void addNewUser(){
-        /**
-         * This method simply adds a user to the arrayList users
-         * using methods from IssueTable.
-         */
+
         gui.getBtnAddUser().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -254,27 +249,35 @@ public class Controls {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            //Creates new issue.
-            //xfh.fillIssues(it);
+            xfh.fillIssues(it);
             Issues is = new Issues(Integer.parseInt(xfh.getHighest()),
                     gui.getChooseUser().getSelectedItem().toString(),
                     new Date(),
                     gui.getIp().getIssueText().getText(),
-                    gui.getChoosePriority().getSelectedItem().toString(),
+                    gui.convertChoosePriority(gui.getChoosePriority()),
                     gui.getIp().getLocationText().getText(),
                     "Open");
+
             is.setCreatedBy(it.getCurrentUser());
             is.setLastUpdatedBy(it.getCurrentUser());
             is.addUpdated(it.getCurrentUser());
+
             it.getIssueList().add(is);
-            it.tableForIssues();
+
+
 
             //Writes to files.
             xfh.writeXmlFile(it);
             xfh.writeUsersToXml(it);
+
+            it.tableRows();
+            it.tableForIssues();
+            gui.prioColumnSorter();
+
             //Changes panel
             gui.setContentPane(gui.getSpine());
             gui.pack();
+
         }
     });}
 
@@ -322,7 +325,7 @@ public class Controls {
             } else {
                 //gui.updateChooseUser();
                 gui.getChooseUser2().setSelectedItem(gui.getqTable().getValueAt(i, 1).toString().trim());
-                gui.getChoosePrio2().setSelectedItem(gui.getqTable().getValueAt(i, 3).toString());
+                gui.getChoosePrio2().setSelectedItem(gui.updateBox(Integer.parseInt(gui.getqTable().getValueAt(i, 3).toString())));
                 gui.getUp().getIssueText().setText(it.getSelectedIssue(gui.getqTable()));
                 gui.getUp().getLocationText().setText(gui.getqTable().getValueAt(i, 4).toString());
                 gui.setContentPane(gui.getUp());
@@ -340,22 +343,24 @@ public class Controls {
         @Override
         public void actionPerformed(ActionEvent e) {
             int j = gui.getqTable().getSelectedRow();
-            String prio = String.valueOf(gui.getChoosePrio2().getSelectedItem());
             for (Issues i : it.getIssueList()) {
                 if (i.getId() == Integer.parseInt(gui.getqTable().getValueAt(j, 0).toString())) {
-                    gui.getChooseUser2();
-                    it.getModel().removeRow(j);
+                    //gui.getChooseUser2();
+                    //it.getModel().removeRow(j);
                     i.setAssigned(gui.getChooseUser2().getSelectedItem().toString());
-                    i.setPriority(prio);
+                    i.setPriority(gui.convertChoosePriority(gui.getChoosePrio2()));
                     i.setIssue(gui.getUp().getIssueText().getText());
                     i.setLocation(gui.getUp().getLocationText().getText());
                     i.setLastUpdatedBy(it.getCurrentUser());
+                    i.setStatus(gui.getUp().getStatusBox().getSelectedItem().toString());
                     i.addUpdated(it.getCurrentUser());
-                    it.tableForIssues();
                 }
             }
 
             xfh.writeXmlFile(it);
+            it.tableRows();
+            it.tableForIssues();
+            gui.prioColumnSorter();
             gui.setContentPane(gui.getSpine());
             gui.pack();
         }
@@ -430,20 +435,28 @@ public class Controls {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
+                File file = new File("newProgram.jar");
                 Process proc = Runtime.getRuntime().exec("java -jar newProgram.jar");
                 proc.getOutputStream();
                 System.out.println("A new program was started successfully! :D");
-            } catch (IOException io) {
+            }catch (FileNotFoundException io) {
                 System.out.println("Could not find the newProgram.jar file.");
+            } catch (IOException io) {
+                System.out.println("There was a problem launching the file.");
             }
         }
     });}
 
+    /**
+     * This method updates the issueList
+     */
     public void updateIssueListFromFile(){
     gui.getDp().getUpdateList().addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+
             it.updateTable();
+            gui.prioColumnSorter();
         }
     });}
 

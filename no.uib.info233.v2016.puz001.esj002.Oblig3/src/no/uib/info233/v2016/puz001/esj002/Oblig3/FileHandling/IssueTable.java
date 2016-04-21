@@ -15,23 +15,20 @@ import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
 
 /**
- * This is a class which deals with handling the xml files
- * and creating lists of strings and object from the xml file.
- * We added a HashMap to this class to get single instances of the Issues
- * class without having to look through the entire collection. An example of this
- * the ID search function. Using the hashMap uses the ID of the
+ * This is a class which deals with handling the JTable
+ * and creating lists of strings and object for presentation in the table.
  */
 public class IssueTable implements Serializable{
 
+	//Fields for the IssueTable class
 	public static ErrorFrame errorFrame = new ErrorFrame();
 	private static final long serialVersionUID = -6349521349294077303L;
-	//Fields for the IssueTable class
 	private TableModel model = new TableModel();
 	private ArrayList<String> users = new ArrayList<String>();
 	private ArrayList<Issues> issueList = new ArrayList<Issues>();
-	private HashMap<Integer, Issues> issueMap = new HashMap<>();
 	private String currentUser = new String();
 	private XmlFilehandling xfh;
+	private PriorityRenderer pr = new PriorityRenderer();
 
 	/**
 	 * Constructor for the IssueTable class.
@@ -43,8 +40,6 @@ public class IssueTable implements Serializable{
 		this.xfh = xfh;
 		xfh.fillUsers(this);
 		xfh.fillIssues(this);
-		fillMap();
-		changePrio();
 		tableForIssues();
 	}
 
@@ -64,18 +59,10 @@ public class IssueTable implements Serializable{
 
 	/**
 	 * Adds a user to the users ArrayList.
-	 *
-	 * @param name
+	 * @param name of the user in form of a String
 	 */
 	public void addUser(String name) {
 		users.add(name);
-	}
-
-
-	public void fillMap(){
-		for(Issues i : issueList){
-			issueMap.put(i.getId(),i);
-		}
 	}
 
 
@@ -85,7 +72,6 @@ public class IssueTable implements Serializable{
 	 */
 	public void tableForIssues() {
 		tableRows();
-
 		for (Issues issue : issueList) {
 			model.addRow(new Object[]{issue.getId(),
 					issue.getAssigned(),
@@ -97,8 +83,10 @@ public class IssueTable implements Serializable{
 	}
 
 	/**
-	 * This method converts all the int priorities into 5 different Strings
-	 * depending on the value if the integer.
+	 * This method converts all the int priorities into 5 different integers
+	 * depending on the value of the integer. This is being done by simply
+	 * taking all the issues in the list and take them through the
+	 * changePrioSingle method.
 	 */
 	public void changePrio() {
 		if (!xfh.getNewFile().exists()) {
@@ -109,24 +97,28 @@ public class IssueTable implements Serializable{
 	}
 
 	/**
-	 * This method converts all the int priorities into 5 different Strings
-	 * depending on the value if the integer.
+	 * This method converts an issues priority into integers
+	 * from 5 - 1 depending on the value if the integer. This is
+	 * done so that we can easily sort them later. These are
+	 * presented as Strings in the JTable even though they in
+	 * reality actually are integers.
 	 */
-	public String changePrioSingle(Issues issue) {
-				int prior = Integer.parseInt(String.valueOf(issue.getPriority().trim()));
+	public int changePrioSingle(Issues issue) {
+				int prior = issue.getPriority();
 				if (prior >= 80) {
-					issue.setPriority("Kritisk");
+					issue.setPriority(1);
 				} else if (prior >= 60 && prior < 80) {
-					issue.setPriority("Høy");
+					issue.setPriority(2);
 				} else if (prior >= 40 && prior < 60) {
-					issue.setPriority("Normal");
+					issue.setPriority(3);
 				} else if (prior >= 20 && prior < 40) {
-					issue.setPriority("Lav");
+					issue.setPriority(4);
 				} else if (prior >= 0 && prior < 20) {
-					issue.setPriority("Ikke prioritert");
+					issue.setPriority(5);
 				}
 		return issue.getPriority();
 	}
+
 
 	/**
 	 * This method returns the selected issue depending on the current
@@ -218,7 +210,7 @@ public class IssueTable implements Serializable{
 
 	/**
 	 * This method returns the users ArrayList
-	 * @return the users
+	 * @return the arrayList users
 	 */
 	public ArrayList<String> getUsers() {
 
@@ -242,13 +234,6 @@ public class IssueTable implements Serializable{
 		return currentUser;
 	}
 
-	/**
-	 * This method returns the IssueMap containing issues.
-	 * @return
-     */
-	public HashMap<Integer, Issues> getIssueMap() {
-		return issueMap;
-	}
 
 	/**
 	 * This method takes a Date as a parameter and
@@ -285,7 +270,6 @@ public class IssueTable implements Serializable{
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(errorFrame,
 					"There was a problem converting the String to a Date.", "Error", JOptionPane.ERROR_MESSAGE);
-
 		}
 
 		if(date != null){
@@ -295,7 +279,9 @@ public class IssueTable implements Serializable{
 	}
 
 	/**
-	 * This method is made to reduce code duplication
+	 * This method clears the model and readds the rows
+	 * and columns again.
+	 * It was primarily made to reduce code duplication
 	 * by reusing some code where possible.
 	 */
 	public void tableRows(){
@@ -309,9 +295,16 @@ public class IssueTable implements Serializable{
 		model.addColumn("Status: ");
 	}
 
+	/**
+	 * This method fetches the updated information
+	 * from the xml file, clears the table and
+	 * adds the updated information thereafter.
+	 */
 	public void updateTable(){
 		xfh.fillIssues(this);
-		changePrio();
+		tableRows();
 		tableForIssues();
 	}
+
+
 }

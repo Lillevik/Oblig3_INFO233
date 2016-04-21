@@ -23,10 +23,14 @@ public class UpdatePanel extends JPanel implements Serializable{
 	private JLabel userLabel = new JLabel("Assign to:");
 	private JLabel priority = new JLabel("Priority:");
 	private JLabel locationField = new JLabel("Location:");
+	private JLabel statusLabel = new JLabel("Status:");
+
 	private JTextField locationText = new JTextField();
 	private JTextArea issueText = new JTextArea("Write issue here.");
 	private JButton createButton = new JButton("Update");
 	private JButton backButton = new JButton("Cancel");
+	private String[] status = new String[]{"Closed", "Open"};
+	private JComboBox statusBox = new JComboBox(status);
 
 	
 	
@@ -49,6 +53,12 @@ public class UpdatePanel extends JPanel implements Serializable{
 	private void placeComponents(JPanel panel) {
 
 		panel.setLayout(null);
+
+		statusLabel.setBounds(200, 160, 80, 25);
+		panel.add(statusLabel);
+
+		statusBox.setBounds(290, 160, 160, 25);
+		panel.add(statusBox);
 
 		userLabel.setBounds(200, 200, 80, 25);
 		panel.add(userLabel);
@@ -111,10 +121,7 @@ public class UpdatePanel extends JPanel implements Serializable{
 		return backButton;
 	}
 
-	/**
-	 * @param backButton the backButton to set
-	 */
-	public void setBackButton(JButton backButton) {
-		this.backButton = backButton;
-	}	
+	public JComboBox getStatusBox() {
+		return statusBox;
+	}
 }

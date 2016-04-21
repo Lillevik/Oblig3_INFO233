@@ -6,10 +6,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.IssueTable;
+import no.uib.info233.v2016.puz001.esj002.Oblig3.FileHandling.PriorityRenderer;
 import no.uib.info233.v2016.puz001.esj002.Oblig3.Issue.Issues;
 
 import java.io.Serializable;
-
 
 
 /**
@@ -19,8 +19,6 @@ import java.io.Serializable;
 public class Gui extends JFrame implements Serializable{
 
 
-	
-	
 	//The fields of the Gui class
 	private static final long serialVersionUID = 167504218040359025L;
 	private JPanel spine;
@@ -28,11 +26,7 @@ public class Gui extends JFrame implements Serializable{
 	private IssuePanel ip = new IssuePanel();
 	private UpdatePanel up = new UpdatePanel();
 	private DetailsPanel dp = new DetailsPanel();
-/*
-	private Listener listener;
-
-	public void setListener(Listener listener) */
-
+	private PriorityRenderer pr = new PriorityRenderer();
 
 	/*
 	 * JPanels used in the Gui.
@@ -70,7 +64,6 @@ public class Gui extends JFrame implements Serializable{
 	private JTextField txtPriority;
 	private JTextField txtId;
 
-
 	/*
 	 * Searchlabel is the label
 	 * above the input fields that says
@@ -98,7 +91,7 @@ public class Gui extends JFrame implements Serializable{
 	 * which is made from the xml doc.
 	 */
 	private JTable qTable;
-	private TableRowSorter sorter = new TableRowSorter();
+	private TableRowSorter<DefaultTableModel> sorter;
 	private JScrollPane pane;
 	private TablePanel tp;
 
@@ -111,7 +104,6 @@ public class Gui extends JFrame implements Serializable{
 	 * JComboBoxes are drop down panels
 	 * making it easier to chose and input.
 	 * The choose user lets you drop down all users etc.
-	 *
 	 */
 	private String[] priorities = {"Ikke prioritert", "Lav", "Normal", "Høy", "Kritisk"};
 	private JComboBox chooseUser;
@@ -119,7 +111,6 @@ public class Gui extends JFrame implements Serializable{
 	private JComboBox choosePrio2 = new JComboBox(priorities);
 	private JComboBox choosePriority = new JComboBox(priorities);
 	private JComboBox searchPrior = new JComboBox(priorities);
-// te
 	/*
 	 * The JMenu items make the menu on the top of the program
 	 */
@@ -131,10 +122,12 @@ public class Gui extends JFrame implements Serializable{
 	/**
 	 * Constructor for the Gui class which extends from JFrame.
 	 * Creates the Gui and fills it with components.
+	 * @param issueTable
 	 */
 	public Gui(IssueTable issueTable){
 		super("Issue Tracker");
 		this.it = issueTable;
+		sorter = new TableRowSorter<DefaultTableModel>(it.getModel());
 		spine = new JPanel(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		spine.setLayout(border);
@@ -160,14 +153,9 @@ public class Gui extends JFrame implements Serializable{
 		tp = new TablePanel(pane);
 		chooseUser = new JComboBox(it.getUsers().toArray());
 		chooseUser2 = new JComboBox(it.getUsers().toArray());
-
-		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(it.getModel());
 		qTable.setRowSorter(sorter);
 
-
-		/*
-		 * Sets up the JMenu
-		 */
+		//Sets up the JMenu
 		menuBar.add(file);
 		menuBar.add(help);
 		JMenuItem save = new JMenuItem("Save");
@@ -175,29 +163,24 @@ public class Gui extends JFrame implements Serializable{
 		file.add(save);
 		help.add(about);
 
-		/**
-		 *Initialize the JPanels
-		 */
+
+		//Initialize the JPanels
 		panelBackLeft = new JPanel(border);
 		panelBackLeftTop = new JPanel();
 		panelBackLeftBot = new JPanel();
 
-		/**
-		 * init the one and only JLabels in the class
-		 */
+
+		//init the one and only JLabels in the class
 		searchLabel = new JLabel();
 
-		/**
-		 * init the JTexFields in the class
-		 */
+
+		 //init the JTexFields in the class
 		txtSearch = new JTextField("search/add User");
 		txtDate = new JTextField("search date mm/dd/yyyy");
 		txtId = new JTextField("Search ID");
 
-		/**
-		 * setting up the ComboBoxes
-		 * makin em pretty
-		 */
+
+		//setting up the ComboBoxes
 		chooseUser.setBounds(290, 200, 160, 25);
 		ip.add(chooseUser);
 		choosePriority.setBounds(290, 240, 160, 25);
@@ -207,7 +190,7 @@ public class Gui extends JFrame implements Serializable{
 		choosePrio2.setBounds(290, 240, 160, 25);
 		up.add(choosePrio2);
 
-		/**
+		/*
 		 * Setting up the JPanel layers in the program
 		 * making everything fit and look ok+
 		 */
@@ -241,10 +224,8 @@ public class Gui extends JFrame implements Serializable{
 		update = new JButton("Update issue");
 		btnId = new JButton("Search ID");
 
-		/**
-		 * seting up the buttons
-		 * pretty etc
-		 */
+
+		//setting up the buttons
 		btnSearch.setSize(new Dimension( 20, 20));
 		btnListAllUsers.setSize(new Dimension(20, 20));
 		btnAddUser.setSize(new Dimension(20, 20));
@@ -253,10 +234,9 @@ public class Gui extends JFrame implements Serializable{
 		update.setSize(new Dimension( 20, 20));
 		btnId.setSize(new Dimension( 20, 20));
 
-		/**
-		 * Setting up the JLabels for txt info and login info
-		 * filling the info
-		 */
+
+		 /* Setting up the JLabels for txt info and login info
+		 * filling the info */
 		txtInfo = new JTextPane();
 		txtInfo.setText("Fill a field and press the correct button to search. Date field -> Date btn etc");
 		txtInfo.setPreferredSize(new Dimension(190, 100));
@@ -266,10 +246,9 @@ public class Gui extends JFrame implements Serializable{
 		txtLoggedIn.setEditable(false);
 		txtLoggedIn.setPreferredSize(new Dimension(190, 20));
 
-		/*
-		 * where all the components are added to the
-		 * correct JPanels or "Layers" of the program.
-		 */
+
+		 /* where all the components are added to the
+		 * correct JPanels or "Layers" of the program.*/
 		spine.add(menuBar);
 		panelBackLeft.add(panelBackLeftTop, BorderLayout.CENTER);
 		panelBackLeft.add(panelBackLeftBot, BorderLayout.NORTH);
@@ -332,8 +311,15 @@ public class Gui extends JFrame implements Serializable{
 						issue.getPriority(),
 						issue.getLocation(),
 						issue.getStatus()});
+				prioColumnSorter();
 			}
 		}
+	}
+
+
+
+	public void prioColumnSorter(){
+		qTable.getColumnModel().getColumn(3).setCellRenderer(pr);
 	}
 
 	
@@ -347,13 +333,59 @@ public class Gui extends JFrame implements Serializable{
 	}
 
 
-	
+	/**
+	 * This method takes a comboBox as a parameter and changes
+	 * the what is returned into an integer so that it can be used
+	 * while comparing Priorities.
+	 * @param box
+	 * @return
+	 */
+	public static int convertChoosePriority(JComboBox box) {
+		if (box.getSelectedItem().toString().equals("Kritisk")) {
+			return 1;
+		} else if (box.getSelectedItem().toString().equals(("Høy"))) {
+			return 2;
+		} else if (box.getSelectedItem().toString().equals(("Normal"))) {
+			return 3;
+		} else if (box.getSelectedItem().toString().equals(("Lav"))) {
+			return 4;
+		} else if (box.getSelectedItem().toString().equals(("Ikke prioritert"))) {
+			return 5;
+		}
+		return 0;
+	}
+
+	/**
+	 * This method takes an integer as an input
+	 * and changes the comboBox into a String
+	 * depending on what the integer input is.
+	 * @param i
+	 * @return
+	 */
+	public String updateBox(int i){
+		if(i == 1){
+			return "Kritisk";
+		} else if(i == 2){
+			return "Høy";
+		} else if(i == 3){
+			return "Normal";
+		} else if(i == 4){
+			return "Lav";
+		} else if(i == 5){
+			return "Ikke prioritert";
+		}
+		return null;
+	}
+
+
+
+
 	/**
 	 * The qtable is the table displaying the lists.
 	 * the contents of the table are edited by other methods
 	 * mainly it contains users and issues.
 	 * @return the qTable
-	 */
+	 * */
 	public JTable getqTable() {
 		return qTable;
 	}
