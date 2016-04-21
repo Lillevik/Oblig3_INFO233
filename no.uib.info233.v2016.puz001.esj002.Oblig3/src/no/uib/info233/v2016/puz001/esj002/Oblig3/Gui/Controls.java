@@ -16,7 +16,10 @@ import java.util.Date;
 
 
 /**
- * Created by goat on 19.04.16.
+ * The purpose of this class was to gather all the
+ * action listeners in one class to easily have "control"
+ * of them instead of spending time searching for them.
+ * Created by Marius on 19.04.16.
  */
 public class Controls {
     private Gui gui;
@@ -96,19 +99,7 @@ public class Controls {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-				/*	it.tableRows();
-					Issues issue = it.getIssueMap().get(Integer.parseInt(gui.getTxtId().getText()));
-
-					it.getModel().addRow(new Object[]{issue.getId(),
-							issue.getAssigned(),
-							issue.getCreated(),
-							issue.getPriority(),
-							issue.getLocation(),
-							issue.getStatus()});
-				} catch (IndexOutOfBoundsException f) {
-					JOptionPane.showMessageDialog(it.errorFrame, "Error getting ID's");
-				}*/
-
+                    //This method is efficient, but only works when the list is ordered. Which it was in this case.
                     Issues issue = it.getIssueList().get(Integer.parseInt(gui.getTxtId().getText()) - 1);
 
                     it.tableRows();

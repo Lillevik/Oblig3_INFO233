@@ -235,6 +235,11 @@ public class Issues implements Serializable {
 		return beenUpdatedBy;
 	}
 
+	/**
+	 * This is a setter for the status which takes a string
+	 * as an input and changes the status acordingly.
+	 * @param status
+	 */
 	public void setStatus(String status) {
 		this.status = status;
 	}

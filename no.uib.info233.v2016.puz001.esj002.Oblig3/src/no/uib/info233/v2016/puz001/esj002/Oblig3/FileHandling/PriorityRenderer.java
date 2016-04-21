@@ -4,6 +4,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * Created by goat on 20.04.16.
+ * This is a customrenderer class which extends DefaultTableCellRenderer.
+ * The purpose of this class is to render the integer values of priority
+ * in each issues into the proper Strings given in the assignment.
  */
 public class PriorityRenderer extends DefaultTableCellRenderer {
 

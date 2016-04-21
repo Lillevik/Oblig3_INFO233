@@ -93,26 +93,50 @@ public class DetailsPanel extends JPanel{
         issueText.setEditable(false);
     }
 
+    /**
+     * This is a getter for the JTextArea issueText
+     * @return the issueText textArea
+     */
     public JTextArea getIssueText() {
         return issueText;
     }
 
+    /**
+     * This is a getter for the JLabel createdBy
+     * @return createdBy JLabel
+     */
     public JLabel getCreatedBy() {
         return createdBy;
     }
 
+    /**
+     * This is a getter for the JLabel lastUpdatedBy
+     * @return lastUpdatedBy JLabel
+     */
     public JLabel getLastUpdatedBy() {
         return lastUpdatedBy;
     }
 
+    /**
+     * This is a getter for the updated JButton
+     * @return updated JButton
+     */
     public JButton getUpdates() {
         return updates;
     }
 
+    /**
+     * This is a getter for the JButton newProgram
+     * @return newProgram JButton
+     */
     public JButton getNewProgram() {
         return newProgram;
     }
 
+    /**
+     *
+     * @return
+     */
     public JButton getUpdateList() {
         return updateList;
     }

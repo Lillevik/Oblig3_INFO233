@@ -32,8 +32,9 @@ public class Main implements Serializable {
 
 
 	/**
-	 * This method starts the program and connects the different
-	 * instances together in one class.
+	 * This method starts the programs and connects
+	 *  the different instances together in one class.
+	 *  This way they can communicate and stay consistent.
 	 * @param args
 	 */
 	public static void main(String[] args) {

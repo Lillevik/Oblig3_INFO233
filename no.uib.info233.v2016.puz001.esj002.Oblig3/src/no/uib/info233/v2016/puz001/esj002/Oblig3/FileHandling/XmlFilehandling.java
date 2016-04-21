@@ -348,6 +348,7 @@ public class XmlFilehandling {
     /**
      * This method writes all the objects and strings in issueList and users list
      * into a single xml file containing all their info. This method is used in newProgram.
+     * @param issueFrame to fetch data from.
      */
     public void writeXmlFileNewProgram(IssueFrame i) {
          IssueTable it = new IssueTable(new XmlFilehandling());
